@@ -31,6 +31,7 @@ export default class GameManager extends cc.Component {
     protected onLoad(){
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
         cc.game.addPersistRootNode(this.node);
 
         this.inputManager = this.node.addComponent(InputManager);

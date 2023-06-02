@@ -58,12 +58,11 @@ export class ProjectileAttr {
     public damage: AttrNum = new AttrNum();
 
     @property(AttrNum)
-    public existTime: AttrNum = new AttrNum();
+    public existDuration: AttrNum = new AttrNum();
 
-    @property(cc.Boolean)
-    public canBounce: boolean = false;
+    @property(AttrNum)
+    public bounceOnEnemyTimes: AttrNum = new AttrNum();
 
-    @property(cc.Boolean)
-    public canPenetrate: boolean = false;
-
+    @property(AttrNum)
+    public penetrateTimes: AttrNum = new AttrNum();
 }

@@ -5,6 +5,11 @@ export let Direction = {
     RIGHT: cc.v2(1, 0)
 }
 
+export let eightDirections = []
+for (let i = 0; i < 8; i++) {
+    eightDirections.push(cc.v2(Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)));
+}
+
 export function ignoreZ(v3: cc.Vec3){
     return cc.v2(v3.x, v3.y);
 }

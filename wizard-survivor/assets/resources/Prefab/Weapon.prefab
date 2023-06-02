@@ -27,11 +27,11 @@
         "__id__": 5
       },
       {
-        "__id__": 15
+        "__id__": 17
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 18
     },
     "_opacity": 255,
     "_color": {
@@ -211,7 +211,7 @@
       "__id__": 10
     },
     "range": {
-      "__id__": 14
+      "__id__": 16
     },
     "projectilePrefab": {
       "__uuid__": "f35abea1-901a-42aa-b98d-5e9266a2c458"
@@ -220,7 +220,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 1
+    "_defaultValue": 0.5
   },
   {
     "__type__": "AttrNum",
@@ -228,7 +228,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 30
+    "_defaultValue": 10
   },
   {
     "__type__": "AttrNum",
@@ -242,11 +242,15 @@
     "damage": {
       "__id__": 12
     },
-    "existTime": {
+    "existDuration": {
       "__id__": 13
     },
-    "canBounce": false,
-    "canPenetrate": false
+    "bounceOnEnemyTimes": {
+      "__id__": 14
+    },
+    "penetrateTimes": {
+      "__id__": 15
+    }
   },
   {
     "__type__": "AttrNum",
@@ -259,6 +263,14 @@
   {
     "__type__": "AttrNum",
     "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 3
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",

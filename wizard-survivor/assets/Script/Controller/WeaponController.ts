@@ -13,16 +13,16 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class WeaponController extends cc.Component {
 
-    @property(AttrNum)
+    @property({type: AttrNum, tooltip: "攻擊頻率"})
     public attackSpeed: AttrNum = new AttrNum();
 
-    @property(AttrNum)
+    @property({type: AttrNum, tooltip: "每次攻擊發射子彈數量"})
     public shotPerAttack: AttrNum  = new AttrNum();
 
-    @property(AttrNum)
+    @property({type: AttrNum, tooltip: "每發子彈頻率"})
     public shootSpeed: AttrNum = new AttrNum();
 
-    @property({type: AttrNum, tooltip: "攻擊前搖時長"})
+    @property({type: AttrNum, tooltip: "從走動狀態轉換到攻擊狀態的時間"})
     public castTime: AttrNum = new AttrNum();
 
     @property(ProjectileAttr)
@@ -36,11 +36,14 @@ export default class WeaponController extends cc.Component {
 
     public player: PlayerController = null;
 
+    private searchTarget: ISearchTarget = null;
+
     private canAttack: boolean = false;
     private shotCnt: number = 0;
     private nextShotCountDown: number = 0;
     private attackCountDown: number = 0;
-    private searchTarget: ISearchTarget = null;
+    private bounceDirIdx: number = 0;
+
 
     onLoad() {
         this.searchTarget = this.node.addComponent(SearchEnemy);
@@ -61,6 +64,7 @@ export default class WeaponController extends cc.Component {
             this.shotCnt = 0;
             this.nextShotCountDown = 0;
             this.attackCountDown = 1/this.attackSpeed.value;
+            this.bounceDirIdx = Math.floor(Math.random()*8);
         }
 
         if (this.canAttack && this.shotCnt<this.shotPerAttack.value && this.nextShotCountDown <= 0){
@@ -77,6 +81,7 @@ export default class WeaponController extends cc.Component {
 
     private stopAttack(){
         this.canAttack = false;
+        this.shotCnt = Infinity;
     }
 
     private shoot() {
@@ -85,7 +90,7 @@ export default class WeaponController extends cc.Component {
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
         const pos =  GameManager.instance.canvas.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);
-        projectile.init({...this.projectileAttr});
+        projectile.init({...this.projectileAttr}, null, this.bounceDirIdx);
         projectile.node.parent = GameManager.instance.canvas;
         projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
     }
