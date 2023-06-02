@@ -22,21 +22,21 @@ export class AttrNum {
         this._addFactor = value;
     }
 
-    @property(cc.Integer)
     public get defaultValue(): number {
         return this._defaultValue;
     }
 
+    @property()
     public set defaultValue(value: number) {
         this.onChange()
         this._defaultValue = value;
     }
 
     public get value() {
-        return Math.floor(this.defaultValue * this._percentageFactor / 100) + this._addFactor;
+        return this.defaultValue * this._percentageFactor / 100 + this._addFactor;
     }
 
-    @property(cc.Integer)
+    @property()
     private _defaultValue: number = 0;
     private _addFactor: number = 0;
     private _percentageFactor: number = 100;

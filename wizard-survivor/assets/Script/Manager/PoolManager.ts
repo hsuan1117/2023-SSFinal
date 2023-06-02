@@ -14,16 +14,12 @@ export default class PoolManager extends cc.Component {
     public createPrefab(prefab: cc.Prefab, dontUsePool: boolean = false): cc.Node {
         if (dontUsePool) return cc.instantiate(prefab);
 
-        console.log('Create prefab: ' + prefab.name)
-        console.log('Pool size: ' + this.pool[prefab.name]?.size())
-
         if (!this.pool[prefab.name]){
             this.pool[prefab.name] = new cc.NodePool();
         }
 
         if (this.pool[prefab.name].size() <= 0){
             const node = cc.instantiate(prefab);
-            this.pool[prefab.name].put(node);
             return node;
         }
 

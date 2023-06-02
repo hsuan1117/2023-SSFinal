@@ -1,6 +1,8 @@
 import EnemyController from "./EnemyController";
 import {ProjectileAttr} from "../Helper/Attributes";
 import requireComponent = cc._decorator.requireComponent;
+import Game = cc.Game;
+import GameManager from "../Manager/GameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -31,6 +33,12 @@ export default class ProjectileController extends cc.Component {
 
     public shootToDirection(direction: cc.Vec2){
         this.rb.linearVelocity = direction.mul(this.projectileAttr.flySpeed.value);
+        this.scheduleOnce(() => {this.deleteProjectile()}, this.projectileAttr.existTime.value)
     }
 
+
+    private deleteProjectile(){
+        this.unschedule(this.deleteProjectile);
+        GameManager.instance.poolManager.recycle(this.node);
+    }
 }
