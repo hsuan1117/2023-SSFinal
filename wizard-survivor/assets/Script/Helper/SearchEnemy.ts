@@ -2,7 +2,7 @@ const {ccclass, property} = cc._decorator;
 
 import {ISearchTarget} from "./ISearchTarget";
 import {Deque} from '@datastructures-js/deque';
-import EnemyController from "./EnemyController";
+import EnemyController from "../Controller/EnemyController";
 
 @ccclass
 export default class SearchEnemy extends cc.Component implements ISearchTarget{

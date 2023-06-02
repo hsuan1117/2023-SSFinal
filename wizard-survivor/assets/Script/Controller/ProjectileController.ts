@@ -1,5 +1,5 @@
 import EnemyController from "./EnemyController";
-import {ProjectileAttr} from "./Attributes";
+import {ProjectileAttr} from "../Helper/Attributes";
 import requireComponent = cc._decorator.requireComponent;
 
 const {ccclass, property} = cc._decorator;

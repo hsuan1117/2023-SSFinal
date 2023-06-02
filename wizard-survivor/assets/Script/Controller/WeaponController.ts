@@ -1,11 +1,11 @@
-import {AttrNum, ProjectileAttr} from "./Attributes";
+import {AttrNum, ProjectileAttr} from "../Helper/Attributes";
 import PlayerController from "./PlayerController";
 import ProjectileController from "./ProjectileController";
 import GameManager from "../Manager/GameManager";
 import requireComponent = cc._decorator.requireComponent;
-import {ignoreZ, padZ} from "../Utils/utils";
-import SearchEnemy from "./SearchEnemy";
-import {ISearchTarget} from "./ISearchTarget";
+import {ignoreZ, padZ} from "../Helper/utils";
+import SearchEnemy from "../Helper/SearchEnemy";
+import {ISearchTarget} from "../Helper/ISearchTarget";
 import Game = cc.Game;
 
 const {ccclass, property} = cc._decorator;

@@ -1,7 +1,7 @@
 import GameManager from "../Manager/GameManager";
-import {Direction} from "../Utils/utils";
+import {Direction} from "../Helper/utils";
 import Game = cc.Game;
-import {AttrNum} from "./Attributes";
+import {AttrNum} from "../Helper/Attributes";
 import WeaponController from "./WeaponController";
 
 const {ccclass, property} = cc._decorator;
