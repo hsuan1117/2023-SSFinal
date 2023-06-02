@@ -21,18 +21,26 @@ export default class PlayerController extends cc.Component {
     @property(cc.Prefab)
     public mainWeaponPrefab: cc.Prefab = null;
 
+    @property(AttrNum)
+    public dashSpeed: AttrNum = new AttrNum();
+
+    @property(AttrNum)
+    public dashCoolDown: AttrNum = new AttrNum();
+
     public event: cc.EventTarget;
     public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
     public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
 
     public currentEXP: number = 0;
-
     public currentHP: number = 10;
-
-    private movingDir: cc.Vec2 = cc.v2(0, 0);
 
     private rb: cc.RigidBody = null;
 
+    private dashCountDown: number = 0;
+    private dashDuration: number = 0.1;
+    private isDashing: boolean = false;
+
+    private movingDir: cc.Vec2 = cc.v2(0, 0);
     private keyToDir: {} = {
         [cc.macro.KEY.w]: Direction.UP,
         [cc.macro.KEY.s]: Direction.DOWN,
@@ -41,12 +49,15 @@ export default class PlayerController extends cc.Component {
     }
 
 
+    // LIFE-CYCLE CALLBACKS:
     onLoad(){
         this.rb = this.node.getComponent(cc.RigidBody);
 
         this.event = new cc.EventTarget();
-        this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
-        this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
+        // this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
+        // this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
+
+        GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
 
         this.addWeapon(this.mainWeaponPrefab)
     }
@@ -55,6 +66,16 @@ export default class PlayerController extends cc.Component {
         this.event.emit(PlayerController.PLAYER_STOP_MOVE)
     }
 
+    update(dt: number) {
+        this.dashCountDown -= dt;
+        this.setMovingDir();
+        if (!this.isDashing){
+            this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+        }
+    }
+
+
+    // PUBLIC METHODS:
     public addWeapon(weaponPrefab: cc.Prefab){
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;
@@ -62,9 +83,12 @@ export default class PlayerController extends cc.Component {
         weapon.init();
     }
 
-    protected update(dt: number) {
-        this.setMovingDir();
-        this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+
+    // HELPER METHODS:
+    protected onKeyDown({keyCode}){
+        if (keyCode === cc.macro.KEY.space){
+            this.dash();
+        }
     }
 
     protected setMovingDir(){
@@ -81,5 +105,16 @@ export default class PlayerController extends cc.Component {
             this.event.emit(PlayerController.PLAYER_STOP_MOVE);
         }
         this.movingDir = dirSum.normalize();
+    }
+
+    protected dash(){
+        if (this.isDashing || this.dashCountDown>0) return;
+        this.isDashing = true;
+        this.dashCountDown = this.dashCoolDown.value;
+        this.rb.linearVelocity = this.movingDir.mul(this.dashSpeed.value);
+        this.scheduleOnce(()=>{
+            this.isDashing = false;
+            this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+        }, this.dashDuration);
     }
 }

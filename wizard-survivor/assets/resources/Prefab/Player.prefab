@@ -27,11 +27,11 @@
         "__id__": 5
       },
       {
-        "__id__": 8
+        "__id__": 10
       }
     ],
     "_prefab": {
-      "__id__": 9
+      "__id__": 11
     },
     "_opacity": 255,
     "_color": {
@@ -205,6 +205,12 @@
     "mainWeaponPrefab": {
       "__uuid__": "a91c6968-04d0-4a6f-8368-d1ec149591c1"
     },
+    "dashSpeed": {
+      "__id__": 8
+    },
+    "dashCoolDown": {
+      "__id__": 9
+    },
     "_id": ""
   },
   {
@@ -214,6 +220,14 @@
   {
     "__type__": "AttrNum",
     "_defaultValue": 5
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 500
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
   },
   {
     "__type__": "cc.RigidBody",
