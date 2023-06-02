@@ -7,6 +7,7 @@ import {ignoreZ, padZ} from "../Helper/utils";
 import SearchEnemy from "../Helper/SearchEnemy";
 import {ISearchTarget} from "../Helper/ISearchTarget";
 import Game = cc.Game;
+import FaceTo from "./FaceTo";
 
 const {ccclass, property} = cc._decorator;
 
@@ -46,6 +47,7 @@ export default class WeaponController extends cc.Component {
 
 
     onLoad() {
+        this.node.getComponent(FaceTo).rotateTarget = this.node;
         this.searchTarget = this.node.addComponent(SearchEnemy);
         this.range.onChangeCallback.push((val) => {
             console.log('Range changed:', val);
@@ -93,6 +95,8 @@ export default class WeaponController extends cc.Component {
     private shoot() {
         const target = this.searchTarget.getTarget();
         if (!target) return;
+
+        this.getComponent(FaceTo).faceTo = target;
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
         const pos =  GameManager.instance.canvas.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);

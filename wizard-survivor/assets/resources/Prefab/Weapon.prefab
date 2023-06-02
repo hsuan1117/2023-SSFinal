@@ -28,10 +28,13 @@
       },
       {
         "__id__": 17
+      },
+      {
+        "__id__": 18
       }
     ],
     "_prefab": {
-      "__id__": 18
+      "__id__": 19
     },
     "_opacity": 255,
     "_color": {
@@ -285,6 +288,16 @@
     },
     "_enabled": true,
     "_searchRange": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "609dbdUOcJDO7c4q0MYaHM4",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {
