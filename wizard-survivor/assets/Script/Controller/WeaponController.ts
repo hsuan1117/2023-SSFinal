@@ -17,10 +17,10 @@ export default class WeaponController extends cc.Component {
     public attackSpeed: AttrNum = new AttrNum();
 
     @property(AttrNum)
-    public streamNum: AttrNum  = new AttrNum();
+    public shotPerAttack: AttrNum  = new AttrNum();
 
     @property(AttrNum)
-    public streamSpeed: AttrNum = new AttrNum();
+    public shootSpeed: AttrNum = new AttrNum();
 
     @property({type: AttrNum, tooltip: "攻擊前搖時長"})
     public castTime: AttrNum = new AttrNum();
@@ -37,6 +37,8 @@ export default class WeaponController extends cc.Component {
     public player: PlayerController = null;
 
     private canAttack: boolean = false;
+    private shotCnt: number = 0;
+    private nextShotCountDown: number = 0;
     private attackCountDown: number = 0;
     private searchTarget: ISearchTarget = null;
 
@@ -52,10 +54,19 @@ export default class WeaponController extends cc.Component {
     }
 
     update(dt){
+        this.nextShotCountDown -= dt;
         this.attackCountDown -= dt;
+
         if (this.canAttack && this.attackCountDown <= 0){
-            this.shoot();
+            this.shotCnt = 0;
+            this.nextShotCountDown = 0;
             this.attackCountDown = 1/this.attackSpeed.value;
+        }
+
+        if (this.canAttack && this.shotCnt<this.shotPerAttack.value && this.nextShotCountDown <= 0){
+            this.shoot();
+            this.nextShotCountDown = 1/this.shootSpeed.value;
+            this.shotCnt++;
         }
     }
 

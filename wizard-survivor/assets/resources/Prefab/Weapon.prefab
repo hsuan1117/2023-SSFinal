@@ -198,10 +198,10 @@
     "attackSpeed": {
       "__id__": 6
     },
-    "streamNum": {
+    "shotPerAttack": {
       "__id__": 7
     },
-    "streamSpeed": {
+    "shootSpeed": {
       "__id__": 8
     },
     "castTime": {
@@ -220,19 +220,19 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 2
-  },
-  {
-    "__type__": "AttrNum",
     "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 1
+    "_defaultValue": 5
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 30
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0.5
   },
   {
     "__type__": "ProjectileAttr",
@@ -258,7 +258,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0.5
+    "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
