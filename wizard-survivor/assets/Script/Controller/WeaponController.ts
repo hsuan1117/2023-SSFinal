@@ -70,9 +70,8 @@ export default class WeaponController extends cc.Component {
 
     private shoot() {
         const target = this.searchTarget.getTarget();
-        console.log('Target: ', target);
         if (!target) return;
-        const projectile = cc.instantiate(this.projectilePrefab).getComponent(ProjectileController);
+        const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
         const pos =  GameManager.instance.canvas.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);
         projectile.init({...this.projectileAttr});
