@@ -209,11 +209,11 @@
   },
   {
     "__type__": "AttrNum",
-    "defaultValue": 324234
+    "defaultValue": 200
   },
   {
     "__type__": "AttrNum",
-    "defaultValue": 3243
+    "defaultValue": 100
   },
   {
     "__type__": "cc.RigidBody",

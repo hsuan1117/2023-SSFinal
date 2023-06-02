@@ -28,7 +28,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 14
     },
     "_opacity": 255,
     "_color": {
@@ -201,41 +201,58 @@
     "streamSpeed": {
       "__id__": 8
     },
-    "projectileAttr": {
+    "castTime": {
       "__id__": 9
+    },
+    "projectileAttr": {
+      "__id__": 10
+    },
+    "projectilePrefab": {
+      "__uuid__": "f35abea1-901a-42aa-b98d-5e9266a2c458"
     },
     "_id": ""
   },
   {
+    "__type__": "AttrNum",
+    "defaultValue": 2
+  },
+  {
+    "__type__": "AttrNum",
+    "defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
     "defaultValue": 0
   },
   {
-    "defaultValue": 0
-  },
-  {
-    "defaultValue": 0
-  },
-  {
+    "__type__": "ProjectileAttr",
     "flySpeed": {
-      "__id__": 10
-    },
-    "damage": {
       "__id__": 11
     },
-    "existTime": {
+    "damage": {
       "__id__": 12
+    },
+    "existTime": {
+      "__id__": 13
     },
     "canBounce": false,
     "canPenetrate": false
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "defaultValue": 100
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "defaultValue": 50
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "defaultValue": 3
   },
   {
     "__type__": "cc.PrefabInfo",

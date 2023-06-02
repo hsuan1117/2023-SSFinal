@@ -19,18 +19,18 @@ export class AttrNum {
 export class ProjectileAttr {
 
     @property(AttrNum)
-    public flySpeed: AttrNum;
+    public flySpeed: AttrNum = new AttrNum();
 
     @property(AttrNum)
-    public damage: AttrNum;
+    public damage: AttrNum = new AttrNum();
 
     @property(AttrNum)
-    public existTime: AttrNum;
+    public existTime: AttrNum = new AttrNum();
 
     @property(cc.Boolean)
-    public canBounce: boolean;
+    public canBounce: boolean = false;
 
     @property(cc.Boolean)
-    public canPenetrate: boolean;
+    public canPenetrate: boolean = false;
 
 }
