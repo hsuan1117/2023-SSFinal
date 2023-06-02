@@ -220,19 +220,19 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0.5
+    "_defaultValue": 2
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 3
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 10
+    "_defaultValue": 30
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0.5
+    "_defaultValue": 0
   },
   {
     "__type__": "ProjectileAttr",
@@ -284,7 +284,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_searchRange": 100,
+    "_searchRange": 0,
     "_id": ""
   },
   {

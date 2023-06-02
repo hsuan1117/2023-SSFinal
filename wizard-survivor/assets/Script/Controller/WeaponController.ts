@@ -47,13 +47,19 @@ export default class WeaponController extends cc.Component {
 
     onLoad() {
         this.searchTarget = this.node.addComponent(SearchEnemy);
-        this.range.onChangeCallback.push(() => {this.searchTarget.searchRange = this.range.value;});
+        this.range.onChangeCallback.push((val) => {
+            console.log('Range changed:', val);
+            this.searchTarget.searchRange = val;
+        });
     }
 
     public init(){
         this.canAttack = false;
+
         this.player.event.on(PlayerController.PLAYER_START_MOVE, this.stopAttack, this);
         this.player.event.on(PlayerController.PLAYER_STOP_MOVE, this.startAttack, this);
+
+        this.searchTarget.searchRange = this.range.value;
     }
 
     update(dt){

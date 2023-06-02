@@ -9,8 +9,8 @@ export class AttrNum {
     }
 
     set percentageFactor(value: number) {
-        this.onChange();
         this._percentageFactor = value;
+        this.onChange();
     }
 
     get addFactor(): number {
@@ -18,8 +18,8 @@ export class AttrNum {
     }
 
     set addFactor(value: number) {
-        this.onChange();
         this._addFactor = value;
+        this.onChange();
     }
 
     public get defaultValue(): number {
@@ -28,8 +28,8 @@ export class AttrNum {
 
     @property()
     public set defaultValue(value: number) {
-        this.onChange()
         this._defaultValue = value;
+        this.onChange()
     }
 
     public get value() {

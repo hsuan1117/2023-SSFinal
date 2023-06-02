@@ -17,3 +17,9 @@ export function ignoreZ(v3: cc.Vec3){
 export function padZ(v2: cc.Vec2){
     return cc.v3(v2.x, v2.y, 0);
 }
+
+export function nodeDistanceSqr(node1: cc.Node, node2: cc.Node){
+    return node1.convertToWorldSpaceAR(cc.v2(0, 0))
+        .sub(node2.convertToWorldSpaceAR(cc.v2(0, 0)))
+        .magSqr();
+}
