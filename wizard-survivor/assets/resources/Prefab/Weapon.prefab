@@ -25,10 +25,13 @@
     "_components": [
       {
         "__id__": 5
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -201,41 +204,76 @@
     "streamSpeed": {
       "__id__": 8
     },
-    "projectileAttr": {
+    "castTime": {
       "__id__": 9
+    },
+    "projectileAttr": {
+      "__id__": 10
+    },
+    "range": {
+      "__id__": 14
+    },
+    "projectilePrefab": {
+      "__uuid__": "f35abea1-901a-42aa-b98d-5e9266a2c458"
     },
     "_id": ""
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 2
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 1
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 1
   },
   {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "ProjectileAttr",
     "flySpeed": {
-      "__id__": 10
-    },
-    "damage": {
       "__id__": 11
     },
-    "existTime": {
+    "damage": {
       "__id__": 12
+    },
+    "existTime": {
+      "__id__": 13
     },
     "canBounce": false,
     "canPenetrate": false
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 400
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 50
   },
   {
-    "defaultValue": 0
+    "__type__": "AttrNum",
+    "_defaultValue": 30
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 300
+  },
+  {
+    "__type__": "132f5LDSlVAh5HrhGIiO0e2",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_searchRange": 100,
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
