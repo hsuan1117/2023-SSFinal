@@ -5,7 +5,7 @@ import {Deque} from '@datastructures-js/deque';
 import DropController from "../Controller/DropController";
 
 @ccclass
-export default class SearchDrop extends cc.Component implements ISearchTarget{
+export default class SearchDrop extends cc.Component implements ISearchTarget {
 
     set searchRange(value: number) {
         this.collider.radius = value;
@@ -38,7 +38,6 @@ export default class SearchDrop extends cc.Component implements ISearchTarget{
     }
 
     private isTarget(target: cc.Node): boolean {
-        return !target.getComponent(DropController)?.isCollected &&
-            target.position.sub(this.node.position).magSqr() <= this._searchRange * this._searchRange;
+        return (target.getComponent(DropController)?.isCollected === false);
     }
 }

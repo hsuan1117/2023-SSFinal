@@ -1,8 +1,12 @@
 import GameManager from "../Manager/GameManager";
-import {Direction} from "../Helper/utils";
+import {Direction, ignoreZ} from "../Helper/utils";
 import Game = cc.Game;
 import {AttrNum} from "../Helper/Attributes";
 import WeaponController from "./WeaponController";
+import {ISearchTarget} from "../Helper/ISearchTarget";
+import SearchEnemy from "../Helper/SearchEnemy";
+import SearchDrop from "../Helper/SearchDrop";
+import DropController from "./DropController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +40,8 @@ export default class PlayerController extends cc.Component {
 
     private rb: cc.RigidBody = null;
 
+    private searchTarget: ISearchTarget = new SearchDrop;
+
     private dashCountDown: number = 0;
     private dashDuration: number = 0.1;
     private isDashing: boolean = false;
@@ -52,6 +58,7 @@ export default class PlayerController extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
         this.rb = this.node.getComponent(cc.RigidBody);
+        this.addComponent(SearchDrop);
 
         this.event = new cc.EventTarget();
         // this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
@@ -72,6 +79,8 @@ export default class PlayerController extends cc.Component {
         if (!this.isDashing){
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }
+        this.collectDrop();
+        cc.log(ignoreZ(this.node.position).x, ignoreZ(this.node.position).y);
     }
 
 
@@ -82,7 +91,6 @@ export default class PlayerController extends cc.Component {
         weapon.player = this;
         weapon.init();
     }
-
 
     // HELPER METHODS:
     protected onKeyDown({keyCode}){
@@ -116,5 +124,12 @@ export default class PlayerController extends cc.Component {
             this.isDashing = false;
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }, this.dashDuration);
+    }
+
+    protected collectDrop() {
+        while (this.getComponent(SearchDrop).getTarget()) {
+            let target = this.getComponent(SearchDrop).getTarget();
+            target.getComponent(DropController).collectBy(this.node);
+        }
     }
 }
