@@ -1,6 +1,6 @@
 import InputManager from "./InputManager";
 import PoolManager from "./PoolManager";
-import resources = cc.resources;
+import PlayerManager from "./PlayerManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,21 +14,15 @@ export default class GameManager extends cc.Component {
         return GameManager._instance;
     }
 
-    public get canvas(): cc.Node {
-        return this._canvas;
-    }
-
-    public inputManager: InputManager
-
-    public poolManager: PoolManager
-
-
-    private _canvas: cc.Node = null;
+    public inputManager: InputManager;
+    public poolManager: PoolManager;
+    public playerManager: PlayerManager;
 
     private static _instance: GameManager = null;
 
 
-    protected onLoad(){
+    // CC-CALLBACKS
+    onLoad(){
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
@@ -36,26 +30,26 @@ export default class GameManager extends cc.Component {
 
         this.inputManager = this.node.addComponent(InputManager);
         this.poolManager = this.node.addComponent(PoolManager);
-        this._canvas = cc.find('Canvas');
+        this.playerManager = this.node.addComponent(PlayerManager);
     }
 
-    protected start(){
+    start(){
         this.generateGameScene();
     }
 
 
+    // HELPERS:
     private generateGameScene(){
-        resources.load('Prefab/Player', cc.Prefab, (err, prefab) => {
-            const player = cc.instantiate(prefab) as unknown as cc.Node;
-            this.canvas.addChild(player);
-        })
-        resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
+        this.playerManager.createPlayer('owowo');
+        cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
             const enemy = cc.instantiate(prefab) as unknown as cc.Node;
-            this.canvas.addChild(enemy);
+            this.node.addChild(enemy);
+            enemy.position = cc.v3(100, 100, 0)
         })
-        resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
+        cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
             const drop = cc.instantiate(prefab) as unknown as cc.Node;
-            this.canvas.addChild(drop);
+            this.node.addChild(drop);
+            drop.position = cc.v3(200, 200, 0);
         })
     }
 }
