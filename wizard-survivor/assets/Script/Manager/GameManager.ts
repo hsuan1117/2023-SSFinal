@@ -53,5 +53,9 @@ export default class GameManager extends cc.Component {
             const enemy = cc.instantiate(prefab) as unknown as cc.Node;
             this.canvas.addChild(enemy);
         })
+        resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
+            const drop = cc.instantiate(prefab) as unknown as cc.Node;
+            this.canvas.addChild(drop);
+        })
     }
 }
