@@ -2,6 +2,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass('AttrNum')
 export class AttrNum {
+    /*直接 push 來註冊 callback*/
     public onChangeCallback: Function[] = [];
 
     get percentageFactor(): number {

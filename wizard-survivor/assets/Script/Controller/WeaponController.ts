@@ -35,7 +35,7 @@ export default class WeaponController extends cc.Component {
     @property(cc.Prefab)
     public projectilePrefab: cc.Prefab = null;
 
-    public player: PlayerController = null;
+    private player: PlayerController = null;
 
     private searchTarget: ISearchTarget = null;
 
@@ -46,22 +46,14 @@ export default class WeaponController extends cc.Component {
     private bounceDirIdx: number = 0;
 
 
+    // LIFE-CYCLE CALLBACKS:
     onLoad() {
-        this.node.getComponent(FaceTo).rotateTarget = this.node;
+        this.node.getComponent(FaceTo).init(this.node)
         this.searchTarget = this.node.addComponent(SearchEnemy);
         // this.range.onChangeCallback.push((val) => {
         //     console.log('Range changed:', val);
         //     this.searchTarget.searchRange = val;
         // });
-    }
-
-    public init(){
-        this.canAttack = false;
-
-        this.player.event.on(PlayerController.PLAYER_START_MOVE, this.stopAttack, this);
-        this.player.event.on(PlayerController.PLAYER_STOP_MOVE, this.startAttack, this);
-
-        this.searchTarget.searchRange = this.range.value;
     }
 
     update(dt){
@@ -82,6 +74,17 @@ export default class WeaponController extends cc.Component {
         }
     }
 
+
+    // PUBLIC METHODS:
+    public init(player: PlayerController){
+        this.canAttack = false;
+        this.player = player;
+        this.player.event.on(PlayerController.PLAYER_START_MOVE, this.stopAttack, this);
+        this.player.event.on(PlayerController.PLAYER_STOP_MOVE, this.startAttack, this);
+    }
+
+
+    // HELPERS:
     private startAttack(){
         this.canAttack = true;
         this.attackCountDown = Math.max(this.attackCountDown, this.castTime.value);
@@ -96,7 +99,7 @@ export default class WeaponController extends cc.Component {
         const target = this.searchTarget.getTarget();
         if (!target) return;
 
-        this.getComponent(FaceTo).faceTo = target;
+        this.getComponent(FaceTo).setFaceTo(target);
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
         const pos =  GameManager.instance.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);

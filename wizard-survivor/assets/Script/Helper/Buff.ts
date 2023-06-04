@@ -36,7 +36,7 @@ export class IncMaxHP implements IBuff{
 
     public execute(player: PlayerController) {
         player.maxHp.addFactor += this.incHP;
-        player.currentHP += this.incHP;
+        player.currentHP.addFactor += this.incHP;
     }
 }
 

@@ -111,8 +111,7 @@ export default class PlayerController extends cc.Component {
     public addWeapon(weaponPrefab: cc.Prefab): WeaponController {
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;
-        weapon.player = this;
-        weapon.init();
+        weapon.init(this);
         return weapon;
     }
 
