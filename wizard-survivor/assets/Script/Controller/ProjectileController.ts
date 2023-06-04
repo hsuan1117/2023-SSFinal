@@ -39,8 +39,6 @@ export default class ProjectileController extends cc.Component {
                     .add(this.rb.linearVelocity.normalize().neg().mul(1 - this.bounceMixRandomRate))
                     .normalize();
 
-                console.log('Bounce to', newDir.toString());
-
                 this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
             }
         }
@@ -53,7 +51,6 @@ export default class ProjectileController extends cc.Component {
         this.onHitCallback = onHitCallback;
         this.bounceCnt = 0;
         this.bounceDir = eightDirections[bounceDirIdx];
-        console.log('BounceDir:', this.bounceDir.mag().toString());
     }
 
     public shootToDirection(direction: cc.Vec2) {

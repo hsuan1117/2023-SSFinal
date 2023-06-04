@@ -65,4 +65,16 @@ export class ProjectileAttr {
 
     @property(AttrNum)
     public penetrateTimes: AttrNum = new AttrNum();
+
+    constructor(flySpeed = 0,
+                damage = 0,
+                existDuration = 0,
+                bounceOnEnemyTimes = 0,
+                penetrateTimes = 0) {
+        this.flySpeed.defaultValue = flySpeed;
+        this.damage.defaultValue = damage;
+        this.existDuration.defaultValue = existDuration;
+        this.bounceOnEnemyTimes.defaultValue = bounceOnEnemyTimes;
+        this.penetrateTimes.defaultValue = penetrateTimes;
+    }
 }

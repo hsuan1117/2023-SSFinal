@@ -1,15 +1,11 @@
 import GameManager from "../Manager/GameManager";
 import {Direction, ignoreZ} from "../Helper/utils";
-import Game = cc.Game;
 import {AttrNum} from "../Helper/Attributes";
 import WeaponController from "./WeaponController";
 import {ISearchTarget} from "../Helper/ISearchTarget";
-import SearchEnemy from "../Helper/SearchEnemy";
 import SearchDrop from "../Helper/SearchDrop";
 import DropController from "./DropController";
-import CircleCollider = cc.CircleCollider;
-import PhysicsContact = cc.PhysicsContact;
-import PhysicsCollider = cc.PhysicsCollider;
+import {ExplosionOnDashBuff} from "../Helper/Buff";
 
 const {ccclass, property} = cc._decorator;
 
@@ -37,7 +33,9 @@ export default class PlayerController extends cc.Component {
     public event: cc.EventTarget;
     public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
     public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
+    public static readonly PLAYER_DASH: string = "PLAYER_DASH";
 
+    public mainWeapon: WeaponController = null;
     public currentEXP: number = 0;
     public currentHP: number = 10;
 
@@ -69,10 +67,11 @@ export default class PlayerController extends cc.Component {
         this.event = new cc.EventTarget();
         // this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
         // this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
+        this.event.on(PlayerController.PLAYER_DASH, ()=>{console.log(PlayerController.PLAYER_DASH)}, this);
 
         GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
 
-        this.addWeapon(this.mainWeaponPrefab)
+        this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
     }
 
     start(){
@@ -86,22 +85,28 @@ export default class PlayerController extends cc.Component {
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }
         this.collectDrop();
-        cc.log(ignoreZ(this.node.position).x, ignoreZ(this.node.position).y);
     }
 
 
     // PUBLIC METHODS:
-    public addWeapon(weaponPrefab: cc.Prefab){
+    public addWeapon(weaponPrefab: cc.Prefab): WeaponController {
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;
         weapon.player = this;
         weapon.init();
+        return weapon;
     }
 
     // HELPER METHODS:
-    protected onKeyDown({keyCode}){
-        if (keyCode === cc.macro.KEY.space){
+    protected onKeyDown({keyCode}) {
+        if (keyCode === cc.macro.KEY.space) {
             this.dash();
+        }
+
+        // for DEBUG
+        if (keyCode === cc.macro.KEY.q) {
+            const buff = new ExplosionOnDashBuff();
+            buff.execute(this);
         }
     }
 
@@ -123,6 +128,7 @@ export default class PlayerController extends cc.Component {
 
     protected dash(){
         if (this.isDashing || this.dashCountDown>0) return;
+        this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
         this.dashCountDown = this.dashCoolDown.value;
         this.rb.linearVelocity = this.movingDir.mul(this.dashSpeed.value);
