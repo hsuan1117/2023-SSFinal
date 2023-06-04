@@ -7,6 +7,9 @@ import {ISearchTarget} from "../Helper/ISearchTarget";
 import SearchEnemy from "../Helper/SearchEnemy";
 import SearchDrop from "../Helper/SearchDrop";
 import DropController from "./DropController";
+import CircleCollider = cc.CircleCollider;
+import PhysicsContact = cc.PhysicsContact;
+import PhysicsCollider = cc.PhysicsCollider;
 
 const {ccclass, property} = cc._decorator;
 
@@ -42,8 +45,10 @@ export default class PlayerController extends cc.Component {
 
     private searchTarget: ISearchTarget = new SearchDrop;
 
+    private readonly DENSITY: number = 1;
+
+    private readonly DASH_DURATION: number = 0.1;
     private dashCountDown: number = 0;
-    private dashDuration: number = 0.1;
     private isDashing: boolean = false;
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
@@ -59,6 +64,7 @@ export default class PlayerController extends cc.Component {
     onLoad(){
         this.rb = this.node.getComponent(cc.RigidBody);
         this.addComponent(SearchDrop);
+        this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
 
         this.event = new cc.EventTarget();
         // this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
@@ -123,7 +129,7 @@ export default class PlayerController extends cc.Component {
         this.scheduleOnce(()=>{
             this.isDashing = false;
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
-        }, this.dashDuration);
+        }, this.DASH_DURATION);
     }
 
     protected collectDrop() {
