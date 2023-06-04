@@ -98,10 +98,10 @@ export default class WeaponController extends cc.Component {
 
         this.getComponent(FaceTo).faceTo = target;
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
-        const pos =  GameManager.instance.canvas.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
+        const pos =  GameManager.instance.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);
         projectile.init({...this.projectileAttr}, null, this.bounceDirIdx);
-        projectile.node.parent = GameManager.instance.canvas;
+        projectile.node.parent = GameManager.instance.node;
         projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
     }
 }
