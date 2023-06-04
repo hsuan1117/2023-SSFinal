@@ -40,14 +40,19 @@ export default class GameManager extends cc.Component {
 
     // HELPERS:
     private generateGameScene(){
+        let ui, enemy, drop: cc.Node;
+        cc.resources.load('Prefab/UI/FixedUI', cc.Prefab, (err, prefab) => {
+            ui = cc.instantiate(prefab) as unknown as cc.Node;
+            this.node.addChild(ui);
+        });
         this.playerManager.createPlayer('owowo');
         cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
-            const enemy = cc.instantiate(prefab) as unknown as cc.Node;
+            enemy = cc.instantiate(prefab) as unknown as cc.Node;
             this.node.addChild(enemy);
             enemy.position = cc.v3(100, 100, 0)
         })
         cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
-            const drop = cc.instantiate(prefab) as unknown as cc.Node;
+            drop = cc.instantiate(prefab) as unknown as cc.Node;
             this.node.addChild(drop);
             drop.position = cc.v3(200, 200, 0);
         })

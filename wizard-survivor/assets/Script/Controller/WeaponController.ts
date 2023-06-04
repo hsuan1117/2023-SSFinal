@@ -23,11 +23,11 @@ export default class WeaponController extends cc.Component {
     @property({type: AttrNum, tooltip: "每發子彈頻率"})
     public shootSpeed: AttrNum = new AttrNum();
 
-    @property({type: AttrNum, tooltip: "從走動狀態轉換到攻擊狀態的時間"})
-    public castTime: AttrNum = new AttrNum();
-
     @property(ProjectileAttr)
     public projectileAttr: ProjectileAttr = new ProjectileAttr();
+
+    @property({type: AttrNum, tooltip: "從走動狀態轉換到攻擊狀態的時間"})
+    public castTime: AttrNum = new AttrNum();
 
     @property(AttrNum)
     public range: AttrNum = new AttrNum();

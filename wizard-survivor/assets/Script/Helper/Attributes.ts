@@ -2,7 +2,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass('AttrNum')
 export class AttrNum {
-    public onChangeCallback: Array<Function> = [];
+    public onChangeCallback: Function[] = [];
 
     get percentageFactor(): number {
         return this._percentageFactor;
@@ -34,6 +34,14 @@ export class AttrNum {
 
     public get value() {
         return this.defaultValue * this._percentageFactor / 100 + this._addFactor;
+    }
+
+    constructor(defaultValue: number = 0){
+        this.defaultValue = defaultValue;
+    }
+
+    public toString(){
+        return `${this.value} (${this.defaultValue} * ${this.percentageFactor}% + ${this.addFactor})`
     }
 
     @property()

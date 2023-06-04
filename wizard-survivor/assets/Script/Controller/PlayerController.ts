@@ -12,35 +12,36 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class PlayerController extends cc.Component {
 
+    public event: cc.EventTarget;
+    public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
+    public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
+    public static readonly PLAYER_DASH: string = "PLAYER_DASH";
+    public static readonly PLAYER_ATTR_CHANGE: string = "PLAYER_ATTR_CHANGE";
+
+    // Player Attributes:
     @property(AttrNum)
     public moveSpeed: AttrNum = new AttrNum();
 
     @property(AttrNum)
     public maxHp: AttrNum = new AttrNum();
 
-    @property(cc.Integer)
-    public expGainPercentage: number = 100;
-
-    @property(cc.Prefab)
-    public mainWeaponPrefab: cc.Prefab = null;
-
     @property(AttrNum)
-    public dashSpeed: AttrNum = new AttrNum();
+    public expGainPercentage: AttrNum = new AttrNum();
 
     @property(AttrNum)
     public dashCoolDown: AttrNum = new AttrNum();
 
-    public event: cc.EventTarget;
-    public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
-    public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
-    public static readonly PLAYER_DASH: string = "PLAYER_DASH";
+    @property(AttrNum)
+    public dashSpeed: AttrNum = new AttrNum();
+
+    @property(cc.Prefab)
+    public mainWeaponPrefab: cc.Prefab = null;
 
     public mainWeapon: WeaponController = null;
-    public currentEXP: number = 0;
-    public currentHP: number = 10;
+
+    public currentHP: AttrNum = new AttrNum(10);
 
     private rb: cc.RigidBody = null;
-
     private searchTarget: ISearchTarget = new SearchDrop;
 
     private readonly DENSITY: number = 1;
@@ -69,9 +70,27 @@ export default class PlayerController extends cc.Component {
         // this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
         this.event.on(PlayerController.PLAYER_DASH, ()=>{console.log(PlayerController.PLAYER_DASH)}, this);
 
-        GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        // GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
 
         this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
+
+        // Attributes Change Event
+        const attrOnCh = () => {this.event.emit(PlayerController.PLAYER_ATTR_CHANGE)};
+        this.moveSpeed.onChangeCallback.push(attrOnCh);
+        this.maxHp.onChangeCallback.push(attrOnCh);
+        this.expGainPercentage.onChangeCallback.push(attrOnCh);
+        this.dashCoolDown.onChangeCallback.push(attrOnCh);
+        this.dashSpeed.onChangeCallback.push(attrOnCh);
+        this.currentHP.onChangeCallback.push(attrOnCh);
+        const weaponOnCh = () => {this.event.emit(PlayerController.PLAYER_ATTR_CHANGE)};
+        this.mainWeapon.attackSpeed.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.shotPerAttack.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.shootSpeed.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.projectileAttr.damage.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.projectileAttr.flySpeed.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.projectileAttr.existDuration.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.projectileAttr.bounceOnEnemyTimes.onChangeCallback.push(weaponOnCh);
+        this.mainWeapon.projectileAttr.penetrateTimes.onChangeCallback.push(weaponOnCh);
     }
 
     start(){
