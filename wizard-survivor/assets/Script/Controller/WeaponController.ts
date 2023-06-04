@@ -49,10 +49,10 @@ export default class WeaponController extends cc.Component {
     onLoad() {
         this.node.getComponent(FaceTo).rotateTarget = this.node;
         this.searchTarget = this.node.addComponent(SearchEnemy);
-        this.range.onChangeCallback.push((val) => {
-            console.log('Range changed:', val);
-            this.searchTarget.searchRange = val;
-        });
+        // this.range.onChangeCallback.push((val) => {
+        //     console.log('Range changed:', val);
+        //     this.searchTarget.searchRange = val;
+        // });
     }
 
     public init(){

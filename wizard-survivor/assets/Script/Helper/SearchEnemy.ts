@@ -7,20 +7,16 @@ import EnemyController from "../Controller/EnemyController";
 
 @ccclass
 export default class SearchEnemy extends cc.Component implements ISearchTarget{
+    // set searchRange(value: number) {
+    //     this._searchRange = value;
+    // }
 
-    set searchRange(value: number) {
-        this._searchRange = value;
+    get searchRange(): number {
+        return this._searchRange;
     }
 
-    @property({type: cc.Integer, tooltip: "搜索範圍", visible: true})
-    private _searchRange: number = 200;
+    private _searchRange: number = 1000;
 
-    private inRangeEnemies: {[key: string]: cc.Node} = {};
-
-
-    // LIFE-CYCLE CALLBACKS:
-    onLoad() {
-    }
 
     // PUBLIC METHODS:
     /*
