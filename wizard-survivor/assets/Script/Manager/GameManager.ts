@@ -40,11 +40,11 @@ export default class GameManager extends cc.Component {
     }
 
     protected start(){
-        this.gameStart();
+        this.generateGameScene();
     }
 
 
-    private gameStart(){
+    private generateGameScene(){
         resources.load('Prefab/Player', cc.Prefab, (err, prefab) => {
             const player = cc.instantiate(prefab) as unknown as cc.Node;
             this.canvas.addChild(player);
