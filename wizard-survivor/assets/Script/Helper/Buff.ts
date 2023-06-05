@@ -8,7 +8,11 @@ import Game = cc.Game;
 
 export interface IBuff {
     description: string;
-    apply(Any): void;
+    /*
+    * 建議 PlayerController.applyBuff 套用 Buff。
+    * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
+     */
+    _apply(Any): void;
 }
 
 export class IncAttackSpeedBuff implements IBuff {
@@ -22,7 +26,7 @@ export class IncAttackSpeedBuff implements IBuff {
         this.addPercentage = addPercentage;
     }
 
-    public apply(player: PlayerController): void {
+    public _apply(player: PlayerController): void {
         player.mainWeapon.attackSpeed.percentageFactor += this.addPercentage;
     }
 }
@@ -34,7 +38,7 @@ export class IncMaxHP implements IBuff{
 
     private readonly incHP: number = 0;
 
-    public apply(player: PlayerController) {
+    public _apply(player: PlayerController) {
         player.maxHp.addFactor += this.incHP;
         player.currentHP.addFactor += this.incHP;
     }
@@ -50,7 +54,7 @@ export class ExplosionOnDashBuff implements IBuff {
         return `Explosion on dash`;
     }
 
-    public apply(player: PlayerController): void {
+    public _apply(player: PlayerController): void {
         cc.resources.load(this.prefabPath, cc.Prefab, (err, prefab: cc.Prefab) => {
             this.prefab = prefab;
         })

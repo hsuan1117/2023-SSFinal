@@ -11,6 +11,7 @@ export default class PlayerStatUI extends cc.Component {
     public init(player: PlayerController){
         this.player = player;
         this.player.event.on(PlayerController.PLAYER_ATTR_CHANGE, this.updateUI, this);
+        this.player.event.on(PlayerController.PLAYER_GAIN_BUFF, this.updateUI, this);
         this.updateUI();
     }
 
@@ -18,7 +19,9 @@ export default class PlayerStatUI extends cc.Component {
     // HELPERS:
     private updateUI(){
         const label = this.node.getComponent(cc.Label);
-        label.string = `current HP: ${this.player.currentHP.toString()}\n` +
+
+        label.string = `Player Attributes:\n` +
+                        `current HP: ${this.player.currentHP.toString()}\n` +
                         `move speed: ${this.player.moveSpeed.toString()}\n` +
                         `max HP: ${this.player.maxHp.toString()}\n` +
                         `exp gain: ${this.player.expGainPercentage.toString()}\n` +
@@ -32,5 +35,10 @@ export default class PlayerStatUI extends cc.Component {
                         `exist duration: ${this.player.mainWeapon.projectileAttr.existDuration.toString()}\n` +
                         `bounce on enemy times: ${this.player.mainWeapon.projectileAttr.bounceOnEnemyTimes.toString()}\n` +
                         `penetrate times: ${this.player.mainWeapon.projectileAttr.penetrateTimes.toString()}\n`;
+
+        label.string += `\nBuffs:\n`;
+        for (const buff of this.player.appliedBuff){
+            label.string += `${buff.description}\n`;
+        }
     }
 }

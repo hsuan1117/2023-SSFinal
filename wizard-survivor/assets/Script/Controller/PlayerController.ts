@@ -5,18 +5,24 @@ import WeaponController from "./WeaponController";
 import {ISearchTarget} from "../Helper/ISearchTarget";
 import SearchDrop from "../Helper/SearchDrop";
 import DropController from "./DropController";
-import {ExplosionOnDashBuff} from "../Helper/Buff";
+import {ExplosionOnDashBuff, IBuff} from "../Helper/Buff";
 
 const {ccclass, property} = cc._decorator;
 
+/*
+1. 負責玩家的移動＆衝刺
+2. 創建並管理屬於該玩家的武器實例
+3. 執行並管理套用在該玩家身上的 BUFF
+ */
 @ccclass
-export default class PlayerController extends cc.Component {
+export default class PlayerController extends cc.Component{
 
     public event: cc.EventTarget;
     public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
     public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
     public static readonly PLAYER_DASH: string = "PLAYER_DASH";
     public static readonly PLAYER_ATTR_CHANGE: string = "PLAYER_ATTR_CHANGE";
+    public static readonly PLAYER_GAIN_BUFF: string = "PLAYER_GAIN_BUFF";
 
     // Player Attributes:
     @property(AttrNum)
@@ -40,6 +46,7 @@ export default class PlayerController extends cc.Component {
     public mainWeapon: WeaponController = null;
     public currentHP: AttrNum = new AttrNum(10);
     public killEnemyCnt: AttrNum = new AttrNum(0);
+    public appliedBuff: IBuff[] = [];
 
     private rb: cc.RigidBody = null;
     private searchTarget: ISearchTarget = new SearchDrop;
@@ -116,6 +123,12 @@ export default class PlayerController extends cc.Component {
         return weapon;
     }
 
+    public applyBuff(buff: IBuff){
+        buff._apply(this);
+        this.appliedBuff.push(buff);
+        this.event.emit(PlayerController.PLAYER_GAIN_BUFF, buff);
+    }
+
     // HELPER METHODS:
     protected onKeyDown({keyCode}) {
         if (keyCode === cc.macro.KEY.space) {
@@ -125,7 +138,7 @@ export default class PlayerController extends cc.Component {
         // for DEBUG
         if (keyCode === cc.macro.KEY.q) {
             const buff = new ExplosionOnDashBuff();
-            buff.apply(this);
+            this.applyBuff(buff);
         }
     }
 
