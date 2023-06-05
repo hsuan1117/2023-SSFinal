@@ -69,7 +69,7 @@ export class ProjectileAttr {
     @property(AttrNum)
     public existDuration: AttrNum = new AttrNum();
 
-    @property(AttrNum)
+    @property({type: AttrNum, tooltip: '在敵人間彈跳的次數。如果穿透次數和彈跳次數都不為 0，則會些把彈跳次數用完再穿透'})
     public bounceOnEnemyTimes: AttrNum = new AttrNum();
 
     @property(AttrNum)

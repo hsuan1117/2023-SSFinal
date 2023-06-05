@@ -19,6 +19,7 @@ export default class ProjectileController extends cc.Component {
     private readonly bounceMixRandomRate: number = 0.4;
     private bounceCnt: number = 0;
     private bounceDir: cc.Vec2 = null;
+    private penetrateCnt: number = 0;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -26,13 +27,15 @@ export default class ProjectileController extends cc.Component {
         this.rb.bullet = true
     }
 
-    onCollisionEnter(other: Collider, self: Collider){
+    onCollisionEnter(other: Collider, self: Collider){}
+
+    onBeginContact(contact: cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider) {
         const enemy = other.getComponent(EnemyController);
         if (enemy) {
             this.onHitCallback && this.onHitCallback({enemy: enemy, projectile: this});
 
-            this.bounceCnt++;
-            if (this.bounceCnt <= this.projectileAttr.bounceOnEnemyTimes.value) {
+            if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
+                this.bounceCnt++;
                 const newDir =
                     this.bounceDir
                     .mul(this.bounceMixRandomRate)
@@ -40,6 +43,12 @@ export default class ProjectileController extends cc.Component {
                     .normalize();
 
                 this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
+            }
+            else if (this.penetrateCnt < this.projectileAttr.penetrateTimes.value) {
+                this.penetrateCnt++;
+            }
+            else {
+                this.deleteProjectile();
             }
         }
     }
@@ -51,6 +60,7 @@ export default class ProjectileController extends cc.Component {
         this.onHitCallback = onHitCallback;
         this.bounceCnt = 0;
         this.bounceDir = eightDirections[bounceDirIdx];
+        this.penetrateCnt = 0;
     }
 
     public shootToDirection(direction: cc.Vec2) {
@@ -64,6 +74,7 @@ export default class ProjectileController extends cc.Component {
     // HELPERS:
     private deleteProjectile(){
         this.unschedule(this.deleteProjectile);
-        GameManager.instance.poolManager.recycle(this.node);
+        GameManager.instance.poolManager
+            .recycle(this.node);
     }
 }
