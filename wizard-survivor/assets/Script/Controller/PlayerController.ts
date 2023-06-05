@@ -38,8 +38,8 @@ export default class PlayerController extends cc.Component {
     public mainWeaponPrefab: cc.Prefab = null;
 
     public mainWeapon: WeaponController = null;
-
     public currentHP: AttrNum = new AttrNum(10);
+    public killEnemyCnt: AttrNum = new AttrNum(0);
 
     private rb: cc.RigidBody = null;
     private searchTarget: ISearchTarget = new SearchDrop;
@@ -82,6 +82,7 @@ export default class PlayerController extends cc.Component {
         this.dashCoolDown.onChangeCallback.push(attrOnCh);
         this.dashSpeed.onChangeCallback.push(attrOnCh);
         this.currentHP.onChangeCallback.push(attrOnCh);
+        this.killEnemyCnt.onChangeCallback.push(attrOnCh);
         const weaponOnCh = () => {this.event.emit(PlayerController.PLAYER_ATTR_CHANGE)};
         this.mainWeapon.attackSpeed.onChangeCallback.push(weaponOnCh);
         this.mainWeapon.shotPerAttack.onChangeCallback.push(weaponOnCh);

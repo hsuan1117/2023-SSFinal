@@ -1,3 +1,7 @@
+import Game = cc.Game;
+import GameManager from "../Manager/GameManager";
+import PlayerController from "./PlayerController";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -25,6 +29,12 @@ export default class DropController extends cc.Component {
     public collectBy(collector: cc.Node) {
         this.collector = collector;
         this.isCollected = true;
+
+        // add exp
+        if (this.dropType === "exp") {
+            const player = collector.getComponent(PlayerController)
+            GameManager.instance.exp.addFactor += Math.floor(this.dropValue * player.expGainPercentage.value);
+        }
     }
 
     protected magnetic() {
