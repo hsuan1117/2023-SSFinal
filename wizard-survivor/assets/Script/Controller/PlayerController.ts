@@ -125,7 +125,7 @@ export default class PlayerController extends cc.Component {
         // for DEBUG
         if (keyCode === cc.macro.KEY.q) {
             const buff = new ExplosionOnDashBuff();
-            buff.execute(this);
+            buff.apply(this);
         }
     }
 

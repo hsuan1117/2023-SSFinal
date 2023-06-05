@@ -8,7 +8,7 @@ import Game = cc.Game;
 
 export interface IBuff {
     description: string;
-    execute(Any): void;
+    apply(Any): void;
 }
 
 export class IncAttackSpeedBuff implements IBuff {
@@ -22,7 +22,7 @@ export class IncAttackSpeedBuff implements IBuff {
         this.addPercentage = addPercentage;
     }
 
-    public execute(player: PlayerController): void {
+    public apply(player: PlayerController): void {
         player.mainWeapon.attackSpeed.percentageFactor += this.addPercentage;
     }
 }
@@ -34,7 +34,7 @@ export class IncMaxHP implements IBuff{
 
     private readonly incHP: number = 0;
 
-    public execute(player: PlayerController) {
+    public apply(player: PlayerController) {
         player.maxHp.addFactor += this.incHP;
         player.currentHP.addFactor += this.incHP;
     }
@@ -50,7 +50,7 @@ export class ExplosionOnDashBuff implements IBuff {
         return `Explosion on dash`;
     }
 
-    public execute(player: PlayerController): void {
+    public apply(player: PlayerController): void {
         cc.resources.load(this.prefabPath, cc.Prefab, (err, prefab: cc.Prefab) => {
             this.prefab = prefab;
         })
