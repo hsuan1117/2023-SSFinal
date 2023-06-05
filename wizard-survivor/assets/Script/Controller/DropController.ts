@@ -38,8 +38,7 @@ export default class DropController extends cc.Component {
     }
 
     protected magnetic() {
-        // add half win size to collector position
-        let collectorPos = this.collector.position.add(cc.v3(480, 320, 0));
+        let collectorPos = this.collector.position;
         this.node.position = this.node.position.lerp(collectorPos, 0.1);
         if (this.node.position.sub(collectorPos).magSqr() < 10) {
             // add state to collector
