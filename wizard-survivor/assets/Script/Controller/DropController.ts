@@ -14,6 +14,10 @@ export default class DropController extends cc.Component {
 
     public collector: cc.Node = null;
 
+    private firstCollect: boolean = false;
+
+    private speedRatio: number = 0;
+
     onLoad() {
         // add collider
         let collider = this.node.addComponent(cc.CircleCollider);
@@ -38,9 +42,19 @@ export default class DropController extends cc.Component {
     }
 
     protected magnetic() {
+        if (!this.firstCollect) {
+            this.firstCollect = true;
+            this.speedRatio = -0.5;
+        } else {
+            if (Math.abs(this.speedRatio) < 0.05) {
+                this.speedRatio += 0.01;
+            } else {
+                this.speedRatio += 0.05;
+            }
+        }
         let collectorPos = this.collector.position;
-        this.node.position = this.node.position.lerp(collectorPos, 0.1);
-        if (this.node.position.sub(collectorPos).magSqr() < 10) {
+        this.node.position = this.node.position.lerp(collectorPos, this.speedRatio * 0.1);
+        if (this.node.position.sub(collectorPos).magSqr() < 15) {
             // add state to collector
             this.node.destroy();
         }
