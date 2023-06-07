@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Player",
+    "_name": "PlayerKnight",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -113,8 +113,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 15,
-      "height": 30
+      "width": 32,
+      "height": 29
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -166,7 +166,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5c3bb932-6c3c-468f-88a9-c8c61d458641"
+      "__uuid__": "1b60c28b-489c-43a0-a8ad-29787ff5d890"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -179,7 +179,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "26ebc06f-14cc-42c3-9973-cefa070a6818"
+    },
     "_id": ""
   },
   {
@@ -190,10 +192,16 @@
       "__id__": 2
     },
     "_enabled": true,
-    "_defaultClip": null,
+    "_defaultClip": {
+      "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
+    },
     "_clips": [
-      null,
-      null
+      {
+        "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
+      },
+      {
+        "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
+      }
     ],
     "playOnLoad": false,
     "_id": ""

@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "KnightStand",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "cfe4e3b7-adc8-4993-9573-bfce44744aa7"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "cfe4e3b7-adc8-4993-9573-bfce44744aa7"
+            }
+          },
+          {
+            "frame": 0.48333333333333334,
+            "value": {
+              "__uuid__": "a2b262b4-2974-4bb4-8ad0-bd2dcb45c2e0"
+            }
+          },
+          {
+            "frame": 0.7333333333333333,
+            "value": {
+              "__uuid__": "3d276e54-5ad5-4516-9c53-a0ba18136b0c"
+            }
+          },
+          {
+            "frame": 0.9833333333333333,
+            "value": {
+              "__uuid__": "65dab693-d2f6-4db1-8413-b605e152215b"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
