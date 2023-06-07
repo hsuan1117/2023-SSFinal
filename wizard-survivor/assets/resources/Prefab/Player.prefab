@@ -191,10 +191,7 @@
     },
     "_enabled": true,
     "_defaultClip": null,
-    "_clips": [
-      null,
-      null
-    ],
+    "_clips": [],
     "playOnLoad": false,
     "_id": ""
   },
