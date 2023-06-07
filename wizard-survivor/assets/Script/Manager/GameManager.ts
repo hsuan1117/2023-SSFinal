@@ -1,4 +1,4 @@
-import InputManager from "./InputManager";
+import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
 import {AttrNum} from "../Helper/Attributes";
@@ -60,6 +60,10 @@ export default class GameManager extends cc.Component {
         cc.game.addPersistRootNode(this.node);
 
         this._inputManager = this.node.addComponent(InputManager);
+        this._inputManager.init({
+            p1 : WASD_TO_CONTROLLER,
+            p2 : ARROW_TO_CONTROLLER
+        })
         this._poolManager = this.node.addComponent(PoolManager);
         this._playerManager = this.node.addComponent(PlayerManager);
 
@@ -103,7 +107,7 @@ export default class GameManager extends cc.Component {
             this.node.addChild(ui);
             console.log('ui', ui);
         });
-        this._playerManager.createPlayer('owowo');
+        this._playerManager.createPlayer('p1');
         cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
             enemy = cc.instantiate(prefab) as unknown as cc.Node;
             this.node.addChild(enemy);

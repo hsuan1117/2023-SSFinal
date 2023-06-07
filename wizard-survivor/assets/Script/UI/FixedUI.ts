@@ -25,7 +25,7 @@ export default class FixedUI extends cc.Component {
         GameManager.instance.playerManager.event.on(PlayerManager.PLAYER_CREATED, () => {
             let cnt = 1;
             GameManager.instance.playerManager.allPlayerIDs.forEach((id) => {
-                let player = GameManager.instance.playerManager.getPlayerNodeByID(id).getComponent(PlayerController);
+                let player = GameManager.instance.playerManager.getPlayer(id)
                 let playerStatUI = this.node.getChildByName(`PlayerStatUI${cnt++}`).getComponent(PlayerStatUI);
                 playerStatUI.node.parent = this.node;
                 playerStatUI.init(player);

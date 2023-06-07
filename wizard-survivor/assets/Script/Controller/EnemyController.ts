@@ -69,7 +69,7 @@ export default class EnemyController extends cc.Component {
     private findClosestPlayer() {
         let target = null, minDistance = 10000000000;
         GameManager.instance.playerManager.allPlayerIDs.forEach((id) => {
-            let player = GameManager.instance.playerManager.getPlayerNodeByID(id).getComponent(PlayerController);
+            let player = GameManager.instance.playerManager.getPlayer(id);
             if (player.node.position.sub(this.node.position).mag() < minDistance) {
                 minDistance = player.node.position.sub(this.node.position).mag();
                 target = player.node.position;

@@ -77,7 +77,10 @@ export default class PlayerController extends cc.Component{
         // this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
         this.event.on(PlayerController.PLAYER_DASH, ()=>{console.log(PlayerController.PLAYER_DASH)}, this);
 
-        GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        // For Debug
+        GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, ()=>{
+
+        }, this);
 
         this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
 
@@ -107,7 +110,6 @@ export default class PlayerController extends cc.Component{
 
     update(dt: number) {
         this.dashCountDown -= dt;
-        this.setMovingDir();
         if (!this.isDashing){
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }
@@ -129,36 +131,17 @@ export default class PlayerController extends cc.Component{
         this.event.emit(PlayerController.PLAYER_GAIN_BUFF, buff);
     }
 
-    // HELPER METHODS:
-    protected onKeyDown({keyCode}) {
-        if (keyCode === cc.macro.KEY.space) {
-            this.dash();
-        }
-
-        // for DEBUG
-        if (keyCode === cc.macro.KEY.q) {
-            const buff = new ExplosionOnDashBuff();
-            this.applyBuff(buff);
-        }
-    }
-
-    protected setMovingDir(){
-        let dirSum = cc.v2(0, 0);
-        for (let key in this.keyToDir){
-            if (GameManager.instance.inputManager.isKeyPressing(parseInt(key))){
-                dirSum.addSelf(this.keyToDir[key]);
-            }
-        }
-        if (this.movingDir.equals(cc.v2(0, 0))  && !dirSum.equals(cc.v2(0, 0))){
+    public setMovingDir(newDir: cc.Vec2){
+        if (this.movingDir.equals(cc.v2(0, 0))  && !newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_START_MOVE);
         }
-        else if (!this.movingDir.equals(cc.v2(0, 0)) && dirSum.equals(cc.v2(0, 0))){
+        else if (!this.movingDir.equals(cc.v2(0, 0)) && newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_STOP_MOVE);
         }
-        this.movingDir = dirSum.normalize();
+        this.movingDir = newDir;
     }
 
-    protected dash(){
+    public dash(){
         if (this.isDashing || this.dashCountDown>0) return;
         this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
@@ -170,6 +153,8 @@ export default class PlayerController extends cc.Component{
         }, this.DASH_DURATION);
     }
 
+
+    // HELPER METHODS:
     protected collectDrop() {
         while (this.getComponent(SearchDrop).getTarget()) {
             let target = this.getComponent(SearchDrop).getTarget();

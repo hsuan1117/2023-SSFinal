@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "lib": [ "es2015", "es2017", "dom" ],
-    "target": "es5",
+    "lib": [ "es2015", "es2017", "es2019", "dom" ],
+    "target": "es6",
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "outDir": "temp/vscode-dist",
