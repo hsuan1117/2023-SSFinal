@@ -15,7 +15,7 @@ export interface IBuff {
     _apply(Any): void;
 }
 
-export class IncAttackSpeedBuff implements IBuff {
+class IncreaseAttackSpeed implements IBuff {
     public get description(): string {
         return `Increase attack speed by ${this.addPercentage}%`;
     }
@@ -31,7 +31,7 @@ export class IncAttackSpeedBuff implements IBuff {
     }
 }
 
-export class IncMaxHP implements IBuff{
+class IncreaseMaxHP implements IBuff{
     public get description(): string {
         return `Increase max HP by ${this.incHP}`;
     }
@@ -44,7 +44,7 @@ export class IncMaxHP implements IBuff{
     }
 }
 
-export class ExplosionOnDashBuff implements IBuff {
+class ExplosionOnDash implements IBuff {
     private readonly DAMAGE: number = 100;
     private readonly DURATION: number = 0.3;
     private prefabPath: string = "Prefab/Projectile/Explosion";
@@ -60,7 +60,6 @@ export class ExplosionOnDashBuff implements IBuff {
         })
 
         player.event.on(PlayerController.PLAYER_DASH, ()=> {
-            console.log(this.description);
             const proj = GameManager.instance.poolManager
                 .createPrefab(this.prefab)
                 .getComponent(ProjectileController);
@@ -76,4 +75,10 @@ export class ExplosionOnDashBuff implements IBuff {
             proj.shootToDirection(cc.Vec2.ZERO);
         }, this);
     }
+}
+
+export let Buffs= {
+    IncreaseAttackSpeed: IncreaseAttackSpeed,
+    IncreaseMaxHP: IncreaseMaxHP,
+    ExplosionOnDash: ExplosionOnDash,
 }
