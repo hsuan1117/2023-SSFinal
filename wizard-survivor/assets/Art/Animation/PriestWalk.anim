@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PriestWalk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.683333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "96b6ea4e-5d57-4238-b7fe-6ec099daaa39"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "8c255a30-00a5-401f-9357-f93392edb5f2"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "d57a3518-eda3-4705-b8cb-30d6d0323268"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "e0603580-b202-4856-a7db-c96d66095c69"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "b09e6b52-43e2-4035-8259-f7e18b82f27b"
+            }
+          },
+          {
+            "frame": 1.6666666666666667,
+            "value": {
+              "__uuid__": "b520b3c5-6abe-4e0c-a5ff-ba7406b14263"
+            }
+          },
+          {
+            "frame": 2,
+            "value": {
+              "__uuid__": "bd907652-bcd9-4be9-8540-f624d27c797c"
+            }
+          },
+          {
+            "frame": 2.3333333333333335,
+            "value": {
+              "__uuid__": "fa1fd0ac-b488-475c-9479-3ef215ed9239"
+            }
+          },
+          {
+            "frame": 2.6666666666666665,
+            "value": {
+              "__uuid__": "96b6ea4e-5d57-4238-b7fe-6ec099daaa39"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

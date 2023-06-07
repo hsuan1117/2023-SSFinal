@@ -53,7 +53,7 @@ export default class PlayerController extends cc.Component {
         [cc.macro.KEY.a]: Direction.LEFT,
         [cc.macro.KEY.d]: Direction.RIGHT,
     }
-
+    //private anim: cc.Animation = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
@@ -71,6 +71,7 @@ export default class PlayerController extends cc.Component {
 
     start(){
         this.event.emit(PlayerController.PLAYER_STOP_MOVE)
+        //this.anim = this.getComponent(cc.Animation)
     }
 
     update(dt: number) {
@@ -81,6 +82,7 @@ export default class PlayerController extends cc.Component {
         }
         this.collectDrop();
         cc.log(ignoreZ(this.node.position).x, ignoreZ(this.node.position).y);
+        //this.playerAnimation();
     }
 
 
@@ -132,4 +134,9 @@ export default class PlayerController extends cc.Component {
             target.getComponent(DropController).collectBy(this.node);
         }
     }
+    /*
+    public playerAnimation(){
+        this.anim.play("stand");
+    }
+    */
 }

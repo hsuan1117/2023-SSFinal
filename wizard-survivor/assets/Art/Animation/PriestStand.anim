@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PriestStand",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.683333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0.016666666666666666,
+            "value": {
+              "__uuid__": "4723d46a-4255-4ffd-9cc7-9b3ab71703ac"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "1d4d6444-3f1e-4e3f-ac4a-32fa93d00168"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "1d4d6444-3f1e-4e3f-ac4a-32fa93d00168"
+            }
+          },
+          {
+            "frame": 1.0166666666666666,
+            "value": {
+              "__uuid__": "b35e1925-33e0-4627-b683-8f8f02bef5e7"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "15b3a78a-a210-42ca-8bc2-c812f30174d1"
+            }
+          },
+          {
+            "frame": 1.6666666666666667,
+            "value": {
+              "__uuid__": "8078f871-4fda-4163-b682-f5404cc6a504"
+            }
+          },
+          {
+            "frame": 2,
+            "value": {
+              "__uuid__": "ca0e9d5c-836e-4de5-ad1d-3f58d6f79b8d"
+            }
+          },
+          {
+            "frame": 2.3333333333333335,
+            "value": {
+              "__uuid__": "a5af72be-f14e-4c42-b928-0ac508d8d534"
+            }
+          },
+          {
+            "frame": 2.6666666666666665,
+            "value": {
+              "__uuid__": "4723d46a-4255-4ffd-9cc7-9b3ab71703ac"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
