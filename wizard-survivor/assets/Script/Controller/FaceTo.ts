@@ -5,8 +5,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class FaceTo extends cc.Component {
 
-    public faceTo: cc.Node = null;
-    public rotateTarget: cc.Node = null;
+    private faceTo: cc.Node = null;
+    private rotateTarget: cc.Node = null;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -16,5 +16,14 @@ export default class FaceTo extends cc.Component {
                                             .sub(this.rotateTarget.convertToWorldSpaceAR(cc.Vec2.ZERO))
                                             .signAngle(cc.Vec2.RIGHT) * 180 / Math.PI * -1;
         }
+    }
+
+    // PUBLIC METHODS:
+    public init(rotateTarget: cc.Node) {
+        this.rotateTarget = rotateTarget;
+    }
+
+    public setFaceTo(faceTo: cc.Node) {
+        this.faceTo = faceTo;
     }
 }

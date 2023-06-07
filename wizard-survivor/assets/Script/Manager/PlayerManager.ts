@@ -8,18 +8,14 @@ const {ccclass, property} = cc._decorator;
  */
 @ccclass
 export default class PlayerManager extends cc.Component {
+    public event: cc.EventTarget = new cc.EventTarget();
+    public static PLAYER_CREATED: string = 'PLAYER_CREATED';
 
     public get allPlayerIDs(): string[]{
         return Object.keys(this.playerNodes);
     }
 
-    private playerNodes: {[id: string]: cc.Node};
-
-
-    // CC-CALLBACKS
-    onLoad(){
-
-    }
+    private playerNodes: {[id: string]: cc.Node} = {};
 
 
     // PUBLIC METHODS
@@ -31,12 +27,11 @@ export default class PlayerManager extends cc.Component {
     實例化一個 Player，並加入場景樹
      */
     public createPlayer(id: string){
-
         cc.resources.load('Prefab/Player', cc.Prefab, (err, prefab) => {
             const player = cc.instantiate(prefab) as unknown as cc.Node;
             GameManager.instance.node.addChild(player);
             this.playerNodes[id] = player;
+            this.event.emit(PlayerManager.PLAYER_CREATED, id);
         });
-
     }
 }

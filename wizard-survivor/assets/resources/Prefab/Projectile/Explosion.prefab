@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Bullet",
+    "_name": "Explosion",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -103,15 +103,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 190,
-      "g": 7,
+      "r": 234,
+      "g": 239,
       "b": 7,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 26,
-      "height": 26
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -166,7 +166,7 @@
       "__uuid__": "e7aba14b-f956-4480-b254-8d57832e273f"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -208,7 +208,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -239,7 +239,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 12,
+    "_radius": 44,
     "_id": ""
   },
   {

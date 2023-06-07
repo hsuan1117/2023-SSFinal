@@ -207,11 +207,11 @@
     "shootSpeed": {
       "__id__": 8
     },
-    "castTime": {
+    "projectileAttr": {
       "__id__": 9
     },
-    "projectileAttr": {
-      "__id__": 10
+    "castTime": {
+      "__id__": 15
     },
     "range": {
       "__id__": 16
@@ -234,25 +234,21 @@
     "_defaultValue": 30
   },
   {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
     "__type__": "ProjectileAttr",
     "flySpeed": {
-      "__id__": 11
+      "__id__": 10
     },
     "damage": {
-      "__id__": 12
+      "__id__": 11
     },
     "existDuration": {
-      "__id__": 13
+      "__id__": 12
     },
     "bounceOnEnemyTimes": {
-      "__id__": 14
+      "__id__": 13
     },
     "penetrateTimes": {
-      "__id__": 15
+      "__id__": 14
     }
   },
   {
@@ -269,7 +265,11 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 3
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
@@ -287,7 +287,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_searchRange": 200,
     "_id": ""
   },
   {
