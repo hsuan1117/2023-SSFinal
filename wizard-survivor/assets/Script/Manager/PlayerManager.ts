@@ -67,6 +67,7 @@ export default class PlayerManager extends cc.Component {
 
     // HELPERS
     private onInput(input: Input){
+        if (!this.players[input.uid]) return;
         if (input.type == InputType.STICK){
             this.players[input.uid].setMovingDir(cc.v2(input.lX/1000, input.lY/1000));
         }
@@ -75,5 +76,9 @@ export default class PlayerManager extends cc.Component {
                 this.players[input.uid].dash();
             }
         }
+    }
+
+    private onBuffApply({uid, buffId}){
+        this.players[uid].addBuff(new Buffs[buffId]());
     }
 }

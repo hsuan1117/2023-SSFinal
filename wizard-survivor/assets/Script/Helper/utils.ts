@@ -25,7 +25,7 @@ export function nodeDistanceSqr(node1: cc.Node, node2: cc.Node){
 }
 
 export function loadResource(path: string, type: typeof cc.Asset){
-    return new Promise((resolve, reject) => {
+    return new Promise<cc.Asset>((resolve, reject) => {
         cc.resources.load(path, type, (err, res) =>
             err ? reject(err) : resolve(res)
         );
