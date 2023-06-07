@@ -2,6 +2,7 @@ import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputMana
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
 import {AttrNum} from "../Helper/Attributes";
+import {loadResource} from "../Helper/utils";
 
 const {ccclass, property} = cc._decorator;
 
@@ -102,22 +103,26 @@ export default class GameManager extends cc.Component {
     // HELPERS:
     private generateGameScene(){
         let ui, enemy, drop: cc.Node;
-        cc.resources.load('Prefab/UI/FixedUI', cc.Prefab, (err, prefab) => {
-            ui = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(ui);
-            console.log('ui', ui);
-        });
+        loadResource('Prefab/UI/FixedUI', cc.Prefab).then(
+            (prefab) => {
+                ui = cc.instantiate(prefab) as unknown as cc.Node;
+                this.node.addChild(ui);
+            }
+        )
         this._playerManager.createPlayer('p1');
-        cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
-            enemy = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(enemy);
-            enemy.position = cc.v3(100, 100, 0)
-        })
-        cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
-            drop = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(drop);
-            drop.position = cc.v3(200, 200, 0);
-        })
-        this.event.emit(GameManager.GAME_START)
+        this._playerManager.createPlayer('p2');
+        // cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
+        //     enemy = cc.instantiate(prefab) as unknown as cc.Node;
+        //     this.node.addChild(enemy);
+        //     enemy.position = cc.v3(100, 100, 0)
+        // })
+        // cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
+        //     drop = cc.instantiate(prefab) as unknown as cc.Node;
+        //     this.node.addChild(drop);
+        //     drop.position = cc.v3(200, 200, 0);
+        // })
+        // wait until all resources loaded
+        // call init
+        // emit GAME_READY
     }
 }
