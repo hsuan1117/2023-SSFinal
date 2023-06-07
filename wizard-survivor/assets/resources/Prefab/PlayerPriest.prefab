@@ -24,17 +24,17 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 5
+        "__id__": 6
       },
       {
-        "__id__": 10
+        "__id__": 12
       },
       {
-        "__id__": 11
+        "__id__": 13
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 14
     },
     "_opacity": 255,
     "_color": {
@@ -95,10 +95,13 @@
     "_components": [
       {
         "__id__": 3
+      },
+      {
+        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 4
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -182,6 +185,28 @@
     "_id": ""
   },
   {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+    },
+    "_clips": [
+      {
+        "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+      },
+      {
+        "__uuid__": "ab166082-7463-4d32-8df1-81877fafcd4e"
+      }
+    ],
+    "playOnLoad": false,
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -201,20 +226,22 @@
     },
     "_enabled": true,
     "moveSpeed": {
-      "__id__": 6
-    },
-    "maxHp": {
       "__id__": 7
     },
-    "expGainPercentage": 22,
-    "mainWeaponPrefab": {
-      "__uuid__": "a91c6968-04d0-4a6f-8368-d1ec149591c1"
-    },
-    "dashSpeed": {
+    "maxHp": {
       "__id__": 8
     },
-    "dashCoolDown": {
+    "expGainPercentage": {
       "__id__": 9
+    },
+    "dashCoolDown": {
+      "__id__": 10
+    },
+    "dashSpeed": {
+      "__id__": 11
+    },
+    "mainWeaponPrefab": {
+      "__uuid__": "a91c6968-04d0-4a6f-8368-d1ec149591c1"
     },
     "_id": ""
   },
@@ -228,11 +255,15 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 100
   },
   {
     "__type__": "AttrNum",
     "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 500
   },
   {
     "__type__": "cc.RigidBody",
@@ -256,29 +287,33 @@
     "_fixedRotation": true,
     "enabledContactListener": false,
     "bullet": false,
-    "awakeOnLoad": true,
+    "awakeOnLoad": false,
     "_id": ""
   },
   {
-    "__type__": "cc.Animation",
+    "__type__": "cc.PhysicsBoxCollider",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+    "tag": 0,
+    "_density": 1,
+    "_sensor": false,
+    "_friction": 0.2,
+    "_restitution": 0,
+    "body": null,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
     },
-    "_clips": [
-      {
-        "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
-      },
-      {
-        "__uuid__": "ab166082-7463-4d32-8df1-81877fafcd4e"
-      }
-    ],
-    "playOnLoad": false,
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 15.3,
+      "height": 30.7
+    },
     "_id": ""
   },
   {
