@@ -128,6 +128,11 @@ export default class PlayerController extends cc.Component{
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
     }
 
+    public recover(val: number) {
+        const deltaHP = Math.min(this.maxHp.value - this.currentHP.value, val);
+        GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, deltaHP);
+    }
+
     public addWeapon(weaponPrefab: cc.Prefab): WeaponController {
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;

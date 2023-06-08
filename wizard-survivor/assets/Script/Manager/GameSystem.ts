@@ -14,6 +14,15 @@ export class GameSystem {
      */
     public static readonly ON_PLAYER_HP_CHANGE: string = "ON_PLAYER_HP_CHANGE";
 
+    /*事件：玩家經驗值改變
+    passed event data: {deltaExp: number} */
+    public static readonly ON_EXP_CHANGE: string = "ON_EXP_CHANGE";
+
+    /*事件：玩家金幣改變
+    passed event data: {deltaCoin: number} */
+    public static readonly ON_COIN_CHANGE: string = "ON_COIN_CHANGE";
+
+
 
     constructor() {
         this.event = new cc.EventTarget();
@@ -27,6 +36,16 @@ export class GameSystem {
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void{
         this.event.emit(GameSystem.ON_PLAYER_HP_CHANGE, {uid: uid, deltaHP: deltaHP});
+    }
+
+    public emitExpChange(deltaExp: number){
+        // emit exp change
+        this.event.emit(GameSystem.ON_EXP_CHANGE, {deltaExp: deltaExp});
+    }
+
+    public emitCoinChange(deltaCoin: number){
+        // emit coin change
+        this.event.emit(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
     }
 }
 

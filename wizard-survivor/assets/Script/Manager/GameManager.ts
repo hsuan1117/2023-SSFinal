@@ -83,9 +83,21 @@ export default class GameManager extends cc.Component {
         this.level.onChangeCallback.push(onGameStatCh);
         this.upgradeExp.onChangeCallback.push(onGameStatCh);
 
-        this.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
+
+        // DEBUG
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
             if (keyCode === cc.macro.KEY.u){
                 this.exp.addFactor += 5;
+            }
+            else if (keyCode === cc.macro.KEY.p){
+                if (cc.director.isPaused()){
+                    console.log('Game Resumed')
+                    cc.director.resume();
+                }
+                else{
+                    console.log('Game Paused')
+                    cc.director.pause()
+                }
             }
         })
 
@@ -98,6 +110,10 @@ export default class GameManager extends cc.Component {
             }
         });
         this.level.onChangeCallback.push(()=> this.event.emit(GameManager.LEVEL_UP));
+
+        // GameSystem 事件
+        this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
+        this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
     }
 
     start(){
@@ -134,5 +150,13 @@ export default class GameManager extends cc.Component {
         // wait until all resources loaded
         // call init
         // emit GAME_READY
+    }
+
+    private onExpChange({deltaExp}){
+        this.exp.addFactor += deltaExp;
+    }
+
+    private onCoinChange({deltaCoin}){
+        this.coinCnt.addFactor += deltaCoin;
     }
 }

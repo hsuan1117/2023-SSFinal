@@ -1,6 +1,7 @@
 import Game = cc.Game;
 import GameManager from "../Manager/GameManager";
 import PlayerController from "./PlayerController";
+import {GameSystem} from "../Manager/GameSystem";
 
 const {ccclass, property} = cc._decorator;
 
@@ -8,7 +9,14 @@ const {ccclass, property} = cc._decorator;
 export default class DropController extends cc.Component {
     public isCollected: boolean = false; // turn to false if Drop in queue
 
+    @property({tooltip: "必須為：'coin', 'exp', 'health pack', 'chest' 之一"})
     public dropType: string = "exp"; // "coin", "exp", "health pack", "chest"
+
+    public static readonly DROP_TYPE_COIN = 'coin';
+    public static readonly DROP_TYPE_EXP = 'exp';
+    public static readonly DROP_TYPE_HEALTH_PACK = 'health pack';
+    public static readonly DROP_TYPE_CHEST = 'chest';
+
 
     public dropValue: number = 1;
 
@@ -33,12 +41,6 @@ export default class DropController extends cc.Component {
     public collectBy(collector: cc.Node) {
         this.collector = collector;
         this.isCollected = true;
-
-        // add exp
-        if (this.dropType === "exp") {
-            const player = collector.getComponent(PlayerController)
-            GameManager.instance.exp.addFactor += Math.floor(this.dropValue * player.expGainPercentage.value);
-        }
     }
 
     protected magnetic() {
@@ -55,7 +57,15 @@ export default class DropController extends cc.Component {
         let collectorPos = this.collector.position;
         this.node.position = this.node.position.lerp(collectorPos, this.speedRatio * 0.1);
         if (this.node.position.sub(collectorPos).magSqr() < 15) {
-            // add state to collector
+            if (this.dropType == DropController.DROP_TYPE_EXP) {
+                GameManager.instance.gameSystem.emitExpChange(this.dropValue)
+            }
+            else if (this.dropType == DropController.DROP_TYPE_COIN) {
+                GameManager.instance.gameSystem.emitCoinChange(this.dropValue);
+            }
+            else if (this.dropType == DropController.DROP_TYPE_HEALTH_PACK){
+                this.collector.getComponent(PlayerController).recover(this.dropValue);
+            }
             this.node.destroy();
         }
     }
