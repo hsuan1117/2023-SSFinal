@@ -1,3 +1,6 @@
+import GameManager from "./GameManager";
+import {GameSystem} from "./GameSystem";
+
 const {ccclass, property} = cc._decorator;
 
 export enum InputType {
@@ -78,11 +81,16 @@ export default class InputManager extends cc.Component {
     onLoad() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-
-        this.event.on(InputManager.ON_INPUT, (input: Input) => {
-            // console.log(Object.fromEntries(this._isPressing.get(input.uid)))
-        }, this);
     }
+
+    start() {
+        GameManager.instance.gameSystem.event.on(
+            GameSystem.ON_INPUT,
+            ({input}) => this.performInput(input),
+            this
+        )
+    }
+
 
     // PUBLIC METHODS:
     /*
@@ -103,7 +111,7 @@ export default class InputManager extends cc.Component {
     btnCode 可為 'X' | 'Y' | 'A' | 'B'
      */
     public isPressing(uid: string, btnCode: string): boolean {
-        return this._isPressing.get(uid).get(btnCode)?? false;
+        return this._isPressing.get(uid).get(btnCode) ?? false;
     }
 
     /*
@@ -114,8 +122,11 @@ export default class InputManager extends cc.Component {
         return this._currentLStick.get(uid);
     }
 
-
     // HELPERS:
+    private performInput(input: Input) {
+        this.event.emit(InputManager.ON_INPUT, input);
+    }
+
     private onKeyDown({keyCode}) {
         for (const [uid, conversion] of this.conversionOfUid) {
             if (!conversion[keyCode]) continue;
@@ -124,16 +135,18 @@ export default class InputManager extends cc.Component {
             this._isPressing.get(uid).set(conversion[keyCode], true)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.BUTTON_DOWN, conversion[keyCode], 0, 0)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.BUTTON_DOWN,
+                    conversion[keyCode],
+                    0, 0
+                ));
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.STICK, '', this._currentLStick.get(uid).x, this._currentLStick.get(uid).y)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.STICK,
+                    '',
+                    this._currentLStick.get(uid).x, this._currentLStick.get(uid).y
+                ));
             }
         }
     }
@@ -149,16 +162,18 @@ export default class InputManager extends cc.Component {
             // console.log(`set ${conversion[keyCode]} to false, this Key is Pressed: ${this._isPressing.get(uid).get(conversion[keyCode])}`)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.BUTTON_UP, conversion[keyCode], 0, 0)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.BUTTON_UP,
+                    conversion[keyCode],
+                    0, 0
+                ));
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.STICK, '', this._currentLStick.get(uid).x, this._currentLStick.get(uid).y)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.STICK,
+                    '',
+                    this._currentLStick.get(uid).x, this._currentLStick.get(uid).y
+                ));
             }
         }
     }

@@ -1,4 +1,6 @@
 import Game = cc.Game;
+import {Input} from "./InputManager";
+import GameManager from "./GameManager";
 
 export class GameSystem {
 
@@ -21,6 +23,10 @@ export class GameSystem {
     /*事件：玩家金幣改變
     passed event data: {deltaCoin: number} */
     public static readonly ON_COIN_CHANGE: string = "ON_COIN_CHANGE";
+
+    /*事件：玩家輸入
+    passed event data: {input: Input} */
+    public static readonly ON_INPUT: string = "ON_INPUT";
 
 
 
@@ -48,8 +54,14 @@ export class GameSystem {
         // emit coin change
         this.event.emit(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
     }
+
+    public emitInput(input: Input){
+        this.event.emit(GameSystem.ON_INPUT, {input: input});
+    }
 }
 
 class RemoteGameSystem extends GameSystem{
-
+    public emitInput(input: Input){
+        this.event.emit(GameSystem.ON_INPUT, {input: input});
+    }
 }
