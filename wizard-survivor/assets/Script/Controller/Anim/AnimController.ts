@@ -2,8 +2,8 @@ import requireComponent = cc._decorator.requireComponent;
 
 const {ccclass, property} = cc._decorator;
 
-@requireComponent(cc.Animation)
 @ccclass
+@requireComponent(cc.Animation)
 export default abstract class AnimController extends cc.Component {
 
     public set state(state: {}) {
