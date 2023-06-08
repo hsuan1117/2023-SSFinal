@@ -1,9 +1,6 @@
-import requireComponent = cc._decorator.requireComponent;
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-@requireComponent(cc.Animation)
 export default abstract class AnimController extends cc.Component {
 
     @property(cc.Animation)
