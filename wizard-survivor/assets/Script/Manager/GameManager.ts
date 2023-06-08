@@ -17,9 +17,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class GameManager extends cc.Component {
     public event: cc.EventTarget;
-    public static readonly GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
-    public static readonly GAME_START: string = "GAME_START";
-    public static readonly LEVEL_UP: string = "LEVEL_UP";
+    public static readonly ON_GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
+    public static readonly ON_GAME_START: string = "GAME_START";
+    public static readonly ON_LEVEL_UP: string = "LEVEL_UP";
+    public static readonly ON_UPGRADE: string = "UPGRADE";
 
     public static get instance(): GameManager {
         if (!GameManager._instance) {
