@@ -158,7 +158,6 @@ export default class GameManager extends cc.Component {
     }
 
     private upgrade(){
-        console.log('Upgrade');
         this.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, ()=>{
             this.resumeGame();
         });

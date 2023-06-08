@@ -28,10 +28,10 @@ export default class UpgradeUI extends cc.Component {
     // private buffIcons: cc.SpriteFrame[] = [];
 
     // CC-CALLBACKS
-    private buffs = Object.keys(Buffs);
-    private buffCards: cc.Node[] = [];
-    private chosenIndex: { [uid: string]: number } = {};
-    private confirmed: { [uid: string]: boolean } = {};
+    private buffs = null;
+    private buffCards: cc.Node[] = null;
+    private chosenIndex: { [uid: string]: number } = null;
+    private confirmed: { [uid: string]: boolean } = null;
 
     start() {
         GameManager.instance.event.on(GameManager.ON_UPGRADE, this.popUpUpgradeUI, this);
@@ -44,13 +44,13 @@ export default class UpgradeUI extends cc.Component {
         GameManager.instance.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, this.closeUpgradeUI, this);
         this.node.active = true;
 
-        // random three buffs from buff list
+        this.buffs = Object.keys(Buffs);
+        this.buffCards = [].fill(null, 0, buffAmount);
+        this.chosenIndex = {};
+        this.confirmed = {};
 
         shuffle(this.buffs);
         this.buffs = this.buffs.slice(0, buffAmount);
-        this.buffCards.fill(null, 0, buffAmount);
-
-        console.log('隨機出來的 buff', this.buffs.toString());
 
         let promise = [];
         for (let i = 0; i < this.buffs.length; i++) {
@@ -85,8 +85,9 @@ export default class UpgradeUI extends cc.Component {
         if (!this.node.active) return;
         const dir = InputManager.lrOfStick(cc.v2(input.lX, input.lY));
         const uid = input.uid;
+        if (this.confirmed[uid]) return;
 
-        if (input.type == InputType.BUTTON_DOWN && input.btnCode == 'A' && !this.confirmed[uid]) {
+        if (input.type == InputType.BUTTON_DOWN && input.btnCode == 'A') {
             this.confirmed[uid] = true;
             this.buffCards[this.chosenIndex[uid]].getChildByName('PointerLabel').getComponent(cc.Label).string =
                 this.buffCards[this.chosenIndex[uid]].getChildByName('PointerLabel').getComponent(cc.Label).string.slice(0, -1);
