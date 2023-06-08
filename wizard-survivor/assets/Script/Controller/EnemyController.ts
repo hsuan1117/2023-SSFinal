@@ -34,13 +34,14 @@ export default class EnemyController extends cc.Component {
     }
 
     playAnim() {
+         // change to controller
          if (this.rb.linearVelocity.x >= 0)
              this.node.scaleX = 1;
          else
              this.node.scaleX = -1;
     }
 
-    runAwayFromPlayer() { // For Boss fight
+    protected runAwayFromPlayer() { // For Boss fight
         let target = this.findClosestPlayer();
         if (!target) {
             this.rb.linearVelocity = cc.Vec2.ZERO;
@@ -50,7 +51,7 @@ export default class EnemyController extends cc.Component {
         this.rb.linearVelocity = ignoreZ(direction.normalize().mul(-2 * this.moveSpeed.value));
     }
 
-    followPlayer() { // For Boss fight
+    protected followPlayer() { // For Boss fight
         let target = this.findClosestPlayer();
         if (!target) {
             this.rb.linearVelocity = cc.Vec2.ZERO;
