@@ -8,7 +8,6 @@ export default class ExpBarUI extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         GameManager.instance.event.on(GameManager.ON_GAME_STAT_CHANGE, this.updateExpBar, this);
-        GameManager.instance.event.on(GameManager.ON_GAME_START, this.updateExpBar, this);
     }
 
     // HELPERS:
