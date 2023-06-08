@@ -8,6 +8,7 @@ import DropController from "./DropController";
 import Game = cc.Game;
 import {GameSystem} from "../Manager/GameSystem";
 import {Buffs, IBuff} from "../Helper/Buff";
+import PlayerAnimController from "./Anim/PlayerAnimController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -50,6 +51,7 @@ export default class PlayerController extends cc.Component{
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public appliedBuff: IBuff[] = [];
 
+    private animCtrl: PlayerAnimController = null;
     private rb: cc.RigidBody = null;
     private searchTarget: ISearchTarget = new SearchDrop;
 
@@ -73,6 +75,7 @@ export default class PlayerController extends cc.Component{
         this.rb = this.node.getComponent(cc.RigidBody);
         this.addComponent(SearchDrop);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
+        this.animCtrl = this.node.getComponent(PlayerAnimController);
 
         this.event = new cc.EventTarget();
 
@@ -130,15 +133,18 @@ export default class PlayerController extends cc.Component{
     public setMovingDir(newDir: cc.Vec2){
         if (this.movingDir.equals(cc.v2(0, 0))  && !newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_START_MOVE);
+            this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
         }
         else if (!this.movingDir.equals(cc.v2(0, 0)) && newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_STOP_MOVE);
+            this.animCtrl.state = {...this.animCtrl.state, isMoving: false};
         }
         this.movingDir = newDir;
     }
 
     public dash(){
         if (this.isDashing || this.dashCountDown>0) return;
+        this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
         this.dashCountDown = this.dashCoolDown.value;
@@ -146,6 +152,7 @@ export default class PlayerController extends cc.Component{
         this.scheduleOnce(()=>{
             this.isDashing = false;
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+            this.animCtrl.state = {...this.animCtrl.state, isDashing: false};
         }, this.DASH_DURATION);
     }
 
