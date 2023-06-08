@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PlayerAssassin",
+    "_name": "BumpingPig",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -24,13 +24,13 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 5
+      },
+      {
         "__id__": 6
       },
       {
-        "__id__": 12
-      },
-      {
-        "__id__": 13
+        "__id__": 7
       }
     ],
     "_prefab": {
@@ -58,8 +58,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        438,
+        203,
         0,
         0,
         0,
@@ -95,13 +95,10 @@
     "_components": [
       {
         "__id__": 3
-      },
-      {
-        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 5
+      "__id__": 4
     },
     "_opacity": 255,
     "_color": {
@@ -113,8 +110,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 25
+      "width": 30,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -166,10 +163,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "df47de03-f99f-4ddc-a3c0-58ab802cde92"
+      "__uuid__": "8b4ce86e-b1c0-47b2-bd05-3ce3c7540657"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -179,31 +176,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "a5120d71-2e64-46ea-bdf7-1c1f2eff595d"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
-    },
-    "_clips": [
-      {
-        "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
-      },
-      {
-        "__uuid__": "414cd981-2734-4d1a-bacc-7f49eb063773"
-      }
-    ],
-    "playOnLoad": false,
+    "_atlas": null,
     "_id": ""
   },
   {
@@ -214,56 +187,8 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "00g8A7MT9POLPTAC0ISD62",
+    "fileId": "3b5WUrvhtOmZtbDhWZ9pmB",
     "sync": false
-  },
-  {
-    "__type__": "bfa71Q353hKSZrSsOz7x96r",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "moveSpeed": {
-      "__id__": 7
-    },
-    "maxHp": {
-      "__id__": 8
-    },
-    "expGainPercentage": {
-      "__id__": 9
-    },
-    "dashCoolDown": {
-      "__id__": 10
-    },
-    "dashSpeed": {
-      "__id__": 11
-    },
-    "mainWeaponPrefab": {
-      "__uuid__": "a91c6968-04d0-4a6f-8368-d1ec149591c1"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 5
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 1
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 500
   },
   {
     "__type__": "cc.RigidBody",
@@ -287,7 +212,7 @@
     "_fixedRotation": true,
     "enabledContactListener": false,
     "bullet": false,
-    "awakeOnLoad": false,
+    "awakeOnLoad": true,
     "_id": ""
   },
   {
@@ -311,10 +236,62 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 15.3,
-      "height": 30.7
+      "width": 32,
+      "height": 32
     },
     "_id": ""
+  },
+  {
+    "__type__": "8ff68wCKC9NtLAiFKd3jYOZ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "moveSpeed": {
+      "__id__": 8
+    },
+    "skillCoolDown": {
+      "__id__": 9
+    },
+    "hp": {
+      "__id__": 10
+    },
+    "collideDamage": {
+      "__id__": 11
+    },
+    "collideDamageCoolDown": {
+      "__id__": 12
+    },
+    "triggerRadius": {
+      "__id__": 13
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 50
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 8
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 100
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0.5
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 250
   },
   {
     "__type__": "cc.PrefabInfo",

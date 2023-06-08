@@ -79,12 +79,12 @@ export default class PlayerController extends cc.Component{
 
         this.event = new cc.EventTarget();
 
+        // For Debug, press Q to apply ExplosionOnDash buff
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
             if (keyCode == cc.macro.KEY.q){
                 GameManager.instance.gameSystem.emitApplyBuff(this.uid, "ExplosionOnDash");
             }
         })
-
 
         this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
 
@@ -123,6 +123,11 @@ export default class PlayerController extends cc.Component{
 
 
     // PUBLIC METHODS:
+    public hurt(damage: number){
+        const deltaHP = Math.min(this.currentHP.value, damage);
+        GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
+    }
+
     public addWeapon(weaponPrefab: cc.Prefab): WeaponController {
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;
