@@ -343,6 +343,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
     "playerIdleAnim": "player_idle",
     "playerMoveAnim": "player_move",
     "playerDashAnim": "player_dash",
