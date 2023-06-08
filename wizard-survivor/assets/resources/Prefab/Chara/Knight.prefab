@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PlayerKnight",
+    "_name": "Knight",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -34,13 +34,10 @@
       },
       {
         "__id__": 14
-      },
-      {
-        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -323,19 +320,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_defaultClip": null,
-    "_clips": [],
-    "playOnLoad": false,
-    "_id": ""
-  },
-  {
     "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
     "_name": "",
     "_objFlags": 0,
@@ -346,11 +330,11 @@
     "anim": {
       "__id__": 4
     },
-    "playerIdleAnim": "player_idle",
-    "playerMoveAnim": "player_move",
-    "playerDashAnim": "player_dash",
-    "playerHurtAnim": "player_hurt",
-    "playerDeadAnim": "player_dead",
+    "playerIdleAnim": "KnightStand",
+    "playerMoveAnim": "KnightWalk",
+    "playerDashAnim": "KnightStand",
+    "playerHurtAnim": "KnightStand",
+    "playerDeadAnim": "KnightStand",
     "_id": ""
   },
   {

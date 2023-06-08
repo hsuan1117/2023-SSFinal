@@ -330,11 +330,11 @@
     "anim": {
       "__id__": 4
     },
-    "playerIdleAnim": "player_idle",
-    "playerMoveAnim": "player_move",
-    "playerDashAnim": "player_dash",
-    "playerHurtAnim": "player_hurt",
-    "playerDeadAnim": "player_dead",
+    "playerIdleAnim": "PriestStand",
+    "playerMoveAnim": "PriestWalk",
+    "playerDashAnim": "PriestStand",
+    "playerHurtAnim": "PriestStand",
+    "playerDeadAnim": "PriestStand",
     "_id": ""
   },
   {
