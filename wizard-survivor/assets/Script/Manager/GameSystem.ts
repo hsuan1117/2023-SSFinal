@@ -32,6 +32,7 @@ export class GameSystem {
     // === PUBLIC METHODS ===
     public emitApplyBuff(uid: string, buffId: string): void {
         this.event.emit(GameSystem.ON_BUFF_APPLY, {uid: uid, buffId: buffId});
+        console.log("emit buff applied")
     }
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void{

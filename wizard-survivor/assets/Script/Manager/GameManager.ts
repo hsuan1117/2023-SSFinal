@@ -77,7 +77,7 @@ export default class GameManager extends cc.Component {
         this.event = new cc.EventTarget();
 
         // 遊戲狀態改變事件
-        const onGameStatCh = () => {this.event.emit(GameManager.GAME_STAT_CHANGE)};
+        const onGameStatCh = () => {this.event.emit(GameManager.ON_GAME_STAT_CHANGE)};
         this.killEnemyCnt.onChangeCallback.push(onGameStatCh);
         this.coinCnt.onChangeCallback.push(onGameStatCh);
         this.exp.onChangeCallback.push(onGameStatCh);
@@ -110,7 +110,8 @@ export default class GameManager extends cc.Component {
                 this.upgradeExp.percentageFactor += this.UPGRADE_EXP_GROWTH;
             }
         });
-        this.level.onChangeCallback.push(()=> this.event.emit(GameManager.LEVEL_UP));
+        this.level.onChangeCallback.push(()=> this.event.emit(GameManager.ON_LEVEL_UP));
+        this.event.on(GameManager.ON_LEVEL_UP, this.upgrade, this);
 
         // GameSystem 事件
         this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
@@ -124,18 +125,36 @@ export default class GameManager extends cc.Component {
 
     // HELPERS:
     private async generateGameScene(){
-        let ui, enemy, drop: cc.Node;
+        let fixedUI, enemy, drop, upgradeUI: cc.Node;
         this.playerManager.createPlayer('p1', 'Knight', WASD_TO_CONTROLLER);
         this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
 
-        loadResource('Prefab/UI/FixedUI', cc.Prefab)
-            .then((prefab) => {
-                ui = cc.instantiate(prefab) as unknown as cc.Node;
-                this.node.addChild(ui);
-            })
-            .then(() => this.playerManager.instantiatePlayer('p1'))
-            .then(() => this.playerManager.instantiatePlayer('p2'))
-            .catch((err)=>console.error(err))
+        await Promise.all([
+            loadResource('Prefab/UI/FixedUI', cc.Prefab).then((prefab) => {
+                fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
+                this.node.addChild(fixedUI);
+            }),
+            loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab)=> {
+                upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
+                this.node.addChild(upgradeUI);
+            }),
+            this.playerManager.instantiatePlayer('p1'),
+            this.playerManager.instantiatePlayer('p2'),
+        ])
+
+        // loadResource('Prefab/UI/FixedUI', cc.Prefab)
+        //     .then((prefab) => {
+        //         fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
+        //         this.node.addChild(fixedUI);
+        //     })
+        //     .then(() => loadResource('Prefab/UI/UpgradeUI', cc.Prefab))
+        //     .then((prefab)=> {
+        //         upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
+        //         this.node.addChild(upgradeUI);
+        //     })
+        //     .then(() => this.playerManager.instantiatePlayer('p1'))
+        //     .then(() => this.playerManager.instantiatePlayer('p2'))
+        //     .catch((err)=>console.error(err))
 
         // this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
         // cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
@@ -159,5 +178,23 @@ export default class GameManager extends cc.Component {
 
     private onCoinChange({deltaCoin}){
         this.coinCnt.addFactor += deltaCoin;
+    }
+
+    private upgrade(){
+        console.log('Upgrade');
+        this.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, ()=>{
+            this.resumeGame();
+        });
+
+        this.event.emit(GameManager.ON_UPGRADE);
+        this.pauseGame();
+    }
+
+    private pauseGame(){
+        cc.director.pause();
+    }
+
+    private resumeGame(){
+        cc.director.resume();
     }
 }
