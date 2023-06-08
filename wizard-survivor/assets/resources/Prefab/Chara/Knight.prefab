@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PlayerPriest",
+    "_name": "PlayerKnight",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -31,10 +31,16 @@
       },
       {
         "__id__": 13
+      },
+      {
+        "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -113,8 +119,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 26,
-      "height": 33
+      "width": 32,
+      "height": 29
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -166,7 +172,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "4723d46a-4255-4ffd-9cc7-9b3ab71703ac"
+      "__uuid__": "1b60c28b-489c-43a0-a8ad-29787ff5d890"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -180,7 +186,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "faab6805-48a9-4f2d-aab0-e52f61357876"
+      "__uuid__": "26ebc06f-14cc-42c3-9973-cefa070a6818"
     },
     "_id": ""
   },
@@ -193,14 +199,14 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+      "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
     },
     "_clips": [
       {
-        "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+        "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
       },
       {
-        "__uuid__": "ab166082-7463-4d32-8df1-81877fafcd4e"
+        "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
       }
     ],
     "playOnLoad": false,
@@ -314,6 +320,37 @@
       "width": 15.3,
       "height": 30.7
     },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_defaultClip": null,
+    "_clips": [],
+    "playOnLoad": false,
+    "_id": ""
+  },
+  {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "playerIdleAnim": "player_idle",
+    "playerMoveAnim": "player_move",
+    "playerDashAnim": "player_dash",
+    "playerHurtAnim": "player_hurt",
+    "playerDeadAnim": "player_dead",
     "_id": ""
   },
   {

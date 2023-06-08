@@ -22,18 +22,25 @@ const {ccclass, property} = cc._decorator;
 export default class FixedUI extends cc.Component {
 
     onLoad () {
-        GameManager.instance.playerManager.event.on(PlayerManager.PLAYER_CREATED, () => {
-            let cnt = 1;
-            GameManager.instance.playerManager.allPlayerIDs.forEach((id) => {
-                let player = GameManager.instance.playerManager.getPlayer(id)
-                let playerStatUI = this.node.getChildByName(`PlayerStatUI${cnt++}`).getComponent(PlayerStatUI);
-                playerStatUI.node.parent = this.node;
-                playerStatUI.init(player);
-            });
+        GameManager.instance.playerManager.event.on(PlayerManager.PLAYER_INSTANTIATED, () => {
+            let childIdx = 1;
+            for (let id of GameManager.instance.playerManager.allPlayerIDs){
+                this.enablePlayerStatUIForPlayer(id, childIdx++);
+            }
         }, this);
     }
 
     start () {
 
+    }
+
+
+    // HELPERS:
+    private enablePlayerStatUIForPlayer(id: string, childIdx: number){
+        let player = GameManager.instance.playerManager.getPlayer(id)
+        if (!player) return;
+        let playerStatUI = this.node.getChildByName(`PlayerStatUI${childIdx}`).getComponent(PlayerStatUI);
+        playerStatUI.node.parent = this.node;
+        playerStatUI.init(player);
     }
 }

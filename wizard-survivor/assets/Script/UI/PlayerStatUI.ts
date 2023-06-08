@@ -11,7 +11,6 @@ export default class PlayerStatUI extends cc.Component {
     public init(player: PlayerController){
         this.player = player;
         this.player.event.on(PlayerController.PLAYER_ATTR_CHANGE, this.updateUI, this);
-        this.player.event.on(PlayerController.PLAYER_GAIN_BUFF, this.updateUI, this);
         this.updateUI();
     }
 

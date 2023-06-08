@@ -1,7 +1,10 @@
-import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
+import InputManager, {ARROW_TO_CONTROLLER, Input, WASD_TO_CONTROLLER} from "./InputManager";
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
 import {AttrNum} from "../Helper/Attributes";
+import {loadResource} from "../Helper/utils";
+import {GameSystem} from "./GameSystem";
+import Game = cc.Game;
 
 const {ccclass, property} = cc._decorator;
 
@@ -37,6 +40,10 @@ export default class GameManager extends cc.Component {
         return this._playerManager;
     }
 
+    public get gameSystem(): GameSystem {
+        return this._gameSystem;
+    }
+
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
     public upgradeExp: AttrNum = new AttrNum(100);
@@ -50,6 +57,7 @@ export default class GameManager extends cc.Component {
     private _inputManager: InputManager;
     private _poolManager: PoolManager;
     private _playerManager: PlayerManager;
+    private _gameSystem: GameSystem;
 
 
     // CC-CALLBACKS
@@ -60,12 +68,9 @@ export default class GameManager extends cc.Component {
         cc.game.addPersistRootNode(this.node);
 
         this._inputManager = this.node.addComponent(InputManager);
-        this._inputManager.init({
-            p1 : WASD_TO_CONTROLLER,
-            p2 : ARROW_TO_CONTROLLER
-        })
         this._poolManager = this.node.addComponent(PoolManager);
         this._playerManager = this.node.addComponent(PlayerManager);
+        this._gameSystem = new GameSystem();
 
         this.event = new cc.EventTarget();
 
@@ -100,24 +105,33 @@ export default class GameManager extends cc.Component {
 
 
     // HELPERS:
-    private generateGameScene(){
+    private async generateGameScene(){
         let ui, enemy, drop: cc.Node;
-        cc.resources.load('Prefab/UI/FixedUI', cc.Prefab, (err, prefab) => {
-            ui = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(ui);
-            console.log('ui', ui);
-        });
-        this._playerManager.createPlayer('p1');
-        cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
-            enemy = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(enemy);
-            enemy.position = cc.v3(100, 100, 0)
-        })
-        cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
-            drop = cc.instantiate(prefab) as unknown as cc.Node;
-            this.node.addChild(drop);
-            drop.position = cc.v3(200, 200, 0);
-        })
-        this.event.emit(GameManager.GAME_START)
+        this.playerManager.createPlayer('p1', 'Knight', WASD_TO_CONTROLLER);
+        this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
+
+        loadResource('Prefab/UI/FixedUI', cc.Prefab)
+            .then((prefab) => {
+                ui = cc.instantiate(prefab) as unknown as cc.Node;
+                this.node.addChild(ui);
+            })
+            .then(() => this.playerManager.instantiatePlayer('p1'))
+            .then(() => this.playerManager.instantiatePlayer('p2'))
+            .catch((err)=>console.error(err))
+
+        // this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
+        // cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
+        //     enemy = cc.instantiate(prefab) as unknown as cc.Node;
+        //     this.node.addChild(enemy);
+        //     enemy.position = cc.v3(100, 100, 0)
+        // })
+        // cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
+        //     drop = cc.instantiate(prefab) as unknown as cc.Node;
+        //     this.node.addChild(drop);
+        //     drop.position = cc.v3(200, 200, 0);
+        // })
+        // wait until all resources loaded
+        // call init
+        // emit GAME_READY
     }
 }

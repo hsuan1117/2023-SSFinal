@@ -52,7 +52,7 @@ export const ARROW_TO_CONTROLLER: ControllerConversion = {
     [cc.macro.KEY.down]: 'L_DOWN',
     [cc.macro.KEY.left]: 'L_LEFT',
     [cc.macro.KEY.right]: 'L_RIGHT',
-    [cc.macro.KEY.enter]: 'A'
+    [cc.macro.KEY.shift]: 'A'
 }
 
 
@@ -80,24 +80,22 @@ export default class InputManager extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
 
         this.event.on(InputManager.ON_INPUT, (input: Input) => {
-            console.log(input.toString())
             // console.log(Object.fromEntries(this._isPressing.get(input.uid)))
         }, this);
     }
 
     // PUBLIC METHODS:
     /*
-     * @param playerConversion: { [uid: string]: ControllerConversion } - 每個本地玩家的鍵盤 - 控制器對應表
+    @param uid: 使用者的 uid
+    @param conversion: 該使用者的按鍵對照表
      */
-    public init(playerConversion: { [uid: string]: ControllerConversion }) {
-        for (const [uid, conversion] of Object.entries(playerConversion)) {
-            this.conversionOfUid.set(uid, conversion);
-            this._currentLStick.set(uid, cc.v2(0, 0));
-            this._isPressing.set(
-                uid,
-                new Map([['X', false], ['Y', false], ['A', false], ['B', false], ['L_UP', false], ['L_DOWN', false], ['L_LEFT', false], ['L_RIGHT', false]])
-            );
-        }
+    public addLocalPlayerInput(uid: string, conversion: ControllerConversion) {
+        this.conversionOfUid.set(uid, conversion);
+        this._currentLStick.set(uid, cc.v2(0, 0));
+        this._isPressing.set(
+            uid,
+            new Map([['X', false], ['Y', false], ['A', false], ['B', false], ['L_UP', false], ['L_DOWN', false], ['L_LEFT', false], ['L_RIGHT', false]])
+        );
     }
 
     /*

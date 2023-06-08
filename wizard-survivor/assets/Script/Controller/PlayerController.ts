@@ -5,7 +5,10 @@ import WeaponController from "./WeaponController";
 import {ISearchTarget} from "../Helper/ISearchTarget";
 import SearchDrop from "../Helper/SearchDrop";
 import DropController from "./DropController";
-import {ExplosionOnDashBuff, IBuff} from "../Helper/Buff";
+import Game = cc.Game;
+import {GameSystem} from "../Manager/GameSystem";
+import {Buffs, IBuff} from "../Helper/Buff";
+import PlayerAnimController from "./Anim/PlayerAnimController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,7 +25,6 @@ export default class PlayerController extends cc.Component{
     public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
     public static readonly PLAYER_DASH: string = "PLAYER_DASH";
     public static readonly PLAYER_ATTR_CHANGE: string = "PLAYER_ATTR_CHANGE";
-    public static readonly PLAYER_GAIN_BUFF: string = "PLAYER_GAIN_BUFF";
 
     // Player Attributes:
     @property(AttrNum)
@@ -43,11 +45,13 @@ export default class PlayerController extends cc.Component{
     @property(cc.Prefab)
     public mainWeaponPrefab: cc.Prefab = null;
 
+    public uid: string = "";
     public mainWeapon: WeaponController = null;
     public currentHP: AttrNum = new AttrNum(10);
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public appliedBuff: IBuff[] = [];
 
+    private animCtrl: PlayerAnimController = null;
     private rb: cc.RigidBody = null;
     private searchTarget: ISearchTarget = new SearchDrop;
 
@@ -71,16 +75,16 @@ export default class PlayerController extends cc.Component{
         this.rb = this.node.getComponent(cc.RigidBody);
         this.addComponent(SearchDrop);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
+        this.animCtrl = this.node.getComponent(PlayerAnimController);
 
         this.event = new cc.EventTarget();
-        // this.event.on(PlayerController.PLAYER_START_MOVE, ()=>{console.log(PlayerController.PLAYER_START_MOVE)}, this);
-        // this.event.on(PlayerController.PLAYER_STOP_MOVE, ()=>{console.log(PlayerController.PLAYER_STOP_MOVE)}, this);
-        this.event.on(PlayerController.PLAYER_DASH, ()=>{console.log(PlayerController.PLAYER_DASH)}, this);
 
-        // For Debug
-        GameManager.instance.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, ()=>{
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
+            if (keyCode == cc.macro.KEY.q){
+                GameManager.instance.gameSystem.emitApplyBuff(this.uid, "ExplosionOnDash");
+            }
+        })
 
-        }, this);
 
         this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
 
@@ -93,6 +97,7 @@ export default class PlayerController extends cc.Component{
         this.dashSpeed.onChangeCallback.push(attrOnCh);
         this.currentHP.onChangeCallback.push(attrOnCh);
         this.killEnemyCnt.onChangeCallback.push(attrOnCh);
+
         const weaponOnCh = () => {this.event.emit(PlayerController.PLAYER_ATTR_CHANGE)};
         this.mainWeapon.attackSpeed.onChangeCallback.push(weaponOnCh);
         this.mainWeapon.shotPerAttack.onChangeCallback.push(weaponOnCh);
@@ -125,24 +130,21 @@ export default class PlayerController extends cc.Component{
         return weapon;
     }
 
-    public applyBuff(buff: IBuff){
-        buff._apply(this);
-        this.appliedBuff.push(buff);
-        this.event.emit(PlayerController.PLAYER_GAIN_BUFF, buff);
-    }
-
     public setMovingDir(newDir: cc.Vec2){
         if (this.movingDir.equals(cc.v2(0, 0))  && !newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_START_MOVE);
+            this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
         }
         else if (!this.movingDir.equals(cc.v2(0, 0)) && newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_STOP_MOVE);
+            this.animCtrl.state = {...this.animCtrl.state, isMoving: false};
         }
         this.movingDir = newDir;
     }
 
     public dash(){
         if (this.isDashing || this.dashCountDown>0) return;
+        this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
         this.dashCountDown = this.dashCoolDown.value;
@@ -150,7 +152,14 @@ export default class PlayerController extends cc.Component{
         this.scheduleOnce(()=>{
             this.isDashing = false;
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+            this.animCtrl.state = {...this.animCtrl.state, isDashing: false};
         }, this.DASH_DURATION);
+    }
+
+    public addBuff(buff: IBuff){
+        buff._apply(this);
+        this.appliedBuff.push(buff);
+        this.event.emit(PlayerController.PLAYER_ATTR_CHANGE, buff);
     }
 
 
