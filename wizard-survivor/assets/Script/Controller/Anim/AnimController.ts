@@ -6,6 +6,9 @@ const {ccclass, property} = cc._decorator;
 @requireComponent(cc.Animation)
 export default abstract class AnimController extends cc.Component {
 
+    @property(cc.Animation)
+    protected anim: cc.Animation = null;
+
     public set state(state: {}) {
         this.onStateChange(this._state, state);
         this._state = state;
@@ -16,11 +19,6 @@ export default abstract class AnimController extends cc.Component {
     }
 
     protected abstract _state: {};
-    protected anim: cc.Animation;
-
-    onLoad() {
-        this.anim = this.getComponent(cc.Animation);
-    }
 
     public abstract initState()
 
