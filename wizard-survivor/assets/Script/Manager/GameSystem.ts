@@ -28,7 +28,7 @@ export class GameSystem {
     passed event data: {input: Input} */
     public static readonly ON_INPUT: string = "ON_INPUT";
 
-
+    private buffReadyToApply: {uid: string, buffId: string}[] = [];
 
     constructor() {
         this.event = new cc.EventTarget();
@@ -37,8 +37,17 @@ export class GameSystem {
 
     // === PUBLIC METHODS ===
     public emitApplyBuff(uid: string, buffId: string): void {
-        this.event.emit(GameSystem.ON_BUFF_APPLY, {uid: uid, buffId: buffId});
-        console.log("emit buff applied")
+        console.log('buffReadyToApply: ', this.buffReadyToApply);
+
+        this.buffReadyToApply.push({uid: uid, buffId: buffId});
+
+        // TODO: GameSystem should not know how many players there are
+        if (this.buffReadyToApply.length >= GameManager.instance.playerManager.allPlayerIDs.length) {
+            for (let bf of this.buffReadyToApply){
+                this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
+            }
+            this.buffReadyToApply = [];
+        }
     }
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void{
@@ -61,7 +70,4 @@ export class GameSystem {
 }
 
 class RemoteGameSystem extends GameSystem{
-    public emitInput(input: Input){
-        this.event.emit(GameSystem.ON_INPUT, {input: input});
-    }
 }

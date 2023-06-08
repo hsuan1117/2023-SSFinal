@@ -16,7 +16,7 @@ export interface IBuff {
 }
 
 class IncreaseAttackSpeed implements IBuff {
-    public get description(): string {
+    public  get description(): string {
         return `Increase attack speed by ${this.addPercentage}%`;
     }
 
@@ -81,4 +81,10 @@ export let Buffs= {
     IncreaseAttackSpeed: IncreaseAttackSpeed,
     IncreaseMaxHP: IncreaseMaxHP,
     ExplosionOnDash: ExplosionOnDash,
+}
+
+export let BuffsName = {
+    IncreaseAttackSpeed: '增加攻速',
+    IncreaseMaxHP: '加HP',
+    ExplosionOnDash: '移動時爆炸',
 }
