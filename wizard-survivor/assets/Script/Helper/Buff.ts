@@ -22,7 +22,7 @@ class IncreaseAttackSpeed implements IBuff {
 
     private readonly addPercentage: number = 0;
 
-    constructor(addPercentage: number) {
+    constructor(addPercentage: number = 20) {
         this.addPercentage = addPercentage;
     }
 
@@ -38,6 +38,10 @@ class IncreaseMaxHP implements IBuff{
 
     private readonly incHP: number = 0;
 
+    constructor(incHP: number = 1) {
+        this.incHP = incHP;
+    }
+
     public _apply(player: PlayerController) {
         player.maxHp.addFactor += this.incHP;
         player.currentHP.addFactor += this.incHP;
@@ -45,13 +49,17 @@ class IncreaseMaxHP implements IBuff{
 }
 
 class ExplosionOnDash implements IBuff {
-    private readonly DAMAGE: number = 100;
+    private damage: number = 0;
     private readonly DURATION: number = 0.3;
     private prefabPath: string = "Prefab/Projectile/Explosion";
     private prefab: cc.Prefab = null;
 
     public get description(): string {
         return `Explosion on dash`;
+    }
+
+    constructor(damage: number) {
+        this.damage = damage;
     }
 
     public _apply(player: PlayerController): void {
@@ -67,7 +75,7 @@ class ExplosionOnDash implements IBuff {
             proj.node.position = player.node.position;
             proj.node.parent = GameManager.instance.node;
             proj.init(
-                new ProjectileAttr(0, this.DAMAGE,
+                new ProjectileAttr(0, this.damage,
                     this.DURATION, 0, 0),
                 null,
                 0
