@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PlayerAssassin",
+    "_name": "Assassin",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -31,10 +31,13 @@
       },
       {
         "__id__": 13
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -241,7 +244,7 @@
       "__id__": 11
     },
     "mainWeaponPrefab": {
-      "__uuid__": "a91c6968-04d0-4a6f-8368-d1ec149591c1"
+      "__uuid__": "0972d291-1121-4f88-8e95-485edbd757d0"
     },
     "_id": ""
   },
@@ -314,6 +317,24 @@
       "width": 15.3,
       "height": 30.7
     },
+    "_id": ""
+  },
+  {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "playerIdleAnim": "AssasinStand",
+    "playerMoveAnim": "AssasinWalk",
+    "playerDashAnim": "AssasinWalk",
+    "playerHurtAnim": "AssasinStand",
+    "playerDeadAnim": "AssasinStand",
     "_id": ""
   },
   {

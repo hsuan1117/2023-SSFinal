@@ -1,10 +1,11 @@
-import InputManager, {ARROW_TO_CONTROLLER, Input, WASD_TO_CONTROLLER} from "./InputManager";
+import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
 import {AttrNum} from "../Helper/Attributes";
 import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
-import Game = cc.Game;
+import PlayerController from "../Controller/PlayerController";
+import PlayerFocus from "../UI/PlayerFocus";
 
 const {ccclass, property} = cc._decorator;
 
@@ -102,9 +103,6 @@ export default class GameManager extends cc.Component {
                 }
             }
         })
-        this.playerManager.event.on(PlayerManager.PLAYER_INSTANTIATED, () => {
-            console.log('Player Instantiated')
-        });
 
         // 當經驗值 or 等級改變
         this.exp.onChangeCallback.push(()=> {
@@ -124,15 +122,19 @@ export default class GameManager extends cc.Component {
         this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
     }
 
-    start(){
-        this.generateGameScene();
+    start() {
+        // this.generateGameScene();
+        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
+        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
+
+        this.generateLobbyScene();
     }
 
 
     // HELPERS:
-    private async generateGameScene(){
-        this.playerManager.createPlayer('p1', 'Knight', WASD_TO_CONTROLLER);
-        this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
+    private async generateGameScene() {
+        this.playerManager.createPlayer('p1', 'Knight');
+        this.playerManager.createPlayer('p2', 'Priest');
 
         let fixedUI, enemy, drop, upgradeUI: cc.Node;
         await Promise.all([
@@ -151,16 +153,85 @@ export default class GameManager extends cc.Component {
         ])
     }
 
-    private onExpChange({deltaExp}){
+    private async generateLobbyScene() {
+        /*
+        可在 Lobby Prefab 下放入各種 GO，包含待選取的角色（角色預覽）。
+        如果該物件有 PlayerController，則會被抓取為角色預覽。
+        請確保角色 Prefab 的 name 和 Node name 相同，兩者都被視作 CharaId
+         */
+        this.showLoading();
+
+        let uids = ['p1', 'p2'];
+        let lobby: cc.Node;
+        let previewCharas: cc.Node[] = [];
+
+         await loadResource('Prefab/Lobby', cc.Prefab)
+            .then((prefab) => {
+                lobby = cc.instantiate(prefab) as unknown as cc.Node;
+                lobby.parent = this.node;
+                lobby.setPosition(0, 0);
+                for (let chara of lobby.children) {
+                    if (chara.getComponent(PlayerController)) {
+                        previewCharas.push(chara);
+                    }
+                }
+        })
+        this.hideLoading();
+
+        let chooseChara = () =>
+            new Promise((resolve, reject) => {
+                    const pf = lobby.getComponent(PlayerFocus);
+                    pf.init(previewCharas, cc.v2(0, 20), true);
+                    pf.focusOnIndex('p1', 0);
+                    pf.focusOnIndex('p2', 0);
+
+                    let choseResult = {};
+                    pf.event.on(PlayerFocus.ON_CONFIRM, ({uid, node}) => {
+                        for (let res of Object.values(choseResult)) {
+                            if (res == node.name) {
+                                return;
+                            }
+                        }
+                        pf.removeFocus(uid);
+                        choseResult[uid] = node.name;
+                        if (Object.keys(choseResult).length === uids.length) {
+                            resolve(choseResult);
+                        }
+                    })
+                }
+            )
+
+        let instantiateChooseResult = (chooseResult) =>
+            new Promise((resolve, reject) => {
+                    for (let uid of uids) {
+                        this.playerManager.createPlayer(uid, chooseResult[uid]);
+                        this.playerManager.instantiatePlayer(uid)
+                            .then((player) => {
+                                    for (let chara of previewCharas) {
+                                        if (chara.name === chooseResult[uid]) {
+                                            player.node.setPosition(chara.getPosition());
+                                            chara.destroy();
+                                        }
+                                    }
+                                }
+                            )
+                    }
+                }
+            )
+
+        chooseChara().then(instantiateChooseResult)
+    }
+
+    private onExpChange({deltaExp}) {
         this.exp.addFactor += deltaExp;
     }
 
-    private onCoinChange({deltaCoin}){
+    private onCoinChange({deltaCoin}) {
         this.coinCnt.addFactor += deltaCoin;
     }
 
-    private upgrade(){
-        this.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, ()=>{
+    private upgrade() {
+        this.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, () => {
             this.resumeGame();
         });
 
@@ -168,11 +239,19 @@ export default class GameManager extends cc.Component {
         this.pauseGame();
     }
 
-    private pauseGame(){
+    private pauseGame() {
         cc.director.pause();
     }
 
-    private resumeGame(){
+    private resumeGame() {
         cc.director.resume();
+    }
+
+    private showLoading() {
+
+    }
+
+    private hideLoading() {
+
     }
 }

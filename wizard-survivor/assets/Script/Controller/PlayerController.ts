@@ -62,13 +62,6 @@ export default class PlayerController extends cc.Component{
     private isDashing: boolean = false;
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
-    private keyToDir: {} = {
-        [cc.macro.KEY.w]: Direction.UP,
-        [cc.macro.KEY.s]: Direction.DOWN,
-        [cc.macro.KEY.a]: Direction.LEFT,
-        [cc.macro.KEY.d]: Direction.RIGHT,
-    }
-
 
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
@@ -86,7 +79,7 @@ export default class PlayerController extends cc.Component{
             }
         })
 
-        this.mainWeapon = this.addWeapon(this.mainWeaponPrefab)
+        this.mainWeapon = this.mainWeaponPrefab? this.addWeapon(this.mainWeaponPrefab) : null
 
         // Attributes Change Event
         const attrOnCh = () => {this.event.emit(PlayerController.PLAYER_ATTR_CHANGE)};

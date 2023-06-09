@@ -49,11 +49,10 @@ export default class PlayerManager extends cc.Component {
     /*
     實例化一個 Player，設定主武器和 Buff，並加入場景樹
      */
-    public createPlayer(uid: string, charaId: string, controllerConversion: ControllerConversion){
+    public createPlayer(uid: string, charaId: string){
         this.playerIds.push(uid);
         this.playerChara[uid] = charaId;
         this.playerDeltaHp[uid] = 0;
-        GameManager.instance.inputManager.addLocalPlayerInput(uid, controllerConversion);
     }
 
     public async instantiatePlayer(uid: string){
