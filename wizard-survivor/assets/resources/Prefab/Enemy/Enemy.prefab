@@ -27,14 +27,14 @@
         "__id__": 5
       },
       {
-        "__id__": 6
+        "__id__": 11
       },
       {
-        "__id__": 7
+        "__id__": 12
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 13
     },
     "_opacity": 255,
     "_color": {
@@ -198,7 +198,42 @@
       "__id__": 1
     },
     "_enabled": true,
+    "moveSpeed": {
+      "__id__": 6
+    },
+    "skillCoolDown": {
+      "__id__": 7
+    },
+    "hp": {
+      "__id__": 8
+    },
+    "collideDamage": {
+      "__id__": 9
+    },
+    "collideDamageCoolDown": {
+      "__id__": 10
+    },
     "_id": ""
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
   },
   {
     "__type__": "cc.RigidBody",
