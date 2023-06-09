@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "VampireWalk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.6833333333333333,
+  "sample": 60,
+  "speed": 1.2,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "f0189491-4956-4e4f-8613-129de3ec8c91"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "53ea0e06-a1da-49a7-9a41-bb5d082d7d9b"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "da606dea-e0b2-40c7-9dbd-4c05ca76305e"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "01bbe55d-21e8-464a-a145-f720fcc2d78e"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "f0189491-4956-4e4f-8613-129de3ec8c91"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
