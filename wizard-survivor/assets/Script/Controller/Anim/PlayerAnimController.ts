@@ -25,6 +25,7 @@ export default class PlayerAnimController extends AnimController {
         isDashing: false,
         isDead: false,
         isHurt: false,
+        faceLeftOrRight: 1, // -1: left, 1: right, 0: keep current
     };
 
     initState() {
@@ -33,6 +34,7 @@ export default class PlayerAnimController extends AnimController {
             isDashing: false,
             isDead: false,
             isHurt: false,
+            faceLeftOrRight: 1, // -1: left, 1: right, 0: keep current
         };
     }
 
@@ -52,5 +54,8 @@ export default class PlayerAnimController extends AnimController {
         else {
             this.anim.play(this.playerIdleAnim);
         }
+
+        if (newState.faceLeftOrRight)
+            this.anim.node.scaleX = newState.faceLeftOrRight;
     }
 }

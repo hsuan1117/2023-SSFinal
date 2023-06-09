@@ -143,6 +143,10 @@ export default class PlayerController extends cc.Component{
             this.animCtrl.state = {...this.animCtrl.state, isMoving: false};
         }
         this.movingDir = newDir;
+        this.animCtrl.state = {
+            ...this.animCtrl.state,
+            faceLeftOrRight: this.movingDir.x<0? -1 : (this.movingDir.x>0? 1 : 0)
+        };
     }
 
     public dash(){
