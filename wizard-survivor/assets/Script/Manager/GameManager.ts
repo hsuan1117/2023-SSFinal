@@ -138,11 +138,13 @@ export default class GameManager extends cc.Component {
         await Promise.all([
             loadResource('Prefab/UI/FixedUI', cc.Prefab).then((prefab) => {
                 fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
-                this.node.addChild(fixedUI);
+                fixedUI.parent = this.node;
+                fixedUI.setPosition(0, 0);
             }),
-            loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab)=> {
+            loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab) => {
                 upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
-                this.node.addChild(upgradeUI);
+                upgradeUI.parent = this.node;
+                upgradeUI.setPosition(0, 0);
             }),
             this.playerManager.instantiatePlayer('p1'),
             this.playerManager.instantiatePlayer('p2')
