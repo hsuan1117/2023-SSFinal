@@ -92,15 +92,16 @@ export default class GameManager extends cc.Component {
             if (keyCode === cc.macro.KEY.u){
                 this.exp.addFactor += 5;
             }
-            else if (keyCode === cc.macro.KEY.p){
-                if (cc.director.isPaused()){
+            else if (keyCode === cc.macro.KEY.p) {
+                if (cc.director.isPaused()) {
                     console.log('Game Resumed')
                     cc.director.resume();
-                }
-                else{
+                } else {
                     console.log('Game Paused')
                     cc.director.pause()
                 }
+            } else if (keyCode == cc.macro.KEY.x) {
+                this.enterGameSceneFromLobby();
             }
         })
 
@@ -123,34 +124,42 @@ export default class GameManager extends cc.Component {
     }
 
     start() {
-        // this.generateGameScene();
-        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
-        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
-
         this.generateLobbyScene();
+    }
+
+
+    // PUBLIC METHODS:
+    public enterGameSceneFromLobby() {
+        this.destroyLobbyScene()
+        this.generateGameScene();
     }
 
 
     // HELPERS:
     private async generateGameScene() {
-        this.playerManager.createPlayer('p1', 'Knight');
-        this.playerManager.createPlayer('p2', 'Priest');
-
         let fixedUI, enemy, drop, upgradeUI: cc.Node;
-        await Promise.all([
+
+        let promises = []
+        promises.push(
             loadResource('Prefab/UI/FixedUI', cc.Prefab).then((prefab) => {
                 fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
                 fixedUI.parent = this.node;
                 fixedUI.setPosition(0, 0);
-            }),
+            })
+        )
+        promises.push(
             loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab) => {
                 upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
                 upgradeUI.parent = this.node;
                 upgradeUI.setPosition(0, 0);
-            }),
-            this.playerManager.instantiatePlayer('p1'),
-            this.playerManager.instantiatePlayer('p2')
-        ])
+            })
+        )
+        for (let uid of this.playerManager.allPlayerIDs) {
+            promises.push(
+                this.playerManager.instantiatePlayer(uid)
+            )
+        }
+        await Promise.all(promises);
     }
 
     private async generateLobbyScene() {
@@ -159,13 +168,14 @@ export default class GameManager extends cc.Component {
         如果該物件有 PlayerController，則會被抓取為角色預覽。
         請確保角色 Prefab 的 name 和 Node name 相同，兩者都被視作 CharaId
          */
-        this.showLoading();
-
         let uids = ['p1', 'p2'];
-        let lobby: cc.Node;
+        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
+        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
+
+        let lobby, enterGame: cc.Node;
         let previewCharas: cc.Node[] = [];
 
-         await loadResource('Prefab/Lobby', cc.Prefab)
+        await loadResource('Prefab/Lobby', cc.Prefab)
             .then((prefab) => {
                 lobby = cc.instantiate(prefab) as unknown as cc.Node;
                 lobby.parent = this.node;
@@ -176,7 +186,6 @@ export default class GameManager extends cc.Component {
                     }
                 }
         })
-        this.hideLoading();
 
         let chooseChara = () =>
             new Promise((resolve, reject) => {
@@ -204,7 +213,7 @@ export default class GameManager extends cc.Component {
         let instantiateChooseResult = (chooseResult) =>
             new Promise((resolve, reject) => {
                     for (let uid of uids) {
-                        this.playerManager.createPlayer(uid, chooseResult[uid]);
+                        this.playerManager.createPlayerLocally(uid, chooseResult[uid]);
                         this.playerManager.instantiatePlayer(uid)
                             .then((player) => {
                                     for (let chara of previewCharas) {
@@ -220,6 +229,12 @@ export default class GameManager extends cc.Component {
             )
 
         chooseChara().then(instantiateChooseResult)
+    }
+
+    private destroyLobbyScene() {
+        for (let child of this.node.children) {
+            child.destroy();
+        }
     }
 
     private onExpChange({deltaExp}) {

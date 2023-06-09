@@ -23,6 +23,7 @@ export default class PlayerManager extends cc.Component {
     }
 
     private playerIds: string[] = [];
+    private isLocalPlayer: {[uid: string]: boolean} = {};
     private playerChara: {[uid: string]: string} = {};
     private playerControllers: {[id: string]: PlayerController} = {};
     private playerDeltaHp: {[uid: string]: number} = {}
@@ -34,6 +35,7 @@ export default class PlayerManager extends cc.Component {
         GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
         GameManager.instance.gameSystem.event.on(GameSystem.ON_BUFF_APPLY, this.onBuffApply, this);
         GameManager.instance.gameSystem.event.on(GameSystem.ON_PLAYER_HP_CHANGE, this.onHPChange, this);
+        GameManager.instance.gameSystem.event.on(GameSystem.ON_CREATE_PLAYER,this.createPlayer, this);
     }
 
 
@@ -49,10 +51,10 @@ export default class PlayerManager extends cc.Component {
     /*
     實例化一個 Player，設定主武器和 Buff，並加入場景樹
      */
-    public createPlayer(uid: string, charaId: string){
-        this.playerIds.push(uid);
-        this.playerChara[uid] = charaId;
-        this.playerDeltaHp[uid] = 0;
+    public createPlayerLocally(uid: string, charaId: string){
+        this.createPlayer({uid: uid, charaId: charaId});
+        this.isLocalPlayer[uid] = true;
+        GameManager.instance.gameSystem.emitCreatePlayer(uid, charaId);
     }
 
     public async instantiatePlayer(uid: string){
@@ -69,6 +71,14 @@ export default class PlayerManager extends cc.Component {
 
 
     // HELPERS
+    private createPlayer({uid, charaId}){
+        if (this.isLocalPlayer[uid]) return;
+        this.playerIds.push(uid);
+        this.playerChara[uid] = charaId;
+        this.playerDeltaHp[uid] = 0;
+        this.isLocalPlayer[uid] = false;
+    }
+
     private onInput(input: Input){
         if (!this.playerControllers[input.uid]) return;
         if (input.type == InputType.STICK){

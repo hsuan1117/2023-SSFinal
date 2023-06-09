@@ -1,6 +1,7 @@
 import InputManager, {Input} from "../Manager/InputManager";
 import GameManager from "../Manager/GameManager";
 import {Direction, padZ} from "../Helper/utils";
+import Game = cc.Game;
 
 const {ccclass, property} = cc._decorator;
 
@@ -38,10 +39,11 @@ export default class PlayerFocus extends cc.Component {
     }
 
     start(){
-        GameManager.instance.inputManager.event.on(
-            InputManager.ON_INPUT,
-            (input) => this.onInput(input),
-        )
+        GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
+    }
+
+    onDestroy() {
+        GameManager.instance.inputManager.event.off(InputManager.ON_INPUT, this.onInput, this);
     }
 
     public init(focusTarget: cc.Node[], offSet: cc.Vec2, sortByPosition=false){

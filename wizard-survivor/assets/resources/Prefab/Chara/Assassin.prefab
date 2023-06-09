@@ -206,7 +206,7 @@
         "__uuid__": "414cd981-2734-4d1a-bacc-7f49eb063773"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {
@@ -330,11 +330,11 @@
     "anim": {
       "__id__": 4
     },
-    "playerIdleAnim": "AssasinStand",
-    "playerMoveAnim": "AssasinWalk",
-    "playerDashAnim": "AssasinWalk",
-    "playerHurtAnim": "AssasinStand",
-    "playerDeadAnim": "AssasinStand",
+    "playerIdleAnim": "AssassinStand",
+    "playerMoveAnim": "AssassinWalk",
+    "playerDashAnim": "AssassinWalk",
+    "playerHurtAnim": "AssassinStand",
+    "playerDeadAnim": "AssassinStand",
     "_id": ""
   },
   {

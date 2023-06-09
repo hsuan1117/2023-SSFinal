@@ -206,7 +206,7 @@
         "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {

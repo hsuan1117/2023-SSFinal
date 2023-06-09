@@ -36,7 +36,6 @@ export default class UpgradeUI extends cc.Component {
     start() {
         GameManager.instance.event.on(GameManager.ON_UPGRADE, this.popUpUpgradeUI, this);
         GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, (input) => this.onInput(input), this);
-        console.log('upgrade ui start')
         this.node.active = false;
     }
 
