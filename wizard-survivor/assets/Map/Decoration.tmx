@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="brick" tilewidth="32" tileheight="32" tilecount="294" columns="21">
+  <image source="brick.png" width="672" height="448"/>
+ </tileset>
+ <tileset firstgid="295" name="brick" tilewidth="32" tileheight="32" margin="2" tilecount="260" columns="20">
+  <image source="brick.png" width="672" height="448"/>
+ </tileset>
+ <tileset firstgid="555" name="brick1" tilewidth="32" tileheight="32" spacing="2" tilecount="247" columns="19">
+  <image source="brick.png" width="672" height="448"/>
+ </tileset>
+ <tileset firstgid="802" name="brick2" tilewidth="32" tileheight="31" tilecount="294" columns="21">
+  <image source="brick.png" width="672" height="448"/>
+ </tileset>
+ <layer name="Tree" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
