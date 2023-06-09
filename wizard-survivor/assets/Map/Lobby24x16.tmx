@@ -3,6 +3,9 @@
  <tileset firstgid="1" name="Lobby30x20" tilewidth="32" tileheight="32" tilecount="600" columns="30">
   <image source="Lobby30x20.png" width="960" height="640"/>
  </tileset>
+ <tileset firstgid="601" name="c01_0" tilewidth="32" tileheight="29" tilecount="1" columns="1">
+  <image source="../../../../../Downloads/dump Soul Knight-20230606T143024Z-001/dump Soul Knight/Texture2D/player/knight/c01_0.png" width="32" height="29"/>
+ </tileset>
  <layer name="floor" width="24" height="16">
   <data encoding="csv">
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,
@@ -50,7 +53,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,601,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
