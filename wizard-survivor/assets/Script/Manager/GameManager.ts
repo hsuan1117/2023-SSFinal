@@ -16,10 +16,12 @@ const {ccclass, property} = cc._decorator;
  */
 @ccclass
 export default class GameManager extends cc.Component {
+
+    // Events
     public event: cc.EventTarget;
-    public static readonly GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
-    public static readonly GAME_START: string = "GAME_START";
-    public static readonly LEVEL_UP: string = "LEVEL_UP";
+    public static readonly ON_GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
+    public static readonly ON_LEVEL_UP: string = "LEVEL_UP";
+    public static readonly ON_UPGRADE: string = "UPGRADE";
 
     public static get instance(): GameManager {
         if (!GameManager._instance) {
@@ -50,6 +52,7 @@ export default class GameManager extends cc.Component {
     public level: AttrNum = new AttrNum(1);
     public exp: AttrNum = new AttrNum(0);
 
+
     /*每升一等，升等需要的經驗會增加多少百分比*/
     private readonly UPGRADE_EXP_GROWTH: number = 20;
 
@@ -75,21 +78,35 @@ export default class GameManager extends cc.Component {
 
         this.event = new cc.EventTarget();
 
-        // 遊戲狀態改變事件
-        const onGameStatCh = () => {this.event.emit(GameManager.GAME_STAT_CHANGE)};
+        // 當下列屬性改變，發布遊戲狀態改變事件，用於 Update FixedUI
+        const onGameStatCh = () => {this.event.emit(GameManager.ON_GAME_STAT_CHANGE)};
         this.killEnemyCnt.onChangeCallback.push(onGameStatCh);
         this.coinCnt.onChangeCallback.push(onGameStatCh);
         this.exp.onChangeCallback.push(onGameStatCh);
         this.level.onChangeCallback.push(onGameStatCh);
         this.upgradeExp.onChangeCallback.push(onGameStatCh);
 
-        this.inputManager.event.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
+        // DEBUG
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
             if (keyCode === cc.macro.KEY.u){
                 this.exp.addFactor += 5;
             }
+            else if (keyCode === cc.macro.KEY.p){
+                if (cc.director.isPaused()){
+                    console.log('Game Resumed')
+                    cc.director.resume();
+                }
+                else{
+                    console.log('Game Paused')
+                    cc.director.pause()
+                }
+            }
         })
+        this.playerManager.event.on(PlayerManager.PLAYER_INSTANTIATED, () => {
+            console.log('Player Instantiated')
+        });
 
-        // 經驗值＆升等事件
+        // 當經驗值 or 等級改變
         this.exp.onChangeCallback.push(()=> {
             while (this.exp.value >= this.upgradeExp.value) {
                 this.exp.addFactor -= this.upgradeExp.value;
@@ -97,7 +114,14 @@ export default class GameManager extends cc.Component {
                 this.upgradeExp.percentageFactor += this.UPGRADE_EXP_GROWTH;
             }
         });
-        this.level.onChangeCallback.push(()=> this.event.emit(GameManager.LEVEL_UP));
+        this.level.onChangeCallback.push(() => {
+            this.event.emit(GameManager.ON_LEVEL_UP);
+            this.upgrade();
+        });
+
+        // 來自 GameSystem 的廣播
+        this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
+        this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
     }
 
     start(){
@@ -107,32 +131,48 @@ export default class GameManager extends cc.Component {
 
     // HELPERS:
     private async generateGameScene(){
-        let ui, enemy, drop: cc.Node;
         this.playerManager.createPlayer('p1', 'Knight', WASD_TO_CONTROLLER);
         this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
 
-        loadResource('Prefab/UI/FixedUI', cc.Prefab)
-            .then((prefab) => {
-                ui = cc.instantiate(prefab) as unknown as cc.Node;
-                this.node.addChild(ui);
-            })
-            .then(() => this.playerManager.instantiatePlayer('p1'))
-            .then(() => this.playerManager.instantiatePlayer('p2'))
-            .catch((err)=>console.error(err))
+        let fixedUI, enemy, drop, upgradeUI: cc.Node;
+        await Promise.all([
+            loadResource('Prefab/UI/FixedUI', cc.Prefab).then((prefab) => {
+                fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
+                fixedUI.parent = this.node;
+                fixedUI.setPosition(0, 0);
+            }),
+            loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab) => {
+                upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
+                upgradeUI.parent = this.node;
+                upgradeUI.setPosition(0, 0);
+            }),
+            this.playerManager.instantiatePlayer('p1'),
+            this.playerManager.instantiatePlayer('p2')
+        ])
+    }
 
-        // this.playerManager.createPlayer('p2', 'Priest', ARROW_TO_CONTROLLER);
-        // cc.resources.load('Prefab/Enemy', cc.Prefab, (err, prefab) => {
-        //     enemy = cc.instantiate(prefab) as unknown as cc.Node;
-        //     this.node.addChild(enemy);
-        //     enemy.position = cc.v3(100, 100, 0)
-        // })
-        // cc.resources.load('Prefab/DropTest', cc.Prefab, (err, prefab) => {
-        //     drop = cc.instantiate(prefab) as unknown as cc.Node;
-        //     this.node.addChild(drop);
-        //     drop.position = cc.v3(200, 200, 0);
-        // })
-        // wait until all resources loaded
-        // call init
-        // emit GAME_READY
+    private onExpChange({deltaExp}){
+        this.exp.addFactor += deltaExp;
+    }
+
+    private onCoinChange({deltaCoin}){
+        this.coinCnt.addFactor += deltaCoin;
+    }
+
+    private upgrade(){
+        this.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, ()=>{
+            this.resumeGame();
+        });
+
+        this.event.emit(GameManager.ON_UPGRADE);
+        this.pauseGame();
+    }
+
+    private pauseGame(){
+        cc.director.pause();
+    }
+
+    private resumeGame(){
+        cc.director.resume();
     }
 }

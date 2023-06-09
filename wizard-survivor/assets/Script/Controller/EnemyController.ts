@@ -4,6 +4,7 @@ import GameManager from "../Manager/GameManager";
 import {ignoreZ} from "../Helper/utils";
 import {AttrNum} from "../Helper/Attributes";
 import PlayerStatUI from "../UI/PlayerStatUI";
+import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -23,14 +24,22 @@ export default class EnemyController extends cc.Component {
     @property(AttrNum)
     public hp: AttrNum = new AttrNum();
 
+    @property(AttrNum)
+    public collideDamage: AttrNum = new AttrNum();
+
+    @property(AttrNum)
+    public collideDamageCoolDown: AttrNum = new AttrNum();
+
     protected skillCoolDownTime: number = 0;
 
 
     // LIFE-CYCLE CALLBACKS:
      onLoad() {
         this.rb = this.node.getComponent(cc.RigidBody);
+        this.rb.enabledContactListener = true;
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.node.getComponent(cc.RigidBody).linearDamping = this.LINEAR_DAMP;
+        this.addComponent(DamagePlayerOnCollide).init(this.collideDamage.value, this.collideDamageCoolDown.value);
     }
 
     playAnim() {

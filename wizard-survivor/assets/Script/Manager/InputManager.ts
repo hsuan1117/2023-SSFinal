@@ -1,3 +1,7 @@
+import GameManager from "./GameManager";
+import {GameSystem} from "./GameSystem";
+import {Direction} from "../Helper/utils";
+
 const {ccclass, property} = cc._decorator;
 
 export enum InputType {
@@ -78,13 +82,29 @@ export default class InputManager extends cc.Component {
     onLoad() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-
-        this.event.on(InputManager.ON_INPUT, (input: Input) => {
-            // console.log(Object.fromEntries(this._isPressing.get(input.uid)))
-        }, this);
     }
 
+    start() {
+        GameManager.instance.gameSystem.event.on(
+            GameSystem.ON_INPUT,
+            ({input}) => this.performInput(input),
+            this
+        )
+    }
+
+
     // PUBLIC METHODS:
+    public static lrOfStick(stick: cc.Vec2): cc.Vec2{
+        if (stick.x > 700){
+            return Direction.RIGHT;
+        }
+        else if (stick.x < -700){
+            return Direction.LEFT
+        }
+        else{
+            return null;
+        }
+    }
     /*
     @param uid: 使用者的 uid
     @param conversion: 該使用者的按鍵對照表
@@ -103,19 +123,22 @@ export default class InputManager extends cc.Component {
     btnCode 可為 'X' | 'Y' | 'A' | 'B'
      */
     public isPressing(uid: string, btnCode: string): boolean {
-        return this._isPressing.get(uid).get(btnCode)?? false;
+        return this._isPressing.get(uid).get(btnCode) ?? false;
     }
 
     /*
     回傳該使用者現在的搖桿方向
-    回傳值為 cc.Vec2，x 與 y 座標皆為 0 ~ 1000
+    回傳值為 cc.Vec2，x 與 y 座標皆為 -1000 ~ 1000
      */
     public lStick(uid: string): cc.Vec2 {
         return this._currentLStick.get(uid);
     }
 
-
     // HELPERS:
+    private performInput(input: Input) {
+        this.event.emit(InputManager.ON_INPUT, input);
+    }
+
     private onKeyDown({keyCode}) {
         for (const [uid, conversion] of this.conversionOfUid) {
             if (!conversion[keyCode]) continue;
@@ -124,16 +147,18 @@ export default class InputManager extends cc.Component {
             this._isPressing.get(uid).set(conversion[keyCode], true)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.BUTTON_DOWN, conversion[keyCode], 0, 0)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.BUTTON_DOWN,
+                    conversion[keyCode],
+                    0, 0
+                ));
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.STICK, '', this._currentLStick.get(uid).x, this._currentLStick.get(uid).y)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.STICK,
+                    '',
+                    this._currentLStick.get(uid).x, this._currentLStick.get(uid).y
+                ));
             }
         }
     }
@@ -149,16 +174,18 @@ export default class InputManager extends cc.Component {
             // console.log(`set ${conversion[keyCode]} to false, this Key is Pressed: ${this._isPressing.get(uid).get(conversion[keyCode])}`)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.BUTTON_UP, conversion[keyCode], 0, 0)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.BUTTON_UP,
+                    conversion[keyCode],
+                    0, 0
+                ));
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                this.event.emit(
-                    InputManager.ON_INPUT,
-                    new Input(uid, InputType.STICK, '', this._currentLStick.get(uid).x, this._currentLStick.get(uid).y)
-                )
+                GameManager.instance.gameSystem.emitInput(new Input(
+                    uid, InputType.STICK,
+                    '',
+                    this._currentLStick.get(uid).x, this._currentLStick.get(uid).y
+                ));
             }
         }
     }
