@@ -101,7 +101,7 @@ export default class GameManager extends cc.Component {
                     cc.director.pause()
                 }
             } else if (keyCode == cc.macro.KEY.x) {
-                this.enterGameSceneFromLobby();
+                this.onGameStart();
             }
         })
 
@@ -121,6 +121,7 @@ export default class GameManager extends cc.Component {
         // 來自 GameSystem 的廣播
         this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
         this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
+        this.gameSystem.event.on(GameSystem.ON_GAME_START, this.onGameStart, this);
     }
 
     start() {
@@ -128,14 +129,12 @@ export default class GameManager extends cc.Component {
     }
 
 
-    // PUBLIC METHODS:
-    public enterGameSceneFromLobby() {
+    // HELPERS:
+    private onGameStart() {
         this.destroyLobbyScene()
         this.generateGameScene();
     }
 
-
-    // HELPERS:
     private async generateGameScene() {
         let fixedUI, enemy, drop, upgradeUI: cc.Node;
 
