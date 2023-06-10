@@ -5,6 +5,21 @@ import winSize = cc.winSize;
 
 const {ccclass, property} = cc._decorator;
 
+/*
+1. 用一個 json 檔案來記錄每一波要出現的敵人種類、數量、間隔等等。目前暫定用編輯器那邊來設定json
+2. 用一個陣列來紀錄敵人種類（暫定）
+3. 呼叫 setWave() 來設定波數， 0 暫定為不會生怪
+
+json 格式：
+{
+  "1": { // 第一波
+    "BumpingPig": { // 敵人種類
+      "spawnInterval": 10, // 生怪間隔
+      "spawnNum": 10 // 每次生怪數量
+    }
+  },
+}
+ */
 @ccclass
 export default class WaveManager extends cc.Component {
 
@@ -17,7 +32,7 @@ export default class WaveManager extends cc.Component {
 
     private enemyPrefabPath: string = "Prefab/Enemy";
 
-    private spawnRadius: number = 600;
+    private spawnRadius: number = 600; // 剛好在螢幕外
 
     private currentWave: any = null;
 
