@@ -23,7 +23,7 @@ json 格式：
 @ccclass
 export default class WaveManager extends cc.Component {
 
-    private enemyTypes: string[] = ["BumpingPig"];
+    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton"];
 
     private waveData: cc.JsonAsset = null;
 

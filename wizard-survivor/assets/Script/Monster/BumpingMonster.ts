@@ -42,7 +42,7 @@ export default class BumpingMonster extends EnemyController {
             this.rb.linearVelocity = cc.Vec2.ZERO;
             // play ready to bump anim
         }
-        else if (this.bumpingTime < 1.2) {
+        else if (this.bumpingTime < 1.6) {
             this.rb.linearVelocity = this.bumpingDirection.mul(this.bumpingSpeed);
             // play bumping anim
         }

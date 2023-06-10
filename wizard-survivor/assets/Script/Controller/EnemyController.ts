@@ -50,6 +50,11 @@ export default class EnemyController extends cc.Component {
              this.node.scaleX = -1;
     }
 
+    protected update(dt: number) {
+        this.followPlayer();
+        this.playAnim();
+    }
+
 
     // PUBLIC METHODS:
     public init() {
