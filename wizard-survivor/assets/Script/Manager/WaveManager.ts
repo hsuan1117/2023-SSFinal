@@ -8,11 +8,14 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class WaveManager extends cc.Component {
 
-    @property(cc.Prefab)
-    private enemyPrefab: cc.Prefab = null;
+    private enemyTypes: string[] = ["BumpingPig"];
 
     @property(cc.JsonAsset)
     private waveData: cc.JsonAsset = null;
+
+    private enemyPrefabs: cc.Prefab[] = [];
+
+    private enemyPrefabPath: string = "Prefab/Enemy";
 
     private spawnRadius: number = 600;
 
@@ -31,28 +34,28 @@ export default class WaveManager extends cc.Component {
     }
 
     start () {
-        // load wave data
-        this.setWave(1);
+        // set wave
+        this.setWave(0);
+        // load enemy prefab
+        for (const enemyType of this.enemyTypes) {
+            cc.resources.load("Prefab/Enemy/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
+                cc.log(prefab);
+                this.enemyPrefabs[enemyType] = prefab;
+            });
+        }
     }
 
     update (dt) {
         // set swpan center to camera center
         this.spawnCenter = ignoreZ(cc.Camera.main.node.position).sub(cc.v2(winSize.width / 2, cc.winSize.height / 2));
 
-        // spawn
-        // foreach enemy in current wave
-        // spawn enemy
-        // set enemy position
-        // set enemy active
-        // set enemy parent
-        // set enemy init
         for (const key in this.currentWave){
             if (this.countDowns[key] === undefined) {
                 this.countDowns[key] = 0;
             }
             if (this.countDowns[key] <= 0){
                 for (let i = 0; i < this.currentWave[key]["spawnNum"]; i++){
-                    this.spawnEnemy(this.enemyPrefab, this.randomSpawnPos());
+                    this.spawnEnemy(this.enemyPrefabs[key], this.randomSpawnPos());
                 }
                 this.countDowns[key] = this.currentWave[key].spawnInterval;
             } else {

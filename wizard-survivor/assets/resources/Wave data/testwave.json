@@ -1,6 +1,6 @@
 {
   "1": {
-    "monster1": {
+    "BumpingPig": {
       "spawnInterval": 10,
       "spawnNum": 10
     }

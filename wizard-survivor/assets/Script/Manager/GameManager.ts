@@ -36,7 +36,7 @@ export default class GameManager extends cc.Component {
     }
 
     public get inputManager(): InputManager {
-        return this._inputManager
+        return this._inputManager;
     };
 
     public get poolManager(): PoolManager {
