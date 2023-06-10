@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "66tEETbRJDO7nWWPwclHPF"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "common_room_item",
+      "rect": [
+        3,
+        2,
+        509,
+        509
+      ],
+      "offset": [
+        1.5,
+        -0.5
+      ],
+      "originalSize": [
+        512,
+        512
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

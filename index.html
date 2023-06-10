@@ -15,14 +15,14 @@
   <meta name="renderer" content="webkit"/>
   <meta name="force-rendering" content="webkit"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
+  
   <link rel="stylesheet" type="text/css" href="style-desktop.81ede.css"/>
   <link rel="icon" href="favicon.8de18.ico"/>
 </head>
 <body>
 <h1 class="header">wizard-survivor</h1>
 
-<div id="GameDiv" style="width:1280px; height: 720px;">
+<div id="GameDiv"  style="width:1280px; height: 720px;">
   <canvas id="GameCanvas" width="1280" height="720"></canvas>
   <div id="splash">
     <div class="progress-bar stripes">
@@ -31,10 +31,10 @@
   </div>
 </div>
 
-<p class="footer">Made with <a href="https://www.cocos.com/products#CocosCreator" title="cocos creator">Cocos Creator</a></p>
+<p class="footer">Made with <a href="https://www.cocos.com/products#CocosCreator" title="Cocos Creator">Cocos Creator</a></p>
 
-<script src="src/settings.295d0.js" charset="utf-8"></script>
-<script src="main.38fa0.js" charset="utf-8"></script>
+<script src="src/settings.33739.js" charset="utf-8"></script>
+<script src="main.00eba.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 (function () {
@@ -60,9 +60,9 @@
       document.body.appendChild(domScript);
     }
 
-    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.8ffd8.js', function () {
+    loadScript(debug ? 'cocos2d-js.ed23b.js' : 'cocos2d-js-min.js', function () {
       if (CC_PHYSICS_BUILTIN || CC_PHYSICS_CANNON) {
-        loadScript(debug ? 'physics.js' : 'physics-min.be033.js', window.boot);
+        loadScript(debug ? 'physics.18a1f.js' : 'physics-min.js', window.boot);
       }
       else {
         window.boot();
@@ -70,6 +70,5 @@
     });
 })();
 </script>
-
 </body>
 </html>
