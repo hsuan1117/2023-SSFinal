@@ -31,10 +31,13 @@
       },
       {
         "__id__": 13
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -203,7 +206,7 @@
         "__uuid__": "d7a44610-592a-4fd7-8ebd-54728e044c75"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {
@@ -240,7 +243,9 @@
     "dashSpeed": {
       "__id__": 11
     },
-    "mainWeaponPrefab": null,
+    "mainWeaponPrefab": {
+      "__uuid__": "b768c1ad-75ad-482a-9f5e-c3e10ced2606"
+    },
     "_id": ""
   },
   {
@@ -312,6 +317,24 @@
       "width": 15.3,
       "height": 30.7
     },
+    "_id": ""
+  },
+  {
+    "__type__": "48597dRxOJNkqge1dQfGu3a",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "enemyIdleAnim": "SkeletonStand",
+    "enemyMoveAnim": "SkeletonWalk",
+    "enemyHurtAnim": "SkeletonStand",
+    "enemyDeadAnim": "SkeletonStand",
+    "enemySkillAnim": "SkeletonStand",
     "_id": ""
   },
   {

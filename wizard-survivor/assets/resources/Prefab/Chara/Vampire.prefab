@@ -31,10 +31,13 @@
       },
       {
         "__id__": 13
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -203,7 +206,7 @@
         "__uuid__": "1fbdc70e-5b11-4387-a885-c0994eecd79e"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {
@@ -240,7 +243,9 @@
     "dashSpeed": {
       "__id__": 11
     },
-    "mainWeaponPrefab": null,
+    "mainWeaponPrefab": {
+      "__uuid__": "b768c1ad-75ad-482a-9f5e-c3e10ced2606"
+    },
     "_id": ""
   },
   {
@@ -312,6 +317,24 @@
       "width": 15.3,
       "height": 30.7
     },
+    "_id": ""
+  },
+  {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "playerIdleAnim": "VampireStand",
+    "playerMoveAnim": "VampireWalk",
+    "playerDashAnim": "VampireStand",
+    "playerHurtAnim": "VampireStand",
+    "playerDeadAnim": "VampireStand",
     "_id": ""
   },
   {
