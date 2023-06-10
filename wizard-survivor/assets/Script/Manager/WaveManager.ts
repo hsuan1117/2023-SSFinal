@@ -1,4 +1,4 @@
-import {ignoreZ} from "../Helper/utils";
+import {ignoreZ, loadResource} from "../Helper/utils";
 import {padZ} from "../Helper/utils";
 import GameManager from "./GameManager";
 import winSize = cc.winSize;
@@ -30,6 +30,10 @@ export default class WaveManager extends cc.Component {
     * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void
      */
     public static readonly ON_ENEMY_DIE: string = "onEnemyDie";
+
+    private enemyDropItems: {[itemType: string]: cc.Prefab};
+    private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
+    private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
 
     private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton"];
 
@@ -70,12 +74,22 @@ export default class WaveManager extends cc.Component {
             cc.log("json = ", json);
         });
 
-        this.event.on(WaveManager.ON_ENEMY_DIE, (event) => console.log(event));
+        // load drop item prefab
+        this.enemyDropItems = {};
+        for (let i=0; i<this.enemyDropItemsType.length; i++){
+            const type = this.enemyDropItemsType[i];
+            loadResource('Prefab/Drops/' + type, cc.Prefab)
+                .then((prefab: cc.Prefab) => {
+                    this.enemyDropItems[type] = prefab;
+                });
+        }
     }
 
     onLoad(){
         this.event = new cc.EventTarget();
+        this.event.on(WaveManager.ON_ENEMY_DIE, this.onEnemyDie, this);
     }
+
 
     update (dt) {
         // set swpan center to camera center
@@ -109,5 +123,24 @@ export default class WaveManager extends cc.Component {
         enemy.active = true;
         enemy.parent = this.node;
         enemy.getComponent("EnemyController").init();
+    }
+
+    private onEnemyDie({enemyPosition, killByUid}: {enemyPosition: cc.Vec3, killByUid: string}){
+        this.dropRandomItem(enemyPosition);
+    }
+
+    private dropRandomItem(position: cc.Vec3){
+        const random = Math.random();
+        let sum = 0;
+        for (let i = 0; i < this.enemyDropItemsType.length; i++){
+            sum += this.enemyDropItemsRate[i];
+            if (random < sum){
+                let item = GameManager.instance.poolManager.createPrefab(this.enemyDropItems[this.enemyDropItemsType[i]]);
+                item.position = position;
+                item.active = true;
+                item.parent = GameManager.instance.node;
+                break;
+            }
+        }
     }
 }
