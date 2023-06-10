@@ -21,6 +21,8 @@ export default class ProjectileController extends cc.Component {
     private bounceDir: cc.Vec2 = null;
     private penetrateCnt: number = 0;
 
+    private existCountDown: number = 0;
+
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.rb = this.getComponent(cc.RigidBody);
@@ -55,6 +57,13 @@ export default class ProjectileController extends cc.Component {
         }
     }
 
+    update(dt: number) {
+        this.existCountDown -= dt;
+        if (this.existCountDown <= 0){
+            this.deleteProjectile();
+        }
+    }
+
 
     // PUBLIC METHODS:
     public init(projectileAttr: ProjectileAttr, onHitCallback: Function = null, bounceDirIdx: number = 0) {
@@ -67,15 +76,12 @@ export default class ProjectileController extends cc.Component {
 
     public shootToDirection(direction: cc.Vec2) {
         this.rb.linearVelocity = direction.mul(this.projectileAttr.flySpeed.value);
-        this.scheduleOnce(() => {
-            this.deleteProjectile()
-        }, this.projectileAttr.existDuration.value)
+        this.existCountDown = this.projectileAttr.existDuration.value;
     }
 
 
     // HELPERS:
     private deleteProjectile(){
-        this.unschedule(this.deleteProjectile);
         GameManager.instance.poolManager
             .recycle(this.node);
     }
