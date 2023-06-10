@@ -32,13 +32,11 @@ export default class PlayerFocus extends cc.Component {
     private pointerContainer: {[tid: number]: cc.Node};
     private focus: {[uid: string]: number};
     private pointer: {[uid: string]: cc.Node};
+    private isLock: {[uid: string]: boolean} = {};
 
 
     onLoad() {
         this.event = new cc.EventTarget();
-    }
-
-    start(){
         GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
     }
 
@@ -51,10 +49,14 @@ export default class PlayerFocus extends cc.Component {
         this.focusTarget = [...focusTarget];
         this.pointerContainer = {};
         this.pointer = {};
-        this.focusTarget.sort((a, b) => {
-            if (a.position < b.position) return -1;
-            return 0;
-        })
+        this.isLock = {};
+        if (sortByPosition){
+            this.focusTarget.sort((a, b) => {
+                if (a.position.x < b.position.x) return -1;
+                if (a.position.y < b.position.y) return -1;
+                return 0;
+            })
+        }
 
 
         for (let tid in this.focusTarget){
@@ -83,8 +85,7 @@ export default class PlayerFocus extends cc.Component {
 
     public focusOnIndex(uid: string, tid: number) {
         this.focus[uid] = tid;
-        console.log('focusOnIndex: ', uid, tid);
-        console.log('focusOnIndex Result: ', this.focus)
+        this.isLock[uid] = false;
         this.updateView();
     }
 
@@ -92,12 +93,33 @@ export default class PlayerFocus extends cc.Component {
         delete this.focus[uid];
         this.pointer[uid].destroy();
         delete this.pointer[uid];
+        delete this.isLock[uid];
+        this.updateView();
+    }
+
+    public removeFocusAll(){
+        for (let uid in this.focus){
+            this.removeFocus(uid);
+        }
+    }
+
+    public lock(uid: string) {
+        this.isLock[uid] = true;
+        if (!this.pointer){
+            this.pointer[uid] = new cc.Node(`Pointer${uid}`);
+        }
+        const label =  this.pointer[uid].addComponent(cc.Label);
+        label.string = `<<${uid}>>`;
+        label.fontSize = 10;
+        label.lineHeight = 0;
+        label.node.color = cc.Color.BLACK;
         this.updateView();
     }
 
     private onInput(input: Input){
         if (!this.focus.hasOwnProperty(input.uid)) return;
 
+        if (this.isLock[input.uid]) return;
 
         const uid = input.uid;
         const dir = InputManager.lrOfStick(cc.v2(input.lX, input.lY));
@@ -118,9 +140,10 @@ export default class PlayerFocus extends cc.Component {
             if (!this.pointer[uid]){
                 this.pointer[uid] = new cc.Node(`Pointer${uid}`);
                 const label =  this.pointer[uid].addComponent(cc.Label);
-                label.string = `<${uid}>`;
+                label.string = `<  ${uid}  >`;
                 label.fontSize = 10;
                 label.lineHeight = 0;
+                label.node.color = cc.Color.RED;
             }
             this.pointer[uid].parent = this.pointerContainer[this.focus[uid]];
             this.pointer[uid].setPosition(0, 0);

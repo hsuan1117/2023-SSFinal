@@ -277,9 +277,11 @@ export default class GameManager extends cc.Component {
                                 return;
                             }
                         }
-                        pf.removeFocus(uid);
+                        // pf.removeFocus(uid)
+                        pf.lock(uid);
                         choseResult[uid] = node.name;
                         if (Object.keys(choseResult).length === uids.length) {
+                            pf.removeFocusAll();
                             resolve(choseResult);
                         }
                     })
@@ -338,7 +340,7 @@ export default class GameManager extends cc.Component {
             this.resumeGame();
         });
 
-        this.event.emit(GameManager.ON_UPGRADE);
+        this.event.emit(GameManager.ON_UPGRADE, {buffAmount: 3});
         this.pauseGame();
     }
 
