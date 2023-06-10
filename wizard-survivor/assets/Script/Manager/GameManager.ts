@@ -6,6 +6,9 @@ import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
 import PlayerController from "../Controller/PlayerController";
 import PlayerFocus from "../UI/PlayerFocus";
+import instantiate = cc.instantiate;
+import Game = cc.Game;
+import PlayerHPUI from "../UI/PlayerHPUI";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,6 +26,7 @@ export default class GameManager extends cc.Component {
     public static readonly ON_GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
     public static readonly ON_LEVEL_UP: string = "LEVEL_UP";
     public static readonly ON_UPGRADE: string = "UPGRADE";
+    public static readonly ON_GAME_READY: string = "GAME_READY";
 
     public static get instance(): GameManager {
         if (!GameManager._instance) {
@@ -102,6 +106,8 @@ export default class GameManager extends cc.Component {
                 }
             } else if (keyCode == cc.macro.KEY.x) {
                 this.onGameStart();
+            } else if (keyCode == cc.macro.KEY.h) {
+                this.gameSystem.emitPlayerHPChange('p1', -1)
             }
         })
 
@@ -153,12 +159,28 @@ export default class GameManager extends cc.Component {
                 upgradeUI.setPosition(0, 0);
             })
         )
+
+        async function instantiateHP(uid: string): Promise<void>{
+            const hpOffset = cc.v3(0, -20);
+
+            loadResource('Prefab/UI/PlayerHPUI', cc.Prefab)
+                .then((prefab) => {
+                    let hp = cc.instantiate(prefab) as unknown as cc.Node;
+                    hp.parent = GameManager.instance.playerManager.getPlayerNodeByID(uid);
+                    hp.setPosition(hpOffset);
+                    hp.getComponent(PlayerHPUI).init(GameManager.instance.playerManager.getPlayer(uid));
+                })
+        }
+
         for (let uid of this.playerManager.allPlayerIDs) {
             promises.push(
                 this.playerManager.instantiatePlayer(uid)
+                    .then(() => instantiateHP(uid))
             )
         }
+
         await Promise.all(promises);
+        this.event.emit(GameManager.ON_GAME_READY);
     }
 
     private async generateLobbyScene() {
