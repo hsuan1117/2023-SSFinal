@@ -45,6 +45,11 @@ export class AttrNum {
         return `${this.value} (${this.defaultValue} * ${this.percentageFactor}% + ${this.addFactor})`
     }
 
+    public reset() {
+        this.addFactor = 0;
+        this.percentageFactor = 100;
+    }
+
     @property()
     private _defaultValue: number = 0;
     private _addFactor: number = 0;

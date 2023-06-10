@@ -50,6 +50,21 @@ export default class EnemyController extends cc.Component {
              this.node.scaleX = -1;
     }
 
+
+    // PUBLIC METHODS:
+    public init() {
+         this.hp.reset();
+         this.skillCoolDownTime = 0;
+    }
+
+    public hurt(damage: number) {
+        this.hp.addFactor -= damage;
+        if (this.hp.value <= 0) {
+            this.dead();
+        }
+    }
+
+
     protected runAwayFromPlayer() { // For Boss fight
         let target = this.findClosestPlayer();
         if (!target) {

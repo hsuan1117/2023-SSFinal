@@ -34,6 +34,8 @@ export default class ProjectileController extends cc.Component {
         if (enemy) {
             this.onHitCallback && this.onHitCallback({enemy: enemy, projectile: this});
 
+            enemy.hurt(this.projectileAttr.damage.value);
+
             if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
                 this.bounceCnt++;
                 const newDir =
