@@ -23,6 +23,14 @@ json 格式：
 @ccclass
 export default class WaveManager extends cc.Component {
 
+    public event: cc.EventTarget;
+    /*
+    * 事件：當敵人死亡時觸發
+    *
+    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void
+     */
+    public static readonly ON_ENEMY_DIE: string = "onEnemyDie";
+
     private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton"];
 
     private waveData: cc.JsonAsset = null;
@@ -61,6 +69,12 @@ export default class WaveManager extends cc.Component {
             this.waveData = json;
             cc.log("json = ", json);
         });
+
+        this.event.on(WaveManager.ON_ENEMY_DIE, (event) => console.log(event));
+    }
+
+    onLoad(){
+        this.event = new cc.EventTarget();
     }
 
     update (dt) {

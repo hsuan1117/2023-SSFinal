@@ -243,7 +243,9 @@
     "dashSpeed": {
       "__id__": 11
     },
-    "mainWeaponPrefab": null,
+    "mainWeaponPrefab": {
+      "__uuid__": "b768c1ad-75ad-482a-9f5e-c3e10ced2606"
+    },
     "_id": ""
   },
   {

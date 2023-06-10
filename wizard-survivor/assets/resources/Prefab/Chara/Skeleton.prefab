@@ -320,21 +320,19 @@
     "_id": ""
   },
   {
-    "__type__": "48597dRxOJNkqge1dQfGu3a",
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "anim": {
-      "__id__": 4
-    },
-    "enemyIdleAnim": "SkeletonStand",
-    "enemyMoveAnim": "SkeletonWalk",
-    "enemyHurtAnim": "SkeletonStand",
-    "enemyDeadAnim": "SkeletonStand",
-    "enemySkillAnim": "SkeletonStand",
+    "anim": null,
+    "playerIdleAnim": "player_idle",
+    "playerMoveAnim": "player_move",
+    "playerDashAnim": "player_dash",
+    "playerHurtAnim": "player_hurt",
+    "playerDeadAnim": "player_dead",
     "_id": ""
   },
   {

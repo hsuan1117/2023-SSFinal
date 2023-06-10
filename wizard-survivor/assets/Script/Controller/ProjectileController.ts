@@ -12,11 +12,16 @@ const {ccclass, property} = cc._decorator;
 @requireComponent(cc.Collider)
 export default class ProjectileController extends cc.Component {
 
+    public get shootByUid(): string {
+        return this._shootByUid;
+    }
+
     private projectileAttr: ProjectileAttr = null;
     private rb: cc.RigidBody = null;
     private onHitCallback: Function = null;
 
     private readonly bounceMixRandomRate: number = 0.4;
+    private _shootByUid: string = null;
     private bounceCnt: number = 0;
     private bounceDir: cc.Vec2 = null;
     private penetrateCnt: number = 0;
@@ -36,7 +41,7 @@ export default class ProjectileController extends cc.Component {
         if (enemy) {
             this.onHitCallback && this.onHitCallback({enemy: enemy, projectile: this});
 
-            enemy.hurt(this.projectileAttr.damage.value);
+            enemy.hurt(this.projectileAttr.damage.value, this.shootByUid);
 
             if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
                 this.bounceCnt++;
@@ -66,12 +71,13 @@ export default class ProjectileController extends cc.Component {
 
 
     // PUBLIC METHODS:
-    public init(projectileAttr: ProjectileAttr, onHitCallback: Function = null, bounceDirIdx: number = 0) {
+    public init(projectileAttr: ProjectileAttr, onHitCallback: Function = null, bounceDirIdx: number = 0, shootByUid: string = null) {
         this.projectileAttr = projectileAttr;
         this.onHitCallback = onHitCallback;
         this.bounceCnt = 0;
         this.bounceDir = eightDirections[bounceDirIdx];
         this.penetrateCnt = 0;
+        this._shootByUid = shootByUid;
     }
 
     public shootToDirection(direction: cc.Vec2) {

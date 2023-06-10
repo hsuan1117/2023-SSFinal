@@ -1,10 +1,9 @@
-import ProjectileController from "./ProjectileController";
-import PlayerController from "./PlayerController";
 import GameManager from "../Manager/GameManager";
 import {ignoreZ} from "../Helper/utils";
 import {AttrNum} from "../Helper/Attributes";
-import PlayerStatUI from "../UI/PlayerStatUI";
 import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
+import WaveManager from "../Manager/WaveManager";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -62,10 +61,10 @@ export default class EnemyController extends cc.Component {
          this.skillCoolDownTime = 0;
     }
 
-    public hurt(damage: number) {
+    public hurt(damage: number, byUid: string) {
         this.hp.addFactor -= damage;
         if (this.hp.value <= 0) {
-            this.dead();
+            this.dead(byUid);
         }
     }
 
@@ -96,7 +95,11 @@ export default class EnemyController extends cc.Component {
         }
     }
 
-    protected dead() {
+    protected dead(killByUid: string) {
+        GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
+            enemyPosition: this.node.getPosition(),
+            killByUid: killByUid
+        });
         GameManager.instance.poolManager.recycle(this.node);
     }
 

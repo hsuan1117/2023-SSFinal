@@ -48,7 +48,7 @@ export default class GameManager extends cc.Component {
         return this._playerManager;
     }
 
-    public get WaveManager(): WaveManager {
+    public get waveManager(): WaveManager {
         return this._waveManager;
     }
 
