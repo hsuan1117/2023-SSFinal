@@ -16,12 +16,9 @@ export default class MapManager extends cc.Component {
 
     private started: boolean = false;
 
-    private fountainPrefab: cc.Prefab = null;
+    private decorationPrefabs: cc.Prefab[] = [];
 
-    private timeGatePrefab: cc.Prefab = null;
-
-    private dfTowerPrefab: cc.Prefab = null;
-
+    private decorationPrefabName: string[] = ["Fountain", "TimeGate", "DF_Tower", "Tree"];
 
     // onLoad () {}
     public init(stageName: string) {
@@ -33,6 +30,11 @@ export default class MapManager extends cc.Component {
             this.mapWidth = 512;
             this.mapHeight = 512;
         });
+        for (let i = 0; i < this.decorationPrefabName.length; i++) {
+            cc.resources.load("Prefab/Decoration/" + this.decorationPrefabName[i], cc.Prefab, (err, prefab: cc.Prefab) => {
+                this.decorationPrefabs[i] = prefab;
+            });
+        }
     }
     private generateBlock(pos) {
         let node = new cc.Node();
@@ -41,12 +43,44 @@ export default class MapManager extends cc.Component {
         node.position = pos;
         node.parent = GameManager.instance.backgroundLayer;
 
+        /*
+        for (let i = -216 + 16; i <= 216 - 16; i += 32) {
+            for (let j = -216 + 16; j <= 216 - 16; j += 32) {
+                let rnd = Math.random();
+                if (rnd < 0.1) {
+                    let tree = cc.instantiate(this.decorationPrefabs[3]);
+                    tree.parent = node;
+                    tree.position = cc.v3(i, j, 0);
+                }
+            }
+        }
+         */
+
+        if (Object.keys(this.visPos).length <= 20)
+            return;
+
         // random generate fountain
         let rand = Math.random();
-        if (rand < 0.1) {
-            let fountain = cc.instantiate(this.fountainPrefab);
+        if (rand < 0.01) {
+            let fountain = cc.instantiate(this.decorationPrefabs[0]);
             fountain.parent = node;
-            fountain.position = cc.v2(0, 0);
+            return;
+        }
+
+        // random generate time gate
+        rand = Math.random();
+        if (rand < 0.01) {
+            let timeGate = cc.instantiate(this.decorationPrefabs[1]);
+            timeGate.parent = node;
+            return;
+        }
+
+        // random generate DF tower
+        rand = Math.random();
+        if (rand < 0.01) {
+            let dfTower = cc.instantiate(this.decorationPrefabs[2]);
+            dfTower.parent = node;
+            return;
         }
     }
 
@@ -55,15 +89,7 @@ export default class MapManager extends cc.Component {
     }
 
     start () {
-        cc.resources.load("Prefabs/Decoration/fountain", cc.Prefab, (err, prefab: cc.Prefab) => {
-            this.fountainPrefab = prefab;
-        });
-        cc.resources.load("Prefabs/Decoration/TimeGate", cc.Prefab, (err, prefab: cc.Prefab) => {
-            this.timeGatePrefab = prefab;
-        });
-        cc.resources.load("Prefabs/Decoration/DF_Tower", cc.Prefab, (err, prefab: cc.Prefab) => {
-            this.dfTowerPrefab = prefab;
-        });
+
     }
 
     public autoGenerateMap() {
@@ -72,8 +98,8 @@ export default class MapManager extends cc.Component {
         let ty = Math.floor(pos.y / this.mapHeight);
         let combinedKey =  this.posHash(tx, ty);
 
-        for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
+        for (let i = -2; i <= 2; i++) {
+            for (let j = -2; j <= 2; j++) {
                 let key = this.posHash(tx + i, ty + j);
                 if (key in this.visPos) continue;
 
