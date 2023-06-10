@@ -141,6 +141,16 @@ export default class GameManager extends cc.Component {
     }
 
 
+    // PUBLIC METHODS:
+    public pauseGame() {
+        cc.director.pause();
+    }
+
+    public resumeGame() {
+        cc.director.resume();
+    }
+
+
     // HELPERS:
     private onGameStart() {
         this.destroyLobbyScene()
@@ -279,14 +289,6 @@ export default class GameManager extends cc.Component {
 
         this.event.emit(GameManager.ON_UPGRADE);
         this.pauseGame();
-    }
-
-    private pauseGame() {
-        cc.director.pause();
-    }
-
-    private resumeGame() {
-        cc.director.resume();
     }
 
     private showLoading() {

@@ -67,6 +67,7 @@ export default class PlayerFocus extends cc.Component {
 
             this.pointerContainer[tid].parent = this.node;
             this.pointerContainer[tid].setPosition(this.focusTarget[tid].position.add(padZ(offSet)));
+            this.pointerContainer[tid].group = 'FixedUI';
         }
     }
 
@@ -82,6 +83,8 @@ export default class PlayerFocus extends cc.Component {
 
     public focusOnIndex(uid: string, tid: number) {
         this.focus[uid] = tid;
+        console.log('focusOnIndex: ', uid, tid);
+        console.log('focusOnIndex Result: ', this.focus)
         this.updateView();
     }
 
@@ -93,7 +96,11 @@ export default class PlayerFocus extends cc.Component {
     }
 
     private onInput(input: Input){
+        console.log('PlayerFocus', input);
+        console.log('Focus', this.focus)
+
         if (!this.focus.hasOwnProperty(input.uid)) return;
+
 
         const uid = input.uid;
         const dir = InputManager.lrOfStick(cc.v2(input.lX, input.lY));

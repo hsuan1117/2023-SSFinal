@@ -22,6 +22,10 @@ export default class PlayerManager extends cc.Component {
         return this.playerIds;
     }
 
+    public get localUids(): string[]{
+        return this.playerIds.filter((id) => this.isLocalPlayer[id]);
+    }
+
     private playerIds: string[] = [];
     private isLocalPlayer: {[uid: string]: boolean} = {};
     private playerChara: {[uid: string]: string} = {};
@@ -49,6 +53,10 @@ export default class PlayerManager extends cc.Component {
 
     public getPlayer(id: string): PlayerController{
         return this.playerControllers[id];
+    }
+
+    public isLocal(id: string): boolean{
+        return this.isLocalPlayer[id] == true;
     }
 
     /*
