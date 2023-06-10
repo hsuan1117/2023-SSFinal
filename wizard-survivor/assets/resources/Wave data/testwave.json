@@ -1,0 +1,14 @@
+{
+  "1": {
+    "monster1": {
+      "spawnInterval": 10,
+      "spawnNum": 10
+    }
+  },
+  "2": {
+    "monster1": {
+      "spawnInterval": 1000,
+      "spawnNum": 20
+    }
+  }
+}
