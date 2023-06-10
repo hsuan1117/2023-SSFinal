@@ -10,6 +10,7 @@ import PlayerFocus from "../UI/PlayerFocus";
 import instantiate = cc.instantiate;
 import Game = cc.Game;
 import PlayerHPUI from "../UI/PlayerHPUI";
+import MapManager from "./MapManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -74,6 +75,7 @@ export default class GameManager extends cc.Component {
     private _playerManager: PlayerManager;
     private _waveManager: WaveManager;
     private _gameSystem: GameSystem;
+    private _mapManager: MapManager;
 
 
     // CC-CALLBACKS
@@ -88,6 +90,7 @@ export default class GameManager extends cc.Component {
         this._poolManager = this.node.addComponent(PoolManager);
         this._playerManager = this.node.addComponent(PlayerManager);
         this._waveManager = this.node.addComponent(WaveManager);
+        this._mapManager = this.node.addComponent(MapManager);
         this._gameSystem = new GameSystem();
 
         this.event = new cc.EventTarget();
@@ -165,6 +168,7 @@ export default class GameManager extends cc.Component {
     private onGameStart() {
         this.destroyLobbyScene()
         this.generateGameScene();
+        this._mapManager.init("IceStage");
     }
 
     private async generateGameScene() {

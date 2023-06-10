@@ -65,13 +65,11 @@ export default class WaveManager extends cc.Component {
         // load enemy prefab
         for (const enemyType of this.enemyTypes) {
             cc.resources.load("Prefab/Enemy/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
-                cc.log(prefab);
                 this.enemyPrefabs[enemyType] = prefab;
             });
         }
         cc.resources.load("Wave data/" + this.waveDataName, cc.JsonAsset, (err, json: cc.JsonAsset) => {
             this.waveData = json;
-            cc.log("json = ", json);
         });
 
         // load drop item prefab
@@ -92,7 +90,6 @@ export default class WaveManager extends cc.Component {
 
 
     update (dt) {
-        // set swpan center to camera center
         this.spawnCenter = ignoreZ(cc.Camera.main.node.position).sub(cc.v2(winSize.width / 2, cc.winSize.height / 2));
 
         for (const key in this.currentWave){
