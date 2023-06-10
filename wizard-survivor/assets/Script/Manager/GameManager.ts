@@ -78,7 +78,7 @@ export default class GameManager extends cc.Component {
 
     // CC-CALLBACKS
     onLoad() {
-        cc.game.setFrameRate(59);
+        cc.game.setFrameRate(30);
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
