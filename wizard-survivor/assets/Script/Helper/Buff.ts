@@ -73,7 +73,8 @@ class ExplosionOnDash implements IBuff {
                 .getComponent(ProjectileController);
 
             proj.node.position = player.node.position;
-            proj.node.parent = GameManager.instance.node;
+            // proj.node.parent = GameManager.instance.node;
+            proj.node.parent = GameManager.instance.bulletLayer;
             proj.init(
                 new ProjectileAttr(0, this.damage,
                     this.DURATION, 0, 0),

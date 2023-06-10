@@ -57,6 +57,22 @@ export default class GameManager extends cc.Component {
         return this._gameSystem;
     }
 
+    public get playerEnemyLayer(): cc.Node {
+        return this._playerEnemyLayer;
+    }
+
+    public get bulletLayer(): cc.Node {
+        return this._bulletLayer;
+    }
+
+    public get itemLayer(): cc.Node {
+        return this._itemLayer;
+    }
+
+    public get backgroundLayer(): cc.Node {
+        return this._backgroundLayer;
+    }
+
 
 
     public killEnemyCnt: AttrNum = new AttrNum(0);
@@ -77,10 +93,15 @@ export default class GameManager extends cc.Component {
     private _gameSystem: GameSystem;
     private _mapManager: MapManager;
 
+    private _backgroundLayer: cc.Node;
+    private _itemLayer: cc.Node;
+    private _playerEnemyLayer: cc.Node;
+    private _bulletLayer: cc.Node;
+
 
     // CC-CALLBACKS
     onLoad() {
-        cc.game.setFrameRate(30);
+        cc.game.setFrameRate(29);
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
@@ -172,6 +193,7 @@ export default class GameManager extends cc.Component {
     }
 
     private async generateGameScene() {
+        this.buildLayers();
         let fixedUI, enemy, drop, upgradeUI: cc.Node;
 
         let promises = []
@@ -215,6 +237,7 @@ export default class GameManager extends cc.Component {
     }
 
     private async generateLobbyScene() {
+        this.buildLayers();
         /*
         可在 Lobby Prefab 下放入各種 GO，包含待選取的角色（角色預覽）。
         如果該物件有 PlayerController，則會被抓取為角色預覽。
@@ -230,7 +253,8 @@ export default class GameManager extends cc.Component {
         await loadResource('Prefab/Lobby', cc.Prefab)
             .then((prefab) => {
                 lobby = cc.instantiate(prefab) as unknown as cc.Node;
-                lobby.parent = this.node;
+                // lobby.parent = this.node;
+                lobby.parent = this.backgroundLayer;
                 lobby.setPosition(0, 0);
                 for (let chara of lobby.children) {
                     if (chara.getComponent(PlayerController)) {
@@ -281,6 +305,18 @@ export default class GameManager extends cc.Component {
             )
 
         chooseChara().then(instantiateChooseResult)
+    }
+
+    private buildLayers(){
+        this._backgroundLayer = new cc.Node('BackgroundLayer');
+        this._itemLayer = new cc.Node('ItemLayer');
+        this._playerEnemyLayer = new cc.Node('PlayerEnemyLayer');
+        this._bulletLayer = new cc.Node('BulletLayer');
+
+        this._backgroundLayer.parent = this.node;
+        this._itemLayer.parent = this.node;
+        this._playerEnemyLayer.parent = this.node;
+        this._bulletLayer.parent = this.node;
     }
 
     private destroyLobbyScene() {

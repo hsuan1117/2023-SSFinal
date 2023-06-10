@@ -96,9 +96,6 @@ export default class PlayerFocus extends cc.Component {
     }
 
     private onInput(input: Input){
-        console.log('PlayerFocus', input);
-        console.log('Focus', this.focus)
-
         if (!this.focus.hasOwnProperty(input.uid)) return;
 
 

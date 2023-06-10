@@ -1,3 +1,5 @@
+import GameManager from "./GameManager";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -31,7 +33,7 @@ export default class MapManager extends cc.Component {
         let mp = node.addComponent(cc.TiledMap);
         mp.tmxAsset = this.stageMap;
         node.position = pos;
-        node.parent = this.node;
+        node.parent = GameManager.instance.backgroundLayer;
     }
 
     private posHash(x, y) {

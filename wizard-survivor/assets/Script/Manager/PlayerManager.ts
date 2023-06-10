@@ -72,7 +72,7 @@ export default class PlayerManager extends cc.Component {
         return await loadResource(`Prefab/Chara/${this.playerChara[uid]}`, cc.Prefab)
             .then((prefab) =>{
                 const player = (cc.instantiate(prefab) as unknown as cc.Node).getComponent(PlayerController);
-                player.node.parent = GameManager.instance.node;
+                player.node.parent = GameManager.instance.playerEnemyLayer;
                 this.playerControllers[uid] = player;
                 player.uid = uid;
                 this.event.emit(PlayerManager.PLAYER_INSTANTIATED, uid);

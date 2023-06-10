@@ -104,7 +104,7 @@ export default class WeaponController extends cc.Component {
         const pos =  GameManager.instance.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
         projectile.node.setPosition(pos);
         projectile.init({...this.projectileAttr}, null, this.bounceDirIdx, this.player.uid);
-        projectile.node.parent = GameManager.instance.node;
+        projectile.node.parent = GameManager.instance.bulletLayer;
         projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
     }
 }

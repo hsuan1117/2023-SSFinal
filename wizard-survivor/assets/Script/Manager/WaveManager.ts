@@ -135,7 +135,7 @@ export default class WaveManager extends cc.Component {
                 let item = GameManager.instance.poolManager.createPrefab(this.enemyDropItems[this.enemyDropItemsType[i]]);
                 item.position = position;
                 item.active = true;
-                item.parent = GameManager.instance.node;
+                item.parent = GameManager.instance.itemLayer;
                 break;
             }
         }
