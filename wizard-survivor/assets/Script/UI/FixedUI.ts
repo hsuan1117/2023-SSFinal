@@ -1,10 +1,3 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 import GameManager from "../Manager/GameManager";
 import Game = cc.Game;
 import PlayerManager from "../Manager/PlayerManager";
@@ -21,6 +14,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class FixedUI extends cc.Component {
 
+    private coinLabel: cc.Label = null;
+
     onLoad () {
         GameManager.instance.playerManager.event.on(PlayerManager.PLAYER_INSTANTIATED, () => {
             let childIdx = 1;
@@ -28,6 +23,12 @@ export default class FixedUI extends cc.Component {
                 this.enablePlayerStatUIForPlayer(id, childIdx++);
             }
         }, this);
+
+        GameManager.instance.event.on(GameManager.ON_GAME_STAT_CHANGE,  this.onGameStatChange, this);
+
+        this.coinLabel = this.node.getChildByName('Coin')
+            .getChildByName('CoinLabel')
+            .getComponent(cc.Label);
     }
 
     start () {
@@ -42,5 +43,9 @@ export default class FixedUI extends cc.Component {
         let playerStatUI = this.node.getChildByName(`PlayerStatUI${childIdx}`).getComponent(PlayerStatUI);
         playerStatUI.node.parent = this.node;
         playerStatUI.init(player);
+    }
+
+    private onGameStatChange(){
+        this.coinLabel.string = `X ${GameManager.instance.coinCnt.value.toString()}`;
     }
 }
