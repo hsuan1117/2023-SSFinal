@@ -40,8 +40,11 @@ export default class PlayerManager extends cc.Component {
 
 
     // PUBLIC METHODS
+    /*
+    若還沒有實例化，回傳 null
+     */
     public getPlayerNodeByID(id: string): cc.Node{
-        return this.playerControllers[id].node;
+        return this.playerControllers[id]?.node;
     }
 
     public getPlayer(id: string): PlayerController{

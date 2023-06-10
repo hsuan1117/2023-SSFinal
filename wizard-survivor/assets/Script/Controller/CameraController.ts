@@ -14,12 +14,15 @@ export default class CameraController extends cc.Component {
 
     update (dt) {
         let targetPos = cc.v3(0, 0);
-        if (GameManager.instance.playerManager.allPlayerIDs.length == 0) return;
+
+        let cnt = 0;
         for (let uid of GameManager.instance.playerManager.allPlayerIDs){
-            targetPos.addSelf(GameManager.instance.playerManager.getPlayerNodeByID(uid).position);
+            const pos = GameManager.instance.playerManager.getPlayerNodeByID(uid)?.position;
+            pos && (++cnt) && targetPos.addSelf(pos);
         }
-        targetPos.divSelf(GameManager.instance.playerManager.allPlayerIDs.length);
-        console.log('targetPos: ', targetPos.toString());
-        this.node.position = this.node.position.lerp(targetPos.add(this.initPos), this.lerpRatio);
+        if (cnt){
+            targetPos.divSelf(cnt);
+            this.node.position = this.node.position.lerp(targetPos.add(this.initPos), this.lerpRatio);
+        }
     }
 }
