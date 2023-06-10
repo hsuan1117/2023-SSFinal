@@ -189,7 +189,7 @@ export default class GameManager extends cc.Component {
     private onGameStart() {
         this.destroyLobbyScene()
         this.generateGameScene();
-        this._mapManager.init("IceStage");
+        this._mapManager.init("ForestStage");
     }
 
     private async generateGameScene() {
