@@ -1,5 +1,3 @@
-import GameManager from "./GameManager";
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -17,6 +15,13 @@ export default class MapManager extends cc.Component {
 
     private started: boolean = false;
 
+    private fountainPrefab: cc.Prefab = null;
+
+    private timeGatePrefab: cc.Prefab = null;
+
+    private dfTowerPrefab: cc.Prefab = null;
+
+
     // onLoad () {}
     public init(stageName: string) {
         this.stageName = stageName;
@@ -33,7 +38,15 @@ export default class MapManager extends cc.Component {
         let mp = node.addComponent(cc.TiledMap);
         mp.tmxAsset = this.stageMap;
         node.position = pos;
-        node.parent = GameManager.instance.backgroundLayer;
+        node.parent = this.node;
+
+        // random generate fountain
+        let rand = Math.random();
+        if (rand < 0.1) {
+            let fountain = cc.instantiate(this.fountainPrefab);
+            fountain.parent = node;
+            fountain.position = cc.v2(0, 0);
+        }
     }
 
     private posHash(x, y) {
@@ -41,6 +54,15 @@ export default class MapManager extends cc.Component {
     }
 
     start () {
+        cc.resources.load("Prefabs/Decoration/fountain", cc.Prefab, (err, prefab: cc.Prefab) => {
+            this.fountainPrefab = prefab;
+        });
+        cc.resources.load("Prefabs/Decoration/TimeGate", cc.Prefab, (err, prefab: cc.Prefab) => {
+            this.timeGatePrefab = prefab;
+        });
+        cc.resources.load("Prefabs/Decoration/DF_Tower", cc.Prefab, (err, prefab: cc.Prefab) => {
+            this.dfTowerPrefab = prefab;
+        });
     }
 
     public autoGenerateMap() {
@@ -49,8 +71,8 @@ export default class MapManager extends cc.Component {
         let ty = Math.floor(pos.y / this.mapHeight);
         let combinedKey =  this.posHash(tx, ty);
 
-        for (let i = -2; i <= 2; i++) {
-            for (let j = -2; j <= 2; j++) {
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
                 let key = this.posHash(tx + i, ty + j);
                 if (key in this.visPos) continue;
 
