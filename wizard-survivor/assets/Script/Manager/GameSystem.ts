@@ -1,6 +1,7 @@
 import Game = cc.Game;
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
+import Echo from "laravel-echo";
 
 export class GameSystem {
 
@@ -47,7 +48,7 @@ export class GameSystem {
      */
     public static readonly ON_GAME_START: string = "ON_GAME_START";
 
-    private buffReadyToApply: {uid: string, buffId: string}[] = [];
+    private buffReadyToApply: { uid: string, buffId: string }[] = [];
 
     constructor() {
         this.event = new cc.EventTarget();
@@ -62,36 +63,36 @@ export class GameSystem {
 
         // TODO: GameSystem should not know how many players there are
         if (this.buffReadyToApply.length >= GameManager.instance.playerManager.allPlayerIDs.length) {
-            for (let bf of this.buffReadyToApply){
+            for (let bf of this.buffReadyToApply) {
                 this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
             }
             this.buffReadyToApply = [];
         }
     }
 
-    public emitPlayerHPChange(uid: string, deltaHP: number): void{
+    public emitPlayerHPChange(uid: string, deltaHP: number): void {
         this.event.emit(GameSystem.ON_PLAYER_HP_CHANGE, {uid: uid, deltaHP: deltaHP});
     }
 
-    public emitExpChange(deltaExp: number){
+    public emitExpChange(deltaExp: number) {
         // emit exp change
         this.event.emit(GameSystem.ON_EXP_CHANGE, {deltaExp: deltaExp});
     }
 
-    public emitCoinChange(deltaCoin: number){
+    public emitCoinChange(deltaCoin: number) {
         // emit coin change
         this.event.emit(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
     }
 
-    public emitInput(input: Input){
+    public emitInput(input: Input) {
         this.event.emit(GameSystem.ON_INPUT, {input: input});
     }
 
-    public emitCreatePlayer(uid: string, charaId: string){
+    public emitCreatePlayer(uid: string, charaId: string) {
         this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
     }
 
-    public emitGameStart(){
+    public emitGameStart() {
         this.event.emit(GameSystem.ON_GAME_START);
     }
     //public emitCreatePlayer(uid: string, charaId: string){
@@ -100,9 +101,175 @@ export class GameSystem {
     //      this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
 }
 
-class RemoteGameSystem extends GameSystem{
-    public emitInput(input: Input){
+class RemoteGameSystem extends GameSystem {
+    public echoInstance: Echo;
+
+    // TODO: 將 emit 改到 listener 裡面
+    private readonly PUSHER_CONFIG = {
+        broadcaster: 'pusher',
+        key: "app-key",
+        cluster: "mt1",
+        forceTLS: false,
+        wsHost: "final.hsuan.app",
+        wsPath: "/websockets",
+        wsPort: ""
+    }
+
+    private createEchoInstanceFromToken(token) {
+        localStorage.setItem('token', token)
+        this.echoInstance = new Echo({
+            ...this.PUSHER_CONFIG,
+            authorizer: (channel, options) => {
+                return {
+                    authorize: (socketId, callback) => {
+                        fetch('/broadcasting/auth', {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                socket_id: socketId,
+                                channel_name: channel.name
+                            })
+                        }).then(res => res.json()).then(response => {
+                            callback(null, response);
+                        }).catch(error => {
+                            callback(error);
+                        });
+                    }
+                };
+            },
+        });
+    }
+
+    constructor() {
+        super();
+    }
+
+    // === PUBLIC METHODS ===
+    public emitApplyBuff(uid: string, buffId: string): void {
+        // TODO
+    }
+
+    public emitPlayerHPChange(uid: string, deltaHP: number): void {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        // this.event.emit(GameSystem.ON_PLAYER_HP_CHANGE, {uid: uid, deltaHP: deltaHP});
+    }
+
+    public emitExpChange(deltaExp: number) {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        this.event.emit(GameSystem.ON_EXP_CHANGE, {deltaExp: deltaExp});
+    }
+
+    public emitCoinChange(deltaCoin: number) {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        this.event.emit(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
+    }
+
+    public emitInput(input: Input) {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
         this.event.emit(GameSystem.ON_INPUT, {input: input});
-        // then broadcast to other players
+    }
+
+    public emitCreatePlayer(uid: string, charaId: string) {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
+    }
+
+    public emitGameStart() {
+        fetch('https://final.hsuan.app/api/', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        this.event.emit(GameSystem.ON_GAME_START);
+    }
+
+    /**
+     * 登入用戶，並儲存 token
+     * @param email
+     * @param password
+     * */
+    public login(email: string, password: string) {
+        fetch('https://final.hsuan.app/api/sanctum/token', {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        }).then(res => res.json()).then(response => {
+            localStorage.setItem('token', response.token);
+            this.createEchoInstanceFromToken(response.token);
+        })
+    }
+
+    /**
+     * 註冊用戶，並儲存 token
+     * @param name
+     * @param email
+     * @param password
+     * */
+    public register(name:string, email: string, password: string) {
+        fetch('https://final.hsuan.app/api/sanctum/token', {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        }).then(res => res.json()).then(response => {
+            localStorage.setItem('token', response.token);
+            this.createEchoInstanceFromToken(response.token);
+        })
     }
 }
