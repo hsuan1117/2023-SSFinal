@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "GraveGuardStand",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.6833333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "1a590bf6-1e62-44ec-90db-0d8419d860b5"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "2f5f44ab-9c51-4651-b620-7d81fb36c033"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "36a9c7d4-b3be-4a2f-8dad-cc73dd2be228"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "aff4061e-0170-45e9-996a-4c2863aa1308"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "1a590bf6-1e62-44ec-90db-0d8419d860b5"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
