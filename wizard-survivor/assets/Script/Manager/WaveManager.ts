@@ -25,8 +25,9 @@ export default class WaveManager extends cc.Component {
 
     private enemyTypes: string[] = ["BumpingPig"];
 
-    @property(cc.JsonAsset)
     private waveData: cc.JsonAsset = null;
+
+    private waveDataName: string = "testwave";
 
     private enemyPrefabs: cc.Prefab[] = [];
 
@@ -48,9 +49,7 @@ export default class WaveManager extends cc.Component {
         this.currentWave = this.waveData.json[wave];
     }
 
-    start () {
-        // set wave
-        this.setWave(0);
+    public init () {
         // load enemy prefab
         for (const enemyType of this.enemyTypes) {
             cc.resources.load("Prefab/Enemy/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
@@ -58,6 +57,10 @@ export default class WaveManager extends cc.Component {
                 this.enemyPrefabs[enemyType] = prefab;
             });
         }
+        cc.resources.load("Wave data/" + this.waveDataName, cc.JsonAsset, (err, json: cc.JsonAsset) => {
+            this.waveData = json;
+            cc.log("json = ", json);
+        });
     }
 
     update (dt) {

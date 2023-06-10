@@ -1,6 +1,7 @@
 import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
+import WaveManager from "./WaveManager";
 import {AttrNum} from "../Helper/Attributes";
 import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
@@ -47,9 +48,15 @@ export default class GameManager extends cc.Component {
         return this._playerManager;
     }
 
+    public get WaveManager(): WaveManager {
+        return this._waveManager;
+    }
+
     public get gameSystem(): GameSystem {
         return this._gameSystem;
     }
+
+
 
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
@@ -65,6 +72,7 @@ export default class GameManager extends cc.Component {
     private _inputManager: InputManager;
     private _poolManager: PoolManager;
     private _playerManager: PlayerManager;
+    private _waveManager: WaveManager;
     private _gameSystem: GameSystem;
 
 
@@ -79,6 +87,7 @@ export default class GameManager extends cc.Component {
         this._inputManager = this.node.addComponent(InputManager);
         this._poolManager = this.node.addComponent(PoolManager);
         this._playerManager = this.node.addComponent(PlayerManager);
+        this._waveManager = this.node.addComponent(WaveManager);
         this._gameSystem = new GameSystem();
 
         this.event = new cc.EventTarget();
@@ -138,6 +147,7 @@ export default class GameManager extends cc.Component {
 
     start() {
         this.generateLobbyScene();
+        this._waveManager.init();
     }
 
 
@@ -197,6 +207,7 @@ export default class GameManager extends cc.Component {
 
         await Promise.all(promises);
         this.event.emit(GameManager.ON_GAME_READY);
+        this._waveManager.setWave(1);
     }
 
     private async generateLobbyScene() {
