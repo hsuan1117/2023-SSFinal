@@ -116,7 +116,7 @@ export default class WaveManager extends cc.Component {
     private spawnEnemy(enemyPrefab: cc.Prefab, pos: cc.Vec2){
         let enemy = GameManager.instance.poolManager.createPrefab(enemyPrefab);
         enemy.position = padZ(pos);
-        cc.log(enemy);
+        // cc.log(enemy);
         enemy.active = true;
         enemy.parent = this.node;
         enemy.getComponent("EnemyController").init();

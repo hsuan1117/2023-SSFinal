@@ -23,7 +23,6 @@ export default class PlayerHPUI extends cc.Component {
     }
 
     private onPlayerAttrChange(){
-        console.log(`Player: ${this.player.uid} HP: ${this.player.currentHP}`);
         this.node.removeAllChildren();
         for (let i=0; i<this.player.currentHP.value; i++){
             const hp = GameManager.instance.poolManager.createPrefab(this.hpIcon);

@@ -76,13 +76,11 @@ export default class UpgradeUI extends cc.Component {
             .then(() => {
                 for (let uid of GameManager.instance.playerManager.localUids) {
                     this.playerFocus.focusOnIndex(uid, 0);
-                    console.log('playerFocus focus on index: ', uid, 0);
                 }
             });
     }
 
     private onConfirm({uid, node}): void {
-        console.log('UpgradeUI onConfirm: ', uid, node.name.slice(-1));
         this.playerFocus.lock(uid);
         GameManager.instance.gameSystem.emitApplyBuff(uid, this.buffs[node.name.slice(-1)]);
     }

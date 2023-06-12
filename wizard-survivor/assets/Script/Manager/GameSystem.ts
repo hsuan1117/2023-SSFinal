@@ -57,8 +57,6 @@ export class GameSystem {
 
     // === PUBLIC METHODS ===
     public emitApplyBuff(uid: string, buffId: string): void {
-        console.log('buffReadyToApply: ', this.buffReadyToApply);
-
         this.buffReadyToApply.push({uid: uid, buffId: buffId});
 
         // TODO: GameSystem should not know how many players there are
