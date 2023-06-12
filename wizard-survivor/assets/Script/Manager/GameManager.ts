@@ -203,6 +203,8 @@ export default class GameManager extends cc.Component {
         }
         else if (sceneType === GameManager.SCENE_GAME) {
             this.generateGameScene();
+            this._waveManager.setWave(1);
+            this._mapManager.init();
         } else if (sceneType === GameManager.SCENE_RESULT) {
             this.playerManager.clearAllChara();
             this.generateResultScene();
@@ -257,8 +259,7 @@ export default class GameManager extends cc.Component {
 
         await Promise.all(promises);
         this.event.emit(GameManager.ON_GAME_READY);
-        this._waveManager.setWave(1);
-        this._mapManager.init("ForestStage");
+
     }
 
     private async generateLobbyScene() {

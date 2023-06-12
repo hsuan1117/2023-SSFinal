@@ -14,16 +14,15 @@ export default class MapManager extends cc.Component {
 
     private visPos: object = {};
 
-    private started: boolean = false;
+    private started: boolean;
 
     private decorationPrefabs: cc.Prefab[] = [];
 
     private decorationPrefabName: string[] = ["Fountain", "TimeGate", "DF_Tower", "Tree"];
 
     // onLoad () {}
-    public init(stageName: string) {
-        this.stageName = stageName;
-        this.started = true;
+
+    start () {
         cc.resources.load("Map/" + this.stageName, cc.TiledMapAsset,(err, map: cc.TiledMap) => {
             cc.log("map = ", map);
             this.stageMap = map;
@@ -35,6 +34,12 @@ export default class MapManager extends cc.Component {
                 this.decorationPrefabs[i] = prefab;
             });
         }
+        this.started = false;
+        this.visPos = {};
+    }
+
+    public init() {
+        this.started = true;
         this.visPos = {};
     }
 
@@ -42,6 +47,7 @@ export default class MapManager extends cc.Component {
         this.started = false;
         this.visPos = {};
     }
+
     private generateBlock(pos) {
         let node = new cc.Node();
         let mp = node.addComponent(cc.TiledMap);
@@ -94,10 +100,6 @@ export default class MapManager extends cc.Component {
         return `${x}*${y}`;
     }
 
-    start () {
-
-    }
-
     public autoGenerateMap() {
         let pos = cc.Camera.main.node.position;
         let tx = Math.floor(pos.x / this.mapWidth);
@@ -118,6 +120,7 @@ export default class MapManager extends cc.Component {
     }
 
     update (dt) {
+        cc.log("map manager update " + this.started);
         if (this.started)
             this.autoGenerateMap();
     }
