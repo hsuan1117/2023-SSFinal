@@ -37,10 +37,13 @@ export default class PlayerFocus extends cc.Component {
 
     onLoad() {
         this.event = new cc.EventTarget();
+    }
+
+    onEnable() {
         GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
     }
 
-    onDestroy() {
+    onDisable() {
         GameManager.instance.inputManager.event.off(InputManager.ON_INPUT, this.onInput, this);
     }
 
@@ -117,7 +120,7 @@ export default class PlayerFocus extends cc.Component {
     }
 
     private onInput(input: Input){
-        if (!this.focus.hasOwnProperty(input.uid)) return;
+        if (!this.focus?.hasOwnProperty(input.uid)) return;
 
         if (this.isLock[input.uid]) return;
 

@@ -10,6 +10,7 @@ import {GameSystem} from "../Manager/GameSystem";
 import {Buffs, BuffsName} from "../Helper/Buff";
 import {loadResource, shuffle} from "../Helper/utils";
 import PlayerFocus from "./PlayerFocus";
+import Game = cc.Game;
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,19 +37,26 @@ export default class UpgradeUI extends cc.Component {
 
     onLoad() {
         this.playerFocus = this.node.getComponent(PlayerFocus);
-        // console.log('Upgrade UI Onload, playerFocus: ', this.playerFocus);
+    }
+
+    onEnable() {
+        this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
+        GameManager.instance.event.on(GameManager.ON_UPGRADE, this.popUp, this);
+    }
+
+    onDisable() {
+        this.playerFocus.event.off(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
+        GameManager.instance.event.off(GameManager.ON_UPGRADE, this.popUp, this);
     }
 
     start() {
-        GameManager.instance.event.on(GameManager.ON_UPGRADE, this.popUpUpgradeUI, this);
-        // GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
-        this.node.active = false;
-        this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
+        this.popDown();
     }
 
-    private popUpUpgradeUI({buffAmount}): void {
-        GameManager.instance.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, this.closeUpgradeUI, this);
-        this.node.active = true;
+    private popUp({buffAmount}): void {
+        GameManager.instance.gameSystem.event.once(GameSystem.ON_BUFF_APPLY, this.popDown, this);
+        // this.node.active = true;
+        this.node.opacity = 255;
 
         this.buffCards = [].fill(null, 0, buffAmount);
         this.buffs = Object.keys(Buffs);
@@ -116,8 +124,7 @@ export default class UpgradeUI extends cc.Component {
     //         .string += 'v';
     // }
 
-    private closeUpgradeUI(): void {
-        this.node.active = false;
-
+    private popDown(): void {
+        this.node.opacity = 0;
     }
 }
