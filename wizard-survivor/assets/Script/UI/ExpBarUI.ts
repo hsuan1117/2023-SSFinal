@@ -5,9 +5,18 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ExpBarUI extends cc.Component {
+
     // LIFE-CYCLE CALLBACKS:
-    onLoad() {
+    onEnable() {
         GameManager.instance.event.on(GameManager.ON_GAME_STAT_CHANGE, this.updateExpBar, this);
+    }
+
+    onDisable() {
+        GameManager.instance.event.off(GameManager.ON_GAME_STAT_CHANGE, this.updateExpBar, this);
+    }
+
+    start(){
+        this.updateExpBar();
     }
 
     // HELPERS:
