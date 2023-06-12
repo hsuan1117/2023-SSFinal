@@ -73,6 +73,15 @@ export default class InputManager extends cc.Component {
     */
     public static readonly ON_INPUT: string = "ON_INPUT";
 
+    /*
+    此為 Input Manager 的事件型別
+
+    僅在本地端輸入發生時 emit
+
+    callbackFn: (input: Input) => void
+     */
+    public static readonly ON_LOCAL_INPUT: string = "ON_LOCAL_INPUT";
+
     private conversionOfUid: Map<string, { [keyCode: number]: string }> = new Map();
     private _currentLStick: Map<string, cc.Vec2> = new Map();
     private _isPressing: Map<string, Map<string, boolean>> = new Map();
@@ -136,6 +145,9 @@ export default class InputManager extends cc.Component {
 
     // HELPERS:
     private performInput(input: Input) {
+        if (this.conversionOfUid.has(input.uid)){
+            this.event.emit(InputManager.ON_LOCAL_INPUT, input);
+        }
         this.event.emit(InputManager.ON_INPUT, input);
     }
 
