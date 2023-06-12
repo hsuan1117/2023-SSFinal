@@ -7,8 +7,6 @@ import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
 import PlayerController from "../Controller/PlayerController";
 import PlayerFocus from "../UI/PlayerFocus";
-import instantiate = cc.instantiate;
-import Game = cc.Game;
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
 
@@ -148,7 +146,7 @@ export default class GameManager extends cc.Component {
                     cc.director.pause()
                 }
             } else if (keyCode == cc.macro.KEY.x) {
-                this.onGameStart();
+                this.changeScene(GameManager.SCENE_RESULT);
             } else if (keyCode == cc.macro.KEY.h) {
                 this.gameSystem.emitPlayerHPChange('p1', -1)
             } else if (keyCode == cc.macro.KEY.e) {
@@ -200,8 +198,10 @@ export default class GameManager extends cc.Component {
         if (sceneType === GameManager.SCENE_LOBBY){
             this.generateLobbyScene();
         }
-        else if (sceneType === GameManager.SCENE_GAME){
+        else if (sceneType === GameManager.SCENE_GAME) {
             this.generateGameScene();
+        } else if (sceneType === GameManager.SCENE_RESULT) {
+            this.generateResultScene();
         }
         this._currentSceneType = sceneType;
     }
@@ -328,6 +328,16 @@ export default class GameManager extends cc.Component {
             )
 
         chooseChara().then(instantiateChooseResult)
+    }
+
+    private async generateResultScene() {
+        this.buildLayers();
+        loadResource('Prefab/UI/ResultUI', cc.Prefab)
+            .then((prefab) => {
+                let resultUI = cc.instantiate(prefab) as unknown as cc.Node;
+                resultUI.parent = this.backgroundLayer;
+                resultUI.setPosition(0, 0);
+            });
     }
 
     private buildLayers(){
