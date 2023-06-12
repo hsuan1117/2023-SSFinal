@@ -9,6 +9,7 @@ import PlayerController from "../Controller/PlayerController";
 import PlayerFocus from "../UI/PlayerFocus";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
+import EnemyController from "../Controller/EnemyController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -356,6 +357,11 @@ export default class GameManager extends cc.Component {
 
     private destroyScene() {
         for (let child of this.node.children) {
+            if (child.getComponent(EnemyController)) {
+                cc.log('recycle enemy');
+                this._poolManager.recycle(child);
+                continue;
+            }
             child.destroy();
         }
     }
