@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Lobby",
+    "_name": "LobbyUI",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -40,10 +40,13 @@
       },
       {
         "__id__": 73
+      },
+      {
+        "__id__": 74
       }
     ],
     "_prefab": {
-      "__id__": 74
+      "__id__": 75
     },
     "_opacity": 255,
     "_color": {
@@ -1955,6 +1958,16 @@
   },
   {
     "__type__": "610ec4zOGVD8ZeGYfFQ0sje",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "893a6WF8UFFPKXqdP1VNQwq",
     "_name": "",
     "_objFlags": 0,
     "node": {

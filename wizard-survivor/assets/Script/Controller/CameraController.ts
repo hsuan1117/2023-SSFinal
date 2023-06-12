@@ -24,5 +24,8 @@ export default class CameraController extends cc.Component {
             targetPos.divSelf(cnt);
             this.node.position = this.node.position.lerp(targetPos.add(this.initPos), this.lerpRatio);
         }
+        else{
+            this.node.setPosition(this.initPos);
+        }
     }
 }

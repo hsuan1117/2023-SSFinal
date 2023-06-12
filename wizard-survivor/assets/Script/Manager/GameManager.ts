@@ -5,11 +5,9 @@ import WaveManager from "./WaveManager";
 import {AttrNum} from "../Helper/Attributes";
 import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
-import PlayerController from "../Controller/PlayerController";
-import PlayerFocus from "../UI/PlayerFocus";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
-import EnemyController from "../Controller/EnemyController";
+import LobbyUI from "../UI/LobbyUI";
 
 const {ccclass, property} = cc._decorator;
 
@@ -179,6 +177,8 @@ export default class GameManager extends cc.Component {
     }
 
     start() {
+        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
+        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
         this.generateLobbyScene();
         this._waveManager.init();
     }
@@ -269,69 +269,19 @@ export default class GameManager extends cc.Component {
         請確保角色 Prefab 的 name 和 Node name 相同，兩者都被視作 CharaId
          */
         let uids = ['p1', 'p2'];
-        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
-        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
 
-        let lobby, enterGame: cc.Node;
+        let enterGame: cc.Node;
         let previewCharas: cc.Node[] = [];
 
-        await loadResource('Prefab/Lobby', cc.Prefab)
-            .then((prefab) => {
-                lobby = cc.instantiate(prefab) as unknown as cc.Node;
-                // lobby.parent = this.node;
-                lobby.parent = this.backgroundLayer;
-                lobby.setPosition(0, 0);
-                for (let chara of lobby.children) {
-                    if (chara.getComponent(PlayerController)) {
-                        previewCharas.push(chara);
-                    }
-                }
-        })
-
-        let chooseChara = () =>
-            new Promise((resolve, reject) => {
-                    const pf = lobby.getComponent(PlayerFocus);
-                    pf.init(previewCharas, cc.v2(0, 20), true);
-                    pf.focusOnIndex('p1', 0);
-                    pf.focusOnIndex('p2', 0);
-
-                    let choseResult = {};
-                    pf.event.on(PlayerFocus.ON_CONFIRM, ({uid, node}) => {
-                        for (let res of Object.values(choseResult)) {
-                            if (res == node.name) {
-                                return;
-                            }
-                        }
-                        // pf.removeFocus(uid)
-                        pf.lock(uid);
-                        choseResult[uid] = node.name;
-                        if (Object.keys(choseResult).length === uids.length) {
-                            pf.removeFocusAll();
-                            resolve(choseResult);
-                        }
-                    })
-                }
-            )
-
-        let instantiateChooseResult = (chooseResult) =>
-            new Promise((resolve, reject) => {
-                    for (let uid of uids) {
-                        this.playerManager.createPlayerLocally(uid, chooseResult[uid]);
-                        this.playerManager.instantiatePlayer(uid)
-                            .then((player) => {
-                                    for (let chara of previewCharas) {
-                                        if (chara.name === chooseResult[uid]) {
-                                            player.node.setPosition(chara.getPosition());
-                                            chara.destroy();
-                                        }
-                                    }
-                                }
-                            )
-                    }
-                }
-            )
-
-        chooseChara().then(instantiateChooseResult)
+        let lobby =
+            await loadResource('Prefab/UI/LobbyUI', cc.Prefab)
+                .then((prefab) => (cc.instantiate(prefab) as unknown as cc.Node)
+                    .getComponent(LobbyUI));
+        lobby.node.parent = this.backgroundLayer;
+        lobby.node.setPosition(0, 0);
+        lobby.init(uids);
+        await lobby.chooseCharaFor();
+        await lobby.createCharaFromChooseResult();
     }
 
     private async generateResultScene() {
