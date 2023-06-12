@@ -35,6 +35,12 @@ export default class MapManager extends cc.Component {
                 this.decorationPrefabs[i] = prefab;
             });
         }
+        this.visPos = {};
+    }
+
+    public clearMap() {
+        this.started = false;
+        this.visPos = {};
     }
     private generateBlock(pos) {
         let node = new cc.Node();

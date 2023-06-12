@@ -114,4 +114,8 @@ export default class EnemyController extends cc.Component {
         });
         return target;
     }
+
+    protected onDestroy() {
+        GameManager.instance.poolManager.recycle(this.node);
+    }
 }

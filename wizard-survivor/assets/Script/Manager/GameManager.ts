@@ -193,6 +193,8 @@ export default class GameManager extends cc.Component {
     }
 
     public changeScene(sceneType: string) {
+        this._mapManager.clearMap();
+        this._waveManager.clearWave();
         this.destroyScene();
 
         if (sceneType === GameManager.SCENE_LOBBY){

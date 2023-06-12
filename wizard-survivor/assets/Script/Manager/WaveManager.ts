@@ -61,6 +61,10 @@ export default class WaveManager extends cc.Component {
         this.currentWave = this.waveData.json[wave];
     }
 
+    clearWave(){
+        this.currentWave = 0;
+    }
+
     public init () {
         // load enemy prefab
         for (const enemyType of this.enemyTypes) {
