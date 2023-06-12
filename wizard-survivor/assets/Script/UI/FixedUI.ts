@@ -45,6 +45,7 @@ export default class FixedUI extends cc.Component {
         for (let id of GameManager.instance.playerManager.allPlayerIDs){
             this.enablePlayerStatUIForPlayer(id, childIdx++);
         }
+        this.onGameStatChange();
     }
 
     private enablePlayerStatUIForPlayer(uid: string, childIdx: number){
