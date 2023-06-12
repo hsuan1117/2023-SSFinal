@@ -21,7 +21,7 @@ export default class FixedUI extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         this.coinLabel = this.node.getChildByName('Coin')
-            .getChildByName('CoinLabel')
+            .getChildByName('Label')
             .getComponent(cc.Label);
     }
 
