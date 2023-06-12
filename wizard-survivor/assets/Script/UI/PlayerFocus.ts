@@ -1,7 +1,7 @@
-import InputManager, {Input} from "../Manager/InputManager";
+import InputManager, {Input, InputType} from "../Manager/InputManager";
 import GameManager from "../Manager/GameManager";
 import {Direction, padZ} from "../Helper/utils";
-import Game = cc.Game;
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -132,7 +132,7 @@ export default class PlayerFocus extends cc.Component {
         const uid = input.uid;
         const dir = InputManager.lrOfStick(cc.v2(input.lX, input.lY));
 
-        if (input.btnCode === 'A'){
+        if (input.type == InputType.BUTTON_DOWN && input.btnCode === 'A'){
             this.event.emit(PlayerFocus.ON_CONFIRM, {uid: uid, node: this.focusTarget[this.focus[uid]]});
         } else if (dir == Direction.LEFT){
             this.focus[uid] = (this.focus[uid] - 1 + this.focusTarget.length) % this.focusTarget.length;

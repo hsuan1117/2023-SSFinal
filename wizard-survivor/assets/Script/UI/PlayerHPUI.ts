@@ -13,13 +13,13 @@ export default class PlayerHPUI extends cc.Component {
 
     onDestroy() {
         this.player.event.off(PlayerController.PLAYER_ATTR_CHANGE, this.onPlayerAttrChange, this);
-        GameManager.instance.event.off(GameManager.ON_GAME_READY, this.onPlayerAttrChange, this)
+        GameManager.instance.event.off(GameManager.ON_GAME_LOGIC_READY, this.onPlayerAttrChange, this)
     }
 
     public init(player: PlayerController){
         this.player = player;
         this.player.event.on(PlayerController.PLAYER_ATTR_CHANGE, this.onPlayerAttrChange, this);
-        GameManager.instance.event.on(GameManager.ON_GAME_READY, this.onPlayerAttrChange, this)
+        GameManager.instance.event.on(GameManager.ON_GAME_LOGIC_READY, this.onPlayerAttrChange, this)
     }
 
     private onPlayerAttrChange(){
