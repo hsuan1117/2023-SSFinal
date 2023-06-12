@@ -97,12 +97,12 @@
     "_prefab": {
       "__id__": 4
     },
-    "_opacity": 255,
+    "_opacity": 225.165,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 110,
-      "b": 211,
+      "r": 230,
+      "g": 0,
+      "b": 124,
       "a": 255
     },
     "_contentSize": {
