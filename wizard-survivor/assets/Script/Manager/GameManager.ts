@@ -30,6 +30,11 @@ export default class GameManager extends cc.Component {
     public static readonly ON_UPGRADE: string = "UPGRADE";
     public static readonly ON_GAME_READY: string = "GAME_READY";
 
+    public static readonly SCENE_GAME = 'Game';
+    public static readonly SCENE_MAIN_MENU = 'MainMenu';
+    public static readonly SCENE_LOBBY = 'Lobby';
+    public static readonly SCENE_RESULT = 'Result';
+
     public static get instance(): GameManager {
         if (!GameManager._instance) {
             GameManager._instance = cc.find('Game').getComponent(GameManager);
@@ -73,6 +78,9 @@ export default class GameManager extends cc.Component {
         return this._backgroundLayer;
     }
 
+    public get currentSceneType(): string {
+        return this._currentSceneType;
+    }
 
 
     public killEnemyCnt: AttrNum = new AttrNum(0);
@@ -92,6 +100,8 @@ export default class GameManager extends cc.Component {
     private _waveManager: WaveManager;
     private _gameSystem: GameSystem;
     private _mapManager: MapManager;
+
+    private _currentSceneType: string;
 
     private _backgroundLayer: cc.Node;
     private _itemLayer: cc.Node;
@@ -184,12 +194,22 @@ export default class GameManager extends cc.Component {
         cc.director.resume();
     }
 
+    public changeScene(sceneType: string) {
+        this.destroyScene();
+
+        if (sceneType === GameManager.SCENE_LOBBY){
+            this.generateLobbyScene();
+        }
+        else if (sceneType === GameManager.SCENE_GAME){
+            this.generateGameScene();
+        }
+        this._currentSceneType = sceneType;
+    }
+
 
     // HELPERS:
     private onGameStart() {
-        this.destroyLobbyScene()
-        this.generateGameScene();
-        this._mapManager.init("ForestStage");
+        this.changeScene(GameManager.SCENE_GAME);
     }
 
     private async generateGameScene() {
@@ -234,6 +254,7 @@ export default class GameManager extends cc.Component {
         await Promise.all(promises);
         this.event.emit(GameManager.ON_GAME_READY);
         this._waveManager.setWave(1);
+        this._mapManager.init("ForestStage");
     }
 
     private async generateLobbyScene() {
@@ -321,7 +342,7 @@ export default class GameManager extends cc.Component {
         this._bulletLayer.parent = this.node;
     }
 
-    private destroyLobbyScene() {
+    private destroyScene() {
         for (let child of this.node.children) {
             child.destroy();
         }
