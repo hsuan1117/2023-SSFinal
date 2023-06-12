@@ -25,7 +25,13 @@ export default class GameManager extends cc.Component {
     public static readonly ON_GAME_STAT_CHANGE: string = "GAME_STAT_CHANGE";
     public static readonly ON_LEVEL_UP: string = "LEVEL_UP";
     public static readonly ON_UPGRADE: string = "UPGRADE";
-    public static readonly ON_GAME_READY: string = "GAME_READY";
+
+    /*
+    有關於計算的程式已經初始化完成。用於讓 UI 監聽，更新 UI。
+
+    callbackFn: () => void
+     */
+    public static readonly ON_GAME_LOGIC_READY: string = "GAME_READY";
 
     public static readonly SCENE_GAME = 'Game';
     public static readonly SCENE_MAIN_MENU = 'MainMenu';
@@ -258,8 +264,7 @@ export default class GameManager extends cc.Component {
         }
 
         await Promise.all(promises);
-        this.event.emit(GameManager.ON_GAME_READY);
-
+        this.event.emit(GameManager.ON_GAME_LOGIC_READY);
     }
 
     private async generateLobbyScene() {
