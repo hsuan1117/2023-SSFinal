@@ -357,11 +357,6 @@ export default class GameManager extends cc.Component {
 
     private destroyScene() {
         for (let child of this.node.children) {
-            if (child.getComponent(EnemyController)) {
-                cc.log('recycle enemy');
-                this._poolManager.recycle(child);
-                continue;
-            }
             child.destroy();
         }
     }

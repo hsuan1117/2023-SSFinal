@@ -103,15 +103,23 @@ export default class EnemyController extends cc.Component {
         GameManager.instance.poolManager.recycle(this.node);
     }
 
+    protected selfDestroy() {
+        GameManager.instance.poolManager.recycle(this.node);
+    }
+
     protected findClosestPlayer() {
         let target = null, minDistance = 10000000000;
         GameManager.instance.playerManager.allPlayerIDs.forEach((id) => {
             let player = GameManager.instance.playerManager.getPlayer(id);
-            if (player.node.position.sub(this.node.position).mag() < minDistance) {
+            if (player && player.node.position.sub(this.node.position).mag() < minDistance) {
                 minDistance = player.node.position.sub(this.node.position).mag();
                 target = player.node.position;
             }
         });
+        if (!target) {
+            this.selfDestroy();
+            return null;
+        }
         return target;
     }
 
