@@ -52,7 +52,7 @@ export default class LobbyUI extends cc.Component {
         return new Promise(resolve => {
             this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, ({uid, node}) => {
                 for (let res of Object.values(chooseResult)) {
-                    if (res == node)
+                    if (res == node.name)
                         return;
                 }
 
