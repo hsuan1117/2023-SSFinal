@@ -48,11 +48,16 @@ export default class PlayerFocus extends cc.Component {
     }
 
     public init(focusTarget: cc.Node[], offSet: cc.Vec2, sortByPosition=false){
+        for (const tid in this.pointerContainer){
+            this.pointerContainer[tid].destroy();
+        }
+
         this.focus = {};
         this.focusTarget = [...focusTarget];
         this.pointerContainer = {};
         this.pointer = {};
         this.isLock = {};
+
         if (sortByPosition){
             this.focusTarget.sort((a, b) => {
                 if (a.position.x < b.position.x) return -1;
