@@ -80,6 +80,18 @@ export default class PlayerManager extends cc.Component {
             })
     }
 
+    public init(){
+        this.clearAllChara();
+    }
+
+    public clearAllChara(){
+        this.playerIds = [];
+        this.isLocalPlayer = {};
+        this.playerChara = {};
+        this.playerControllers = {};
+        this.playerDeltaHp = {};
+    }
+
 
     // HELPERS
     private createPlayer({uid, charaId}){

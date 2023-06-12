@@ -204,6 +204,7 @@ export default class GameManager extends cc.Component {
         else if (sceneType === GameManager.SCENE_GAME) {
             this.generateGameScene();
         } else if (sceneType === GameManager.SCENE_RESULT) {
+            this.playerManager.clearAllChara();
             this.generateResultScene();
         }
         this._currentSceneType = sceneType;
