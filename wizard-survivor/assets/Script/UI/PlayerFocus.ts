@@ -40,11 +40,11 @@ export default class PlayerFocus extends cc.Component {
     }
 
     onEnable() {
-        GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
+        GameManager.instance.inputManager.event.on(InputManager.ON_LOCAL_INPUT, this.onInput, this);
     }
 
     onDisable() {
-        GameManager.instance.inputManager.event.off(InputManager.ON_INPUT, this.onInput, this);
+        GameManager.instance.inputManager.event.off(InputManager.ON_LOCAL_INPUT, this.onInput, this);
     }
 
     public init(focusTarget: cc.Node[], offSet: cc.Vec2, sortByPosition=false){

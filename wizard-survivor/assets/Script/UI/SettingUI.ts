@@ -17,9 +17,6 @@ export default class SettingUI extends cc.Component {
     private playerFocus: PlayerFocus = null;
 
     onLoad() {
-        GameManager.instance.inputManager.event.on(
-            InputManager.ON_INPUT, this.onInput, this
-        )
         this.settingPopUp = this.node.getChildByName('SettingPopUp');
         this.playerFocus = this.node.getComponent(PlayerFocus);
         this.playerFocus.init(
@@ -27,6 +24,14 @@ export default class SettingUI extends cc.Component {
             cc.v2(0, 20).add(ignoreZ(this.settingPopUp.position)),
             true
         )
+    }
+
+    onEnable() {
+        GameManager.instance.inputManager.event.on(InputManager.ON_LOCAL_INPUT, this.onInput, this);
+    }
+
+    onDisable() {
+        GameManager.instance.inputManager.event.on(InputManager.ON_LOCAL_INPUT, this.onInput, this);
     }
 
 
@@ -72,8 +77,8 @@ export default class SettingUI extends cc.Component {
     private onInput(input: Input) {
         // console.log('SettingUI onInput', input)
         // console.log('is Local', GameManager.instance.playerManager.isLocal(input.uid));
-        if (!GameManager.instance.playerManager.isLocal(input.uid))
-            return;
+        // if (!GameManager.instance.playerManager.isLocal(input.uid))
+        //     return;
         if (!this.isCollide[input.uid])
             return;
         if ((!this.isOn) && input.type == InputType.BUTTON_DOWN && input.btnCode == 'A')
