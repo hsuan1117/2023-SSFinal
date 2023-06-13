@@ -31,10 +31,13 @@
       },
       {
         "__id__": 12
+      },
+      {
+        "__id__": 13
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 14
     },
     "_opacity": 255,
     "_color": {
@@ -284,6 +287,22 @@
       "width": 32,
       "height": 32
     },
+    "_id": ""
+  },
+  {
+    "__type__": "48597dRxOJNkqge1dQfGu3a",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": null,
+    "enemyIdleAnim": "enemy_idle",
+    "enemyMoveAnim": "enemy_move",
+    "enemyHurtAnim": "enemy_hurt",
+    "enemyDeadAnim": "enemy_dead",
+    "enemySkillAnim": "enemy_skill",
     "_id": ""
   },
   {

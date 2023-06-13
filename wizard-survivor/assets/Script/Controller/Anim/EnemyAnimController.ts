@@ -25,6 +25,7 @@ export default class EnemyAnimController extends AnimController {
         isDead: false,
         isHurt: false,
         isSkill: false,
+        faceLeftOrRight: 1 // -1: left, 1: right, 0: keep current
     };
 
     initState() {
@@ -33,10 +34,24 @@ export default class EnemyAnimController extends AnimController {
             isSkill: false,
             isDead: false,
             isHurt: false,
+            faceLeftOrRight: 1 // -1: left, 1: right, 0: keep current
         };
     }
 
+    protected sameState(oldState, newState): boolean {
+        return oldState.isMoving == newState.isMoving
+            && oldState.isSkill == newState.isSkill
+            && oldState.isDead == newState.isDead
+            && oldState.isHurt == newState.isHurt
+            && oldState.faceLeftOrRight == newState.faceLeftOrRight;
+    }
+
     protected onStateChange(oldState, newState): void {
+        if (!this.anim) return;
+        if (this.sameState(oldState, newState))
+            return;
+        this.anim.stop();
+
         if (newState.isDead) {
             this.anim.play(this.enemyDeadAnim);
         }
@@ -49,5 +64,12 @@ export default class EnemyAnimController extends AnimController {
         else if (newState.isSkill) {
             this.anim.play(this.enemySkillAnim);
         }
+        else {
+            this.anim.play(this.enemyIdleAnim);
+        }
+
+        if (newState.faceLeftOrRight)
+            this.anim.node.scaleX = newState.faceLeftOrRight;
     }
+
 }

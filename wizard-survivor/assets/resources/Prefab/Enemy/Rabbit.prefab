@@ -31,10 +31,13 @@
       },
       {
         "__id__": 13
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -79,8 +82,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": ""
   },
   {
@@ -146,8 +149,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": ""
   },
   {
@@ -209,7 +212,7 @@
         "__uuid__": "e3093bfe-6615-418f-9b1a-377dfc22e013"
       }
     ],
-    "playOnLoad": false,
+    "playOnLoad": true,
     "_id": ""
   },
   {
@@ -250,7 +253,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 50
   },
   {
     "__type__": "AttrNum",
@@ -258,7 +261,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 200
   },
   {
     "__type__": "AttrNum",
@@ -317,6 +320,24 @@
       "width": 32,
       "height": 32
     },
+    "_id": ""
+  },
+  {
+    "__type__": "48597dRxOJNkqge1dQfGu3a",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "enemyIdleAnim": "RabbitStand",
+    "enemyMoveAnim": "RabbitWalk",
+    "enemyHurtAnim": "",
+    "enemyDeadAnim": "RabbitDead",
+    "enemySkillAnim": "RabbitAttack",
     "_id": ""
   },
   {

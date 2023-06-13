@@ -3,6 +3,7 @@ import {ignoreZ} from "../Helper/utils";
 import {AttrNum} from "../Helper/Attributes";
 import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
 import WaveManager from "../Manager/WaveManager";
+import EnemyAnimController from "./Anim/EnemyAnimController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,6 +14,7 @@ export default class EnemyController extends cc.Component {
     private readonly DENSITY: number = 10;
     private readonly LINEAR_DAMP: number = 100;
     public rb: cc.RigidBody = null;
+    public animCtrl: EnemyAnimController = null;
 
     @property(AttrNum)
     public moveSpeed: AttrNum = new AttrNum();
@@ -39,14 +41,21 @@ export default class EnemyController extends cc.Component {
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.node.getComponent(cc.RigidBody).linearDamping = this.LINEAR_DAMP;
         this.addComponent(DamagePlayerOnCollide).init(this.collideDamage.value, this.collideDamageCoolDown.value);
+        this.animCtrl = this.node.getComponent(EnemyAnimController);
+        this.animCtrl.initState();
     }
 
     playAnim() {
          // change to controller
+        if (!this.animCtrl)
+            return;
+
          if (this.rb.linearVelocity.x >= 0)
-             this.node.scaleX = 1;
+             this.animCtrl.state = {...this.animCtrl.state, isFacingRight: true};
          else
-             this.node.scaleX = -1;
+             this.animCtrl.state = {...this.animCtrl.state, isFacingRight: false};
+
+         this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
     }
 
     protected update(dt: number) {
@@ -59,6 +68,8 @@ export default class EnemyController extends cc.Component {
     public init() {
          this.hp.reset();
          this.skillCoolDownTime = 0;
+         this.animCtrl.initState();
+         cc.log("EnemyController init", this.animCtrl.state);
     }
 
     public hurt(damage: number, byUid: string) {
@@ -96,11 +107,13 @@ export default class EnemyController extends cc.Component {
     }
 
     protected dead(killByUid: string) {
-        GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
+         this.animCtrl.state = {...this.animCtrl.state, isDead: true};
+         GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
             enemyPosition: this.node.getPosition(),
             killByUid: killByUid
-        });
-        GameManager.instance.poolManager.recycle(this.node);
+         });
+
+         GameManager.instance.poolManager.recycle(this.node);
     }
 
     protected selfDestroy() {

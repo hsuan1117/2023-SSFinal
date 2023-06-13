@@ -1,0 +1,37 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "BumpingPigStand",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0.03333333333333333,
+            "value": {
+              "__uuid__": "9b85836b-a377-4ca5-9bd5-ddd9a224a0ed"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "cf089a7d-4f00-4451-8bf9-73f8942a4bef"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "9b85836b-a377-4ca5-9bd5-ddd9a224a0ed"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
