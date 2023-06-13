@@ -1,0 +1,61 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "RabbitAttack",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 0.8,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "91bab41a-65f2-4a9e-a73e-7083496dd665"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "b3b9205a-4540-460f-b546-824a44ae0f11"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "d67f54db-3f89-4c9f-98bc-e5004abb159e"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "5b097ff4-e141-479c-ac15-04422675ced4"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "f5a0613b-040c-4a56-a795-95f302596265"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "f90401e6-f865-4567-ae1e-69ee8c4d07ef"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "f90401e6-f865-4567-ae1e-69ee8c4d07ef"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
