@@ -327,12 +327,14 @@
       "__id__": 1
     },
     "_enabled": true,
-    "anim": null,
-    "playerIdleAnim": "player_idle",
-    "playerMoveAnim": "player_move",
-    "playerDashAnim": "player_dash",
-    "playerHurtAnim": "player_hurt",
-    "playerDeadAnim": "player_dead",
+    "anim": {
+      "__id__": 4
+    },
+    "playerIdleAnim": "SkeletonStand",
+    "playerMoveAnim": "SkeletonWalk",
+    "playerDashAnim": "SkeletonStand",
+    "playerHurtAnim": "SkeletonStand",
+    "playerDeadAnim": "SkeletonStand",
     "_id": ""
   },
   {
