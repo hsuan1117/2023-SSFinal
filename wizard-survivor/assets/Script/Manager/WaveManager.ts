@@ -35,7 +35,7 @@ export default class WaveManager extends cc.Component {
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
     private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
 
-    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton"];
+    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit"];
 
     private waveData: cc.JsonAsset = null;
 

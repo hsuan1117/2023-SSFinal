@@ -24,7 +24,6 @@ export default class MapManager extends cc.Component {
 
     start () {
         cc.resources.load("Map/" + this.stageName, cc.TiledMapAsset,(err, map: cc.TiledMap) => {
-            cc.log("map = ", map);
             this.stageMap = map;
             this.mapWidth = 512;
             this.mapHeight = 512;
@@ -104,7 +103,6 @@ export default class MapManager extends cc.Component {
         let pos = cc.Camera.main.node.position;
         let tx = Math.floor(pos.x / this.mapWidth);
         let ty = Math.floor(pos.y / this.mapHeight);
-        let combinedKey =  this.posHash(tx, ty);
 
         for (let i = -2; i <= 2; i++) {
             for (let j = -2; j <= 2; j++) {
@@ -120,7 +118,6 @@ export default class MapManager extends cc.Component {
     }
 
     update (dt) {
-        cc.log("map manager update " + this.started);
         if (this.started)
             this.autoGenerateMap();
     }
