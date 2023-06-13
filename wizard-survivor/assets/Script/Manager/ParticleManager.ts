@@ -1,27 +1,36 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
+import GameManager from "./GameManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class ParticleManager extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(Array)
+    public particleList: string[] = ["White Explosion"];
 
-    @property
-    text: string = 'hello';
+    private particlePrefabs: {[particleName: string]: cc.Prefab} = {};
+
+    private prefabPath: string = "Prefab/ParticleEffect/";
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    start () {
+    public createParticle(particleName: string, pos: cc.Vec3, parent: cc.Node = GameManager.instance.bulletLayer) {
+        this.scheduleOnce(() => {
+            const particle = cc.instantiate(this.particlePrefabs[particleName]);
+            particle.parent = parent;
+            particle.position = pos;
 
+            particle.stopAllActions();
+        }, 0.1);
+    }
+
+    start () {
+        for (const enemyType of this.particleList) {
+            cc.resources.load("Prefab/ParticleEffect/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
+                this.particlePrefabs[enemyType] = prefab;
+            });
+        }
     }
 
     // update (dt) {}
