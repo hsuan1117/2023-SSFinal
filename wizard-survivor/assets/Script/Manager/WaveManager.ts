@@ -100,6 +100,7 @@ export default class WaveManager extends cc.Component {
             if (this.countDowns[key] === undefined) {
                 this.countDowns[key] = 0;
             }
+
             if (this.countDowns[key] <= 0){
                 for (let i = 0; i < this.currentWave[key]["spawnNum"]; i++){
                     this.spawnEnemy(this.enemyPrefabs[key], this.randomSpawnPos());

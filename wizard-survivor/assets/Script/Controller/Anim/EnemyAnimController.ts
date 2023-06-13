@@ -47,6 +47,7 @@ export default class EnemyAnimController extends AnimController {
     }
 
     protected onStateChange(oldState, newState): void {
+        if (!this.anim) return;
         if (this.sameState(oldState, newState))
             return;
         this.anim.stop();

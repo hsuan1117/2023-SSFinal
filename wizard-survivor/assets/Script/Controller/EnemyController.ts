@@ -47,6 +47,9 @@ export default class EnemyController extends cc.Component {
 
     playAnim() {
          // change to controller
+        if (!this.animCtrl)
+            return;
+
          if (this.rb.linearVelocity.x >= 0)
              this.animCtrl.state = {...this.animCtrl.state, isFacingRight: true};
          else
