@@ -894,6 +894,7 @@
       "__id__": 8
     },
     "_enabled": true,
+    "font": null,
     "_id": ""
   },
   {
@@ -1964,6 +1965,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "font": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
     "_id": ""
   },
   {

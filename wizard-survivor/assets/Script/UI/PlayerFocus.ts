@@ -19,12 +19,16 @@ remove focus(uid)
 
 @ccclass
 export default class PlayerFocus extends cc.Component {
+
     public event: cc.EventTarget;
     /*
     某位使用者按下 A 鍵 confirm
     callbackFn({uid: string, node: cc.Node}): void
      */
     public static readonly ON_CONFIRM: string = "CONFIRM";
+
+    @property(cc.Font)
+    private font: cc.Font = null;
 
     private readonly SPACING_Y: number = 0;
 
@@ -117,10 +121,9 @@ export default class PlayerFocus extends cc.Component {
             this.pointer[uid] = new cc.Node(`Pointer${uid}`);
         }
         const label =  this.pointer[uid].addComponent(cc.Label);
+        label.font = this.font;
         label.string = `<<${uid}>>`;
-        label.fontSize = 10;
-        label.lineHeight = 0;
-        label.node.color = cc.Color.BLACK;
+        this.setFontStyle(label, cc.Color.BLACK)
         this.updateView();
     }
 
@@ -149,13 +152,19 @@ export default class PlayerFocus extends cc.Component {
                 this.pointer[uid] = new cc.Node(`Pointer${uid}`);
                 const label =  this.pointer[uid].addComponent(cc.Label);
                 label.string = `<  ${uid}  >`;
-                label.fontSize = 10;
-                label.lineHeight = 0;
-                label.node.color = cc.Color.RED;
+                this.setFontStyle(label, cc.Color.RED);
             }
             this.pointer[uid].parent = this.pointerContainer[this.focus[uid]];
             this.pointer[uid].setPosition(0, 0);
             this.pointerContainer[this.focus[uid]].getComponent(cc.Layout).updateLayout()
         }
+    }
+
+    private setFontStyle(label: cc.Label, color: cc.Color){
+        label.fontSize = 20;
+        label.lineHeight = 20;
+        label.node.color = color
+        label.font = this.font;
+        label.enableBold = true;
     }
 }
