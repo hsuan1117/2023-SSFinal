@@ -4,108 +4,108 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>bombman_0.png</key>
+            <key>enemy28_0.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,29}</string>
+                <string>{29,25}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,29}</string>
+                <string>{29,25}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{30,29}}</string>
+                <string>{{0,0},{29,25}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_1.png</key>
+            <key>enemy28_1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,30}</string>
+                <string>{30,26}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,30}</string>
+                <string>{30,26}</string>
                 <key>textureRect</key>
-                <string>{{0,29},{30,30}}</string>
+                <string>{{0,25},{30,26}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_2.png</key>
+            <key>enemy28_2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,30}</string>
+                <string>{29,27}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,30}</string>
+                <string>{29,27}</string>
                 <key>textureRect</key>
-                <string>{{0,59},{30,30}}</string>
+                <string>{{0,51},{29,27}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_3.png</key>
+            <key>enemy28_3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,29}</string>
+                <string>{30,25}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,29}</string>
+                <string>{30,25}</string>
                 <key>textureRect</key>
-                <string>{{0,89},{30,29}}</string>
+                <string>{{0,78},{30,25}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_4.png</key>
+            <key>enemy28_4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,29}</string>
+                <string>{29,25}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,29}</string>
+                <string>{29,25}</string>
                 <key>textureRect</key>
-                <string>{{0,118},{30,29}}</string>
+                <string>{{0,103},{29,25}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_5.png</key>
+            <key>enemy28_5.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{30,30}</string>
+                <string>{29,24}</string>
                 <key>spriteSourceSize</key>
-                <string>{30,30}</string>
+                <string>{29,24}</string>
                 <key>textureRect</key>
-                <string>{{0,147},{30,30}}</string>
+                <string>{{0,128},{29,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bombman_6.png</key>
+            <key>enemy28_6.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{29,19}</string>
+                <string>{31,21}</string>
                 <key>spriteSourceSize</key>
-                <string>{29,19}</string>
+                <string>{31,21}</string>
                 <key>textureRect</key>
-                <string>{{0,177},{29,19}}</string>
+                <string>{{0,152},{31,21}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -119,13 +119,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>bombman.png</string>
+            <string>BumpingPig.png</string>
             <key>size</key>
-            <string>{30,196}</string>
+            <string>{31,173}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:dd4cf6a0a907c5810a394be69cfe103e:c393d0c3696c8311e91f4d8bd7b518bb:e22e3549bc5e201f394faf14f5af5e00$</string>
+            <string>$TexturePacker:SmartUpdate:6617787c02abfb194960f59f8f0638fb:7f15c007b3b14483fe1cfbaeaead67f5:514547b0d8b0caa42f502debcde7bda7$</string>
             <key>textureFileName</key>
-            <string>bombman.png</string>
+            <string>BumpingPig.png</string>
         </dict>
     </dict>
 </plist>
