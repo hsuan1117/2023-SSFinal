@@ -1,4 +1,3 @@
-import Game = cc.Game;
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
@@ -97,42 +96,75 @@ export class GameSystem {
     public emitGameStart() {
         this.event.emit(GameSystem.ON_GAME_START);
     }
+
     //public emitCreatePlayer(uid: string, charaId: string){
     //      this event is broadcast to all client,
     //      but client handel this event only if it is from remote
     //      this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
 }
 
-class RemoteGameSystem extends GameSystem {
-    public echoInstance: Echo;
+type EnvConfig = {
+    PUSHER_CONFIG: {
+        broadcaster: string,
+        key: string,
+        cluster: string,
+        forceTLS: boolean,
+        wsHost: string,
+        wsPath: string,
+        wsPort: number
+    },
+    API_CONFIG: {
+        API_URL: string
+    }
+}
 
-    // TODO: 將 emit 改到 listener 裡面
-    private readonly PUSHER_CONFIG = {
+export const PROD_ENV: EnvConfig = {
+    PUSHER_CONFIG: {
         broadcaster: 'pusher',
         key: "app-key",
         cluster: "mt1",
         forceTLS: false,
         wsHost: "final.hsuan.app",
         wsPath: "/websockets",
-        wsPort: ""
+        wsPort: null
+    },
+    API_CONFIG: {
+        API_URL: "https://final.hsuan.app/api"
     }
+}
+
+export const DEV_ENV: EnvConfig = {
+    PUSHER_CONFIG: {
+        broadcaster: 'pusher',
+        key: "app-key",
+        cluster: "mt1",
+        forceTLS: false,
+        wsHost: "localhost",
+        wsPath: "",
+        wsPort: 6001
+    },
+    API_CONFIG: {
+        API_URL: "http://localhost:8000/api"
+    },
+}
+
+export class RemoteGameSystem extends GameSystem {
+    public echoInstance: Echo;
+
+    // TODO: 將 emit 改到 listener 裡面
+    private env: EnvConfig = DEV_ENV;
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
         this.echoInstance = new Echo({
-            ...this.PUSHER_CONFIG,
+            ...this.env.PUSHER_CONFIG,
             authorizer: (channel, options) => {
                 return {
                     authorize: (socketId, callback) => {
-                        fetch('/broadcasting/auth', {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                            body: JSON.stringify({
-                                socket_id: socketId,
-                                channel_name: channel.name
-                            })
-                        }).then(res => res.json()).then(response => {
+                        this.api("POST", '/broadcasting/auth', {
+                            socket_id: socketId,
+                            channel_name: channel.name
+                        }).then(response => {
                             callback(null, response);
                         }).catch(error => {
                             callback(error);
@@ -143,8 +175,26 @@ class RemoteGameSystem extends GameSystem {
         });
     }
 
+    private async api(method, endpoint, jsonBody) {
+        return fetch(this.env.API_CONFIG.API_URL + endpoint, {
+            method,
+            body: JSON.stringify(jsonBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+    }
+
     constructor() {
         super();
+        // TODO: change
+        this.env = DEV_ENV;
+        if (window.location.href.indexOf('localhost') === -1)
+            this.env = PROD_ENV;
+
+        this.api('POST', '/room', {})
     }
 
     // === PUBLIC METHODS ===
@@ -258,7 +308,7 @@ class RemoteGameSystem extends GameSystem {
      * @param email
      * @param password
      * */
-    public register(name:string, email: string, password: string) {
+    public register(name: string, email: string, password: string) {
         fetch('https://final.hsuan.app/api/sanctum/token', {
             method: 'POST',
             body: JSON.stringify({
