@@ -24,20 +24,20 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 5
-      },
-      {
         "__id__": 6
       },
       {
         "__id__": 7
       },
       {
-        "__id__": 14
+        "__id__": 8
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -98,10 +98,13 @@
     "_components": [
       {
         "__id__": 3
+      },
+      {
+        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 4
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -166,7 +169,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "8b4ce86e-b1c0-47b2-bd05-3ce3c7540657"
+      "__uuid__": "9b85836b-a377-4ca5-9bd5-ddd9a224a0ed"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -179,7 +182,31 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "87e59e2a-88ec-44a1-a1fc-8bd11eacde06"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "d6dd7436-0f68-4db4-90a7-9b293e473a78"
+    },
+    "_clips": [
+      {
+        "__uuid__": "d6dd7436-0f68-4db4-90a7-9b293e473a78"
+      },
+      {
+        "__uuid__": "0b1180c4-cd59-4208-a469-698ec3ecd9e9"
+      }
+    ],
+    "playOnLoad": false,
     "_id": ""
   },
   {
@@ -253,22 +280,22 @@
     },
     "_enabled": true,
     "moveSpeed": {
-      "__id__": 8
-    },
-    "skillCoolDown": {
       "__id__": 9
     },
-    "hp": {
+    "skillCoolDown": {
       "__id__": 10
     },
-    "collideDamage": {
+    "hp": {
       "__id__": 11
     },
-    "collideDamageCoolDown": {
+    "collideDamage": {
       "__id__": 12
     },
-    "triggerRadius": {
+    "collideDamageCoolDown": {
       "__id__": 13
+    },
+    "triggerRadius": {
+      "__id__": 14
     },
     "_id": ""
   },
@@ -305,11 +332,11 @@
     },
     "_enabled": true,
     "anim": null,
-    "enemyIdleAnim": "enemy_idle",
-    "enemyMoveAnim": "enemy_move",
-    "enemyHurtAnim": "enemy_hurt",
-    "enemyDeadAnim": "enemy_dead",
-    "enemySkillAnim": "enemy_skill",
+    "enemyIdleAnim": "BumpingPigStand",
+    "enemyMoveAnim": "BumpingPigWalk",
+    "enemyHurtAnim": "BumpingPigStand",
+    "enemyDeadAnim": "BumpingPigStand",
+    "enemySkillAnim": "BumpingPigStand",
     "_id": ""
   },
   {
