@@ -5,18 +5,23 @@ import ProjectileController from "../Controller/ProjectileController";
 import {ProjectileAttr} from "./Attributes";
 import resources = cc.resources;
 import Game = cc.Game;
+import BUILTIN_NAME = cc.Material.BUILTIN_NAME;
 
-export interface IBuff {
+export class IBuff {
+    showName: string;
     description: string;
+    id: string;
     /*
     * 建議 PlayerController.applyBuff 套用 Buff。
     * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
      */
-    _apply(Any): void;
+    _apply(Any): void {}
 }
 
 class IncreaseAttackSpeed implements IBuff {
-    public  get description(): string {
+    public readonly id = "IncreaseAttackSpeed";
+    public readonly showName: string = "提升攻擊速度";
+    public get description(): string {
         return `Increase attack speed by ${this.addPercentage}%`;
     }
 
@@ -32,6 +37,9 @@ class IncreaseAttackSpeed implements IBuff {
 }
 
 class IncreaseMaxHP implements IBuff{
+    public readonly id = "IncreaseMaxHP";
+    public readonly showName: string = "增加最大血量";
+
     public get description(): string {
         return `Increase max HP by ${this.incHP}`;
     }
@@ -49,7 +57,9 @@ class IncreaseMaxHP implements IBuff{
 }
 
 class ExplosionOnDash implements IBuff {
-    private damage: number = 0;
+    public readonly id = "ExplosionOnDash";
+    public readonly showName: string = "衝刺時炸傷周圍敵軍";
+    private readonly damage: number = 0;
     private readonly DURATION: number = 0.3;
     private prefabPath: string = "Prefab/Projectile/Explosion";
     private prefab: cc.Prefab = null;
@@ -58,7 +68,7 @@ class ExplosionOnDash implements IBuff {
         return `Explosion on dash`;
     }
 
-    constructor(damage: number) {
+    constructor(damage: number = 10) {
         this.damage = damage;
     }
 
@@ -86,14 +96,14 @@ class ExplosionOnDash implements IBuff {
     }
 }
 
-export let Buffs= {
-    IncreaseAttackSpeed: IncreaseAttackSpeed,
-    IncreaseMaxHP: IncreaseMaxHP,
-    ExplosionOnDash: ExplosionOnDash,
+let BuffsList: (typeof IBuff)[] = [IncreaseAttackSpeed, IncreaseMaxHP, ExplosionOnDash];
+let Buffs = {};
+let BuffsName: {[key: string]: string} = {};
+
+for (let i = 0; i < BuffsList.length; i++) {
+    const inst = new BuffsList[i]();
+    Buffs[inst.id] = BuffsList[i];
+    BuffsName[inst.id] = inst.showName;
 }
 
-export let BuffsName = {
-    IncreaseAttackSpeed: '增加攻速',
-    IncreaseMaxHP: '加HP',
-    ExplosionOnDash: '移動時爆炸',
-}
+export {Buffs, BuffsName};

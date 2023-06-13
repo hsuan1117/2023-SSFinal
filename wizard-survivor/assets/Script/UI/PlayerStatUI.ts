@@ -1,4 +1,5 @@
 import PlayerController from "../Controller/PlayerController";
+import {loadResource} from "../Helper/utils";
 
 const {ccclass, property} = cc._decorator;
 
@@ -8,15 +9,17 @@ export default class PlayerStatUI extends cc.Component {
     public player: PlayerController = null;
 
     private label;
+    private buffIconContainer: cc.Node;
+    private showedBuff: string[] = [];
 
     // LIFE-CYCLE CALLBACKS:
-    onLoad(){
+    onLoad() {
         this.label = this.node.getChildByName('AttrLabel').getComponent(cc.Label);
-        console.log('PlayerStatUI.onLoad, this.label', this.label)
+        this.buffIconContainer = this.node.getChildByName('Buff');
     }
 
     // PUBLIC METHODS:
-    public init(player: PlayerController){
+    public init(player: PlayerController) {
         this.player = player;
         this.player.event.on(PlayerController.PLAYER_ATTR_CHANGE, this.updateUI, this);
         this.updateUI();
@@ -24,26 +27,41 @@ export default class PlayerStatUI extends cc.Component {
 
 
     // HELPERS:
-    private updateUI(){
+    private async updateUI() {
 
         this.label.string =
-                        // `current HP: ${this.player.currentHP.toString()}\n` +
-                        `移動速度: ${this.player.moveSpeed.value}\n` +
-                        `最大生命: ${this.player.maxHp.value}\n` +
-                        `經驗增益: ${this.player.expGainPercentage.value}%\n` +
-                        `衝刺冷卻時間: ${this.player.dashCoolDown.value}\n` +
-                        // `dash speed: ${this.player.dashSpeed.toString()}\n` +
-                        `攻擊速度: ${this.player.mainWeapon.attackSpeed.value}\n` +
-                        // `shot per attack: ${this.player.mainWeapon.shotPerAttack.toString()}\n` +
-                        // `shoot speed: ${this.player.mainWeapon.shootSpeed.toString()}\n` +
-                        `基礎傷害: ${this.player.mainWeapon.projectileAttr.damage.value}\n` +
-                        `子彈飛行速度: ${this.player.mainWeapon.projectileAttr.flySpeed.value}\n`;
-                        // `exist duration: ${this.player.mainWeapon.projectileAttr.existDuration.toString()}\n`;
-                        // `bounce on enemy times: ${this.player.mainWeapon.projectileAttr.bounceOnEnemyTimes.toString()}\n` +
-                        // `penetrate times: ${this.player.mainWeapon.projectileAttr.penetrateTimes.toString()}\n`
+            // `current HP: ${this.player.currentHP.toString()}\n` +
+            `移動速度: ${this.player.moveSpeed.value}\n` +
+            `最大生命: ${this.player.maxHp.value}\n` +
+            `經驗增益: ${this.player.expGainPercentage.value}%\n` +
+            `衝刺冷卻時間: ${this.player.dashCoolDown.value}\n` +
+            // `dash speed: ${this.player.dashSpeed.toString()}\n` +
+            `攻擊速度: ${this.player.mainWeapon.attackSpeed.value}\n` +
+            // `shot per attack: ${this.player.mainWeapon.shotPerAttack.toString()}\n` +
+            // `shoot speed: ${this.player.mainWeapon.shootSpeed.toString()}\n` +
+            `基礎傷害: ${this.player.mainWeapon.projectileAttr.damage.value}\n` +
+            `子彈飛行速度: ${this.player.mainWeapon.projectileAttr.flySpeed.value}\n`;
+        // `exist duration: ${this.player.mainWeapon.projectileAttr.existDuration.toString()}\n`;
+        // `bounce on enemy times: ${this.player.mainWeapon.projectileAttr.bounceOnEnemyTimes.toString()}\n` +
+        // `penetrate times: ${this.player.mainWeapon.projectileAttr.penetrateTimes.toString()}\n`
         // label.string += `\nBuffs:\n`;
         // for (const buff of this.player.appliedBuff){
         //     label.string += `${buff.description}\n`;
         // }
+
+        let toAdds = [];
+        let i = 0;
+        while (i < this.showedBuff.length && this.showedBuff[i] === this.player.appliedBuff[i].id) i++;
+        toAdds = this.player.appliedBuff.slice(i).map(buff => buff.id);
+        this.showedBuff = [...this.showedBuff, ...toAdds];
+
+        for (const toAdd of toAdds) {
+            const spriteFrame: cc.SpriteFrame =  await loadResource('Art/BuffCard/' + toAdd, cc.SpriteFrame) as unknown as cc.SpriteFrame;
+            const buffIcon = new cc.Node();
+            buffIcon.addComponent(cc.Sprite).spriteFrame = spriteFrame;
+            buffIcon.parent = this.buffIconContainer;
+            buffIcon.width = 30;
+            buffIcon.height = 30;
+        }
     }
 }
