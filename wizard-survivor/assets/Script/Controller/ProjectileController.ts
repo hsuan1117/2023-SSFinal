@@ -57,6 +57,8 @@ export default class ProjectileController extends cc.Component {
                 this.penetrateCnt++;
             }
             else {
+                // Testing
+                GameManager.instance.particleManager.createParticle("White Explosion", this.node.position);
                 this.deleteProjectile();
             }
         }

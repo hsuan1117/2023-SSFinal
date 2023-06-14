@@ -51,9 +51,9 @@ export default class EnemyController extends cc.Component {
             return;
 
          if (this.rb.linearVelocity.x >= 0)
-             this.animCtrl.state = {...this.animCtrl.state, isFacingRight: true};
+             this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: 1};
          else
-             this.animCtrl.state = {...this.animCtrl.state, isFacingRight: false};
+             this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: -1};
 
          this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
     }
@@ -69,7 +69,6 @@ export default class EnemyController extends cc.Component {
          this.hp.reset();
          this.skillCoolDownTime = 0;
          this.animCtrl.initState();
-         cc.log("EnemyController init", this.animCtrl.state);
     }
 
     public hurt(damage: number, byUid: string) {

@@ -8,6 +8,7 @@ import {GameSystem} from "./GameSystem";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
 import LobbyUI from "../UI/LobbyUI";
+import ParticleManager from "./ParticleManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -61,6 +62,14 @@ export default class GameManager extends cc.Component {
         return this._waveManager;
     }
 
+    public get mapManager(): MapManager {
+        return this._mapManager;
+    }
+
+    public get particleManager(): ParticleManager {
+        return this._particleManager;
+    }
+
     public get gameSystem(): GameSystem {
         return this._gameSystem;
     }
@@ -103,6 +112,7 @@ export default class GameManager extends cc.Component {
     private _waveManager: WaveManager;
     private _gameSystem: GameSystem;
     private _mapManager: MapManager;
+    private _particleManager: ParticleManager;
 
     private _currentSceneType: string;
 
@@ -125,6 +135,7 @@ export default class GameManager extends cc.Component {
         this._playerManager = this.node.addComponent(PlayerManager);
         this._waveManager = this.node.addComponent(WaveManager);
         this._mapManager = this.node.addComponent(MapManager);
+        this._particleManager = this.node.addComponent(ParticleManager);
         this._gameSystem = new GameSystem();
 
         this.event = new cc.EventTarget();

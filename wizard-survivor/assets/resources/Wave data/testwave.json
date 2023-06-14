@@ -1,12 +1,12 @@
 {
   "1": {
     "BumpingPig": {
-      "spawnInterval": 100000,
-      "spawnNum": 1
+      "spawnInterval": 10,
+      "spawnNum": 10
     },
     "Rabbit": {
-        "spawnInterval": 100000,
-        "spawnNum": 1
+        "spawnInterval": 10,
+        "spawnNum": 10
     }
   },
   "2": {

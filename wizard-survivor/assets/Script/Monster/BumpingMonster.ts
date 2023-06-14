@@ -1,5 +1,6 @@
 import EnemyController from "../Controller/EnemyController";
 import {AttrNum} from "../Helper/Attributes";
+import {ignoreZ} from "../Helper/utils";
 const {ccclass, property} = cc._decorator;
 
 // this is a move very slow but can bump into player monster
@@ -8,6 +9,7 @@ export default class BumpingMonster extends EnemyController {
 
     private bumpingSpeed: number = 500;
     private bumpingDirection: cc.Vec2 = cc.Vec2.ZERO;
+    private bumpingStartPos: cc.Vec2 = cc.Vec2.ZERO;
     private bumpingTime: number = -1;
 
     @property(AttrNum)
@@ -19,10 +21,16 @@ export default class BumpingMonster extends EnemyController {
         this.skillCoolDown.defaultValue = 5;
     }
 
+    protected skillTrigger() {
+        this.bumpingTime = 0;
+        this.bumpingStartPos = ignoreZ(this.node.position);
+        this.bumpingDirection = this.findClosestPlayer().sub(this.node.position).normalize();
+        this.animCtrl.state = {...this.animCtrl.state, isMoving: false};
+    }
+
     update (dt) {
         if (this.skillCoolDownTime >= this.skillCoolDown.value  && this.bumpingTime < 0 && this.findClosestPlayer().sub(this.node.position).mag() < this.triggerRadius.value) {
-            this.bumpingTime = 0;
-            this.bumpingDirection = this.findClosestPlayer().sub(this.node.position).normalize();
+            this.skillTrigger();
             return;
         }
         else if (this.bumpingTime >= 0) {
@@ -30,10 +38,11 @@ export default class BumpingMonster extends EnemyController {
             return;
         }
 
+        // skill cool down
         if (this.skillCoolDownTime < this.skillCoolDown.value)
             this.skillCoolDownTime += dt;
-        this.followPlayer();
-        this.playAnim();
+
+        super.update(dt);
     }
 
     protected bumpingPlayer(dt) {
@@ -42,7 +51,7 @@ export default class BumpingMonster extends EnemyController {
             this.rb.linearVelocity = cc.Vec2.ZERO;
             // play ready to bump anim
         }
-        else if (this.bumpingTime < 1.6) {
+        else if (this.bumpingStartPos.sub(ignoreZ(this.node.position)).mag() < this.triggerRadius.value + 50) {
             this.rb.linearVelocity = this.bumpingDirection.mul(this.bumpingSpeed);
             // play bumping anim
         }

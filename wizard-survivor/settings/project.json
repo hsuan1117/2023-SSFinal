@@ -3,17 +3,22 @@
     "GameObject",
     "Player",
     "Camera",
-    "FixedUI"
+    "FixedUI",
+    "Enemy"
   ],
   "collision-matrix": [
     [
       true,
       true,
-      false
+      false,
+      null,
+      true
     ],
     [
       true,
       true,
+      true,
+      null,
       true
     ],
     [
@@ -23,6 +28,13 @@
     ],
     [
       false,
+      false,
+      false,
+      false
+    ],
+    [
+      true,
+      true,
       false,
       false,
       false

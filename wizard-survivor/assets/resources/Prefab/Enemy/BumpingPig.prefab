@@ -331,7 +331,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "anim": null,
+    "anim": {
+      "__id__": 4
+    },
     "enemyIdleAnim": "BumpingPigStand",
     "enemyMoveAnim": "BumpingPigWalk",
     "enemyHurtAnim": "BumpingPigStand",
