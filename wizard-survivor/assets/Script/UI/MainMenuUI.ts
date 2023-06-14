@@ -20,9 +20,9 @@ export enum GameType {
 
 export type GameInfo = {
     localUids: string[];
-    id?: string|number;
+    id?: string | number;
     users?: {
-        id: string|number;
+        id: string | number;
         name: string;
         email: string;
     }[];
@@ -158,12 +158,15 @@ export default class MainMenuUI extends cc.Component {
                 alert(`錯誤：${room.message}`);
             return;
         }
+        console.log(room)
+        const userId = room.user_id
+        room = room.room;
+
         const gameInfo: GameInfo = {
             gameType: GameType.ONLINE,
-            localUids: room.users.map((user) => user.id),
+            localUids: [userId],
             ...room,
         }
-        console.log(gameInfo)
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo})
     }
 

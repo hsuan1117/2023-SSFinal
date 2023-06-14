@@ -142,7 +142,9 @@ export class RemoteGameSystem extends GameSystem {
 
         // @ts-ignore
         this.echoInstance.join('room.' + this.gameInfo?.id).listenToAll((evt, data) => {
-            if (evt.startsWith('client-')) {
+            console.log('receive event', evt, data)
+            if (evt.startsWith('.client-')) {
+                console.log('dispatch event', evt.split('client-')[1], data)
                 this.event.emit(evt.split('client-')[1], data);
             }
         });
