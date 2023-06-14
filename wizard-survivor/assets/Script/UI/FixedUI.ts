@@ -50,7 +50,6 @@ export default class FixedUI extends cc.Component {
 
     private enablePlayerStatUIForPlayer(uid: string, childIdx: number){
         let player = GameManager.instance.playerManager.getPlayer(uid)
-        console.log('enablePlayerStatUIForPlayer, uid, player, childIdx', uid, player, childIdx);
         if (!player) return;
         let playerStatUI = this.node.getChildByName(`PlayerStatUI${childIdx}`).getComponent(PlayerStatUI);
         playerStatUI.node.parent = this.node;

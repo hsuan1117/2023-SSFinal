@@ -4,6 +4,9 @@ import GameManager from "./GameManager";
 import Echo from "laravel-echo";
 import {GameInfo} from "../UI/MainMenuUI";
 
+/*
+1. 負責轉發需要和其他客戶端、伺服器同步的事件。
+ */
 export class GameSystem {
 
     // === Define Events ===

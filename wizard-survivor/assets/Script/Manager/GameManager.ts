@@ -97,17 +97,17 @@ export default class GameManager extends cc.Component {
         return this._currentSceneType;
     }
 
+    /*每升一等，升等需要的經驗會增加多少百分比*/
+    private readonly UPGRADE_EXP_GROWTH: number = 20;
 
+    /* === 局內、玩家共享遊戲狀態 === */
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
     public upgradeExp: AttrNum = new AttrNum(100);
     public level: AttrNum = new AttrNum(1);
     public exp: AttrNum = new AttrNum(0);
 
-
-    /*每升一等，升等需要的經驗會增加多少百分比*/
-    private readonly UPGRADE_EXP_GROWTH: number = 20;
-
+    /* === 管理類 === */
     private static _instance: GameManager = null;
     private _inputManager: InputManager;
     private _poolManager: PoolManager;
@@ -119,6 +119,7 @@ export default class GameManager extends cc.Component {
 
     private _currentSceneType: string;
 
+    /* == 場景分層 == */
     private _backgroundLayer: cc.Node;
     private _itemLayer: cc.Node;
     private _playerEnemyLayer: cc.Node;
@@ -126,7 +127,8 @@ export default class GameManager extends cc.Component {
 
     private _localUids: string[];
 
-    // CC-CALLBACKS
+
+    /* == LIFE-CYCLE CALLBACKS == */
     onLoad() {
         cc.game.setFrameRate(59);
         cc.director.getPhysicsManager().enabled = true;
@@ -318,6 +320,7 @@ export default class GameManager extends cc.Component {
         }
 
         await Promise.all(promises);
+
         this.event.emit(GameManager.ON_GAME_LOGIC_READY);
     }
 

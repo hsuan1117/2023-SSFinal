@@ -36,16 +36,11 @@ export default class LobbyUI extends cc.Component {
             return Promise.reject("No uid to choose");
         }
 
-        console.log('LobbyUI.previewCharas', this.previewCharas);
-        console.log('LobbyUI.uids', this.uids);
-
         this.playerFocus.init(this.previewCharas, cc.v2(0, 20), true);
 
         for (let uid of this.uids) {
             this.playerFocus.focusOnIndex(uid, 0);
         }
-
-        console.log('LobbyUI.chooseCharaFor, uids', this.uids);
 
         let chooseResult = {};
 
@@ -71,7 +66,7 @@ export default class LobbyUI extends cc.Component {
     public async createCharaFromChooseResult() {
         let promises = [];
         for (let uid of this.uids) {
-            GameManager.instance.playerManager.createPlayerLocally(uid, this.chooseResult[uid]);
+            GameManager.instance.gameSystem.emitCreatePlayer(uid, this.chooseResult[uid]);
             promises.push(
                 GameManager.instance.playerManager.instantiatePlayer(uid)
                     .then((player) => {

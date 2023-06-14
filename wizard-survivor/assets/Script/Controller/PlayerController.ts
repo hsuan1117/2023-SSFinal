@@ -71,13 +71,6 @@ export default class PlayerController extends cc.Component{
 
         this.event = new cc.EventTarget();
 
-        // For Debug, press Q to apply ExplosionOnDash buff
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode})=>{
-            if (keyCode == cc.macro.KEY.q){
-                GameManager.instance.gameSystem.emitApplyBuff(this.uid, "ExplosionOnDash");
-            }
-        })
-
         this.mainWeapon = this.mainWeaponPrefab? this.addWeapon(this.mainWeaponPrefab) : null
 
         // Attributes Change Event
