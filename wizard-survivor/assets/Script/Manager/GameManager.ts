@@ -4,19 +4,22 @@ import PlayerManager from "./PlayerManager";
 import WaveManager from "./WaveManager";
 import {AttrNum} from "../Helper/Attributes";
 import {loadResource} from "../Helper/utils";
-import {GameSystem} from "./GameSystem";
+import {createGameSystem, GameSystem} from "./GameSystem";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
 import LobbyUI from "../UI/LobbyUI";
+import MainMenuUI, {GameInfo} from "../UI/MainMenuUI";
 import ParticleManager from "./ParticleManager";
+import Game = cc.Game;
 
 const {ccclass, property} = cc._decorator;
 
 /*
-1. 創建場景：遊戲物件、UI 等
+1. 控制遊戲流程和場景
 2. 提供 Manager 的入口
-3. 統計全局遊戲數據：EXP、等級、殺敵數、金幣數等
+3. 管理玩家共享的遊戲數據：EXP、等級、殺敵數、金幣數等
 4. 提供全局事件
+5. 管理全局屬性：玩家資訊、遊戲資訊等
  */
 @ccclass
 export default class GameManager extends cc.Component {
@@ -121,6 +124,7 @@ export default class GameManager extends cc.Component {
     private _playerEnemyLayer: cc.Node;
     private _bulletLayer: cc.Node;
 
+    private _localUids: string[];
 
     // CC-CALLBACKS
     onLoad() {
@@ -136,9 +140,12 @@ export default class GameManager extends cc.Component {
         this._waveManager = this.node.addComponent(WaveManager);
         this._mapManager = this.node.addComponent(MapManager);
         this._particleManager = this.node.addComponent(ParticleManager);
-        this._gameSystem = new GameSystem();
+        this._gameSystem = null; // this will be set before LobbyUI is loaded
 
         this.event = new cc.EventTarget();
+
+        this._currentSceneType = 'UNKNOWN';
+
 
         // 當下列屬性改變，發布遊戲狀態改變事件，用於 Update FixedUI
         const onGameStatCh = () => {this.event.emit(GameManager.ON_GAME_STAT_CHANGE)};
@@ -186,22 +193,15 @@ export default class GameManager extends cc.Component {
             this.event.emit(GameManager.ON_LEVEL_UP);
             this.upgrade();
         });
-
-        // 來自 GameSystem 的廣播
-        this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
-        this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
-        this.gameSystem.event.on(GameSystem.ON_GAME_START, this.onGameStart, this);
     }
 
     start() {
-        GameManager.instance.inputManager.addLocalPlayerInput('p1', WASD_TO_CONTROLLER);
-        GameManager.instance.inputManager.addLocalPlayerInput('p2', ARROW_TO_CONTROLLER);
-        this.generateLobbyScene();
+        this.changeScene(GameManager.SCENE_MAIN_MENU);
         this._waveManager.init();
     }
 
 
-    // PUBLIC METHODS:
+    /* === PUBLIC METHODS === */
     public pauseGame() {
         cc.director.pause();
     }
@@ -210,21 +210,26 @@ export default class GameManager extends cc.Component {
         cc.director.resume();
     }
 
-    public changeScene(sceneType: string) {
-        this._mapManager.clearMap();
-        this._waveManager.clearWave();
+    public async changeScene(sceneType: string) {
+        if (this._currentSceneType === GameManager.SCENE_GAME) {
+            this._mapManager.clearMap();
+            this._waveManager.clearWave();
+        }
         this.destroyScene();
 
-        if (sceneType === GameManager.SCENE_LOBBY){
-            this.generateLobbyScene();
+        if (sceneType === GameManager.SCENE_MAIN_MENU) {
+            await this.generateMainMenuScene();
+        }
+        else if (sceneType === GameManager.SCENE_LOBBY){
+            await this.generateLobbyScene();
         }
         else if (sceneType === GameManager.SCENE_GAME) {
-            this.generateGameScene();
             this._waveManager.setWave(1);
             this._mapManager.init();
+            await this.generateGameScene();
         } else if (sceneType === GameManager.SCENE_RESULT) {
             this.playerManager.clearAllChara();
-            this.generateResultScene();
+            await this.generateResultScene();
         }
         this._currentSceneType = sceneType;
     }
@@ -233,6 +238,44 @@ export default class GameManager extends cc.Component {
     // HELPERS:
     private onGameStart() {
         this.changeScene(GameManager.SCENE_GAME);
+    }
+
+    private async generateMainMenuScene(){
+        const mainMenuUI =  await loadResource('Prefab/UI/MainMenuUI', cc.Prefab)
+            .then((prefab) => (cc.instantiate(prefab) as unknown as cc.Node).getComponent(MainMenuUI));
+        mainMenuUI.node.parent = this.node;
+
+        this.inputManager.addLocalPlayerInput('anonymous', WASD_TO_CONTROLLER);
+        mainMenuUI.init('anonymous');
+
+        let gameInfo: GameInfo = await mainMenuUI.getStartGameInfo();
+
+        this._localUids = gameInfo.localUids;
+        this._localUids.sort();
+
+        let initGameSystem = (gameInfo: GameInfo) => {
+            this._gameSystem = createGameSystem(gameInfo);
+            this._playerManager.setGameSystem(this._gameSystem);
+            this._inputManager.setGameSystem(this._gameSystem);
+            this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
+            this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
+            this.gameSystem.event.on(GameSystem.ON_GAME_START, this.onGameStart, this);
+        }
+        initGameSystem(gameInfo);
+
+        // Set input for local player
+        let conversion = [WASD_TO_CONTROLLER, ARROW_TO_CONTROLLER];
+        if (this._localUids.length > 2) throw new Error('For now, only support 2 players');
+
+        for (let i=0, len=this._localUids.length; i<len; i++) {
+            this.inputManager.addLocalPlayerInput(this._localUids[i], conversion[i%conversion.length]);
+        }
+
+        // console.log('GameManager.generateMainMenuScene: gameInfo, this._localUids, this._gameSystem', gameInfo, this._localUids, this._gameSystem);
+        // console.log('GameManager.generateMainMenuScene: this._inputManager', this._inputManager);
+
+        this.inputManager.removeLocalPlayerInput('anonymous');
+        this.changeScene(GameManager.SCENE_LOBBY);
     }
 
     private async generateGameScene() {
@@ -285,8 +328,6 @@ export default class GameManager extends cc.Component {
         如果該物件有 PlayerController，則會被抓取為角色預覽。
         請確保角色 Prefab 的 name 和 Node name 相同，兩者都被視作 CharaId
          */
-        let uids = ['p1', 'p2'];
-
         let enterGame: cc.Node;
         let previewCharas: cc.Node[] = [];
 
@@ -296,7 +337,7 @@ export default class GameManager extends cc.Component {
                     .getComponent(LobbyUI));
         lobby.node.parent = this.backgroundLayer;
         lobby.node.setPosition(0, 0);
-        lobby.init(uids);
+        lobby.init(this._localUids);
         await lobby.chooseCharaFor();
         await lobby.createCharaFromChooseResult();
     }

@@ -1,4 +1,3 @@
-import GameManager from "./GameManager";
 import {GameSystem} from "./GameSystem";
 import {Direction} from "../Helper/utils";
 
@@ -85,6 +84,7 @@ export default class InputManager extends cc.Component {
     private conversionOfUid: Map<string, { [keyCode: number]: string }> = new Map();
     private _currentLStick: Map<string, cc.Vec2> = new Map();
     private _isPressing: Map<string, Map<string, boolean>> = new Map();
+    private gameSystem: GameSystem;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -93,27 +93,23 @@ export default class InputManager extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 
-    start() {
-        GameManager.instance.gameSystem.event.on(
-            GameSystem.ON_INPUT,
-            ({input}) => this.performInput(input),
-            this
-        )
-    }
-
 
     // PUBLIC METHODS:
-    public static lrOfStick(stick: cc.Vec2): cc.Vec2{
-        if (stick.x > 700){
+    public setGameSystem(gameSystem: GameSystem) {
+        this.gameSystem = gameSystem;
+        gameSystem.event.on(GameSystem.ON_INPUT, this.broadcastInputToLocal, this);
+    }
+
+    public static lrOfStick(stick: cc.Vec2): cc.Vec2 {
+        if (stick.x > 700) {
             return Direction.RIGHT;
-        }
-        else if (stick.x < -700){
+        } else if (stick.x < -700) {
             return Direction.LEFT
-        }
-        else{
+        } else {
             return null;
         }
     }
+
     /*
     @param uid: 使用者的 uid
     @param conversion: 該使用者的按鍵對照表
@@ -125,6 +121,12 @@ export default class InputManager extends cc.Component {
             uid,
             new Map([['X', false], ['Y', false], ['A', false], ['B', false], ['L_UP', false], ['L_DOWN', false], ['L_LEFT', false], ['L_RIGHT', false]])
         );
+    }
+
+    public removeLocalPlayerInput(uid: string) {
+        this.conversionOfUid.delete(uid);
+        this._currentLStick.delete(uid);
+        this._isPressing.delete(uid);
     }
 
     /*
@@ -144,8 +146,16 @@ export default class InputManager extends cc.Component {
     }
 
     // HELPERS:
-    private performInput(input: Input) {
-        if (this.conversionOfUid.has(input.uid)){
+    private emitInputToGameSystem(input: Input) {
+        if (this.gameSystem) this.gameSystem.emitInput(input);
+        else {
+            // If gameSystem is not set, by pass gameSystem and emit input directly
+            this.broadcastInputToLocal({input});
+        }
+    }
+
+    private broadcastInputToLocal({input}) {
+        if (this.conversionOfUid.has(input.uid)) {
             this.event.emit(InputManager.ON_LOCAL_INPUT, input);
         }
         this.event.emit(InputManager.ON_INPUT, input);
@@ -159,14 +169,14 @@ export default class InputManager extends cc.Component {
             this._isPressing.get(uid).set(conversion[keyCode], true)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                GameManager.instance.gameSystem.emitInput(new Input(
+                this.emitInputToGameSystem(new Input(
                     uid, InputType.BUTTON_DOWN,
                     conversion[keyCode],
                     0, 0
                 ));
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                GameManager.instance.gameSystem.emitInput(new Input(
+                this.emitInputToGameSystem(new Input(
                     uid, InputType.STICK,
                     '',
                     this._currentLStick.get(uid).x, this._currentLStick.get(uid).y
@@ -186,14 +196,15 @@ export default class InputManager extends cc.Component {
             // console.log(`set ${conversion[keyCode]} to false, this Key is Pressed: ${this._isPressing.get(uid).get(conversion[keyCode])}`)
 
             if (conversion[keyCode] == 'A' || conversion[keyCode] == 'B' || conversion[keyCode] == 'X' || conversion[keyCode] == 'Y') {
-                GameManager.instance.gameSystem.emitInput(new Input(
-                    uid, InputType.BUTTON_UP,
+                this.emitInputToGameSystem(new Input(
+                    uid,
+                    InputType.BUTTON_UP,
                     conversion[keyCode],
-                    0, 0
-                ));
+                    0, 0)
+                );
             } else if (conversion[keyCode] == 'L_UP' || conversion[keyCode] == 'L_DOWN' || conversion[keyCode] == 'L_LEFT' || conversion[keyCode] == 'L_RIGHT') {
                 this.updateStick(uid);
-                GameManager.instance.gameSystem.emitInput(new Input(
+                this.emitInputToGameSystem(new Input(
                     uid, InputType.STICK,
                     '',
                     this._currentLStick.get(uid).x, this._currentLStick.get(uid).y

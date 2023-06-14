@@ -2,6 +2,7 @@ import Game = cc.Game;
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
+import {GameInfo} from "../UI/MainMenuUI";
 
 export class GameSystem {
 
@@ -38,7 +39,7 @@ export class GameSystem {
 
     注意！！！這個事件會廣播給所有 client，但是只有 remote client 需要處理這個事件
 
-    passed event data: {uid: string, charaId: string}
+    passed event data: {uid: string, charaId: string, isLocal: boolean}
      */
     public static readonly ON_CREATE_PLAYER: string = "ON_CREATE_PLAYER";
 
@@ -87,7 +88,7 @@ export class GameSystem {
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
-        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
+        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId, isLocal: true});
     }
 
     public emitGameStart() {
@@ -270,4 +271,8 @@ class RemoteGameSystem extends GameSystem {
             this.createEchoInstanceFromToken(response.token);
         })
     }
+}
+
+export function createGameSystem(gameInfo: GameInfo): GameSystem {
+    return new GameSystem();
 }

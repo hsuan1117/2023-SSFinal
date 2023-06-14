@@ -5,6 +5,7 @@ import {loadResource} from "../Helper/utils";
 import {GameSystem} from "./GameSystem";
 import {Buffs} from "../Helper/Buff";
 import Game = cc.Game;
+import game = cc.game;
 
 const {ccclass, property} = cc._decorator;
 
@@ -32,16 +33,14 @@ export default class PlayerManager extends cc.Component {
     private playerControllers: {[id: string]: PlayerController} = {};
     private playerDeltaHp: {[uid: string]: number} = {}
 
+    private gameSystem: GameSystem;
 
-    // LIFE-CYCLE CALLBACKS:
-    start () {
-        // listen to Input Manager
+
+    // === LIFE-CYCLE CALLBACKS ===
+    start(){
         GameManager.instance.inputManager.event.on(InputManager.ON_INPUT, this.onInput, this);
-        GameManager.instance.gameSystem.event.on(GameSystem.ON_BUFF_APPLY, this.onBuffApply, this);
-        GameManager.instance.gameSystem.event.on(GameSystem.ON_PLAYER_HP_CHANGE, this.onHPChange, this);
-        GameManager.instance.gameSystem.event.on(GameSystem.ON_CREATE_PLAYER,this.createPlayer, this);
+        this.clearAllChara();
     }
-
 
     // PUBLIC METHODS
     /*
@@ -59,15 +58,6 @@ export default class PlayerManager extends cc.Component {
         return this.isLocalPlayer[id] == true;
     }
 
-    /*
-    實例化一個 Player，設定主武器和 Buff，並加入場景樹
-     */
-    public createPlayerLocally(uid: string, charaId: string){
-        this.createPlayer({uid: uid, charaId: charaId});
-        this.isLocalPlayer[uid] = true;
-        GameManager.instance.gameSystem.emitCreatePlayer(uid, charaId);
-    }
-
     public async instantiatePlayer(uid: string){
         return await loadResource(`Prefab/Chara/${this.playerChara[uid]}`, cc.Prefab)
             .then((prefab) =>{
@@ -80,8 +70,11 @@ export default class PlayerManager extends cc.Component {
             })
     }
 
-    public init(){
-        this.clearAllChara();
+    public setGameSystem(gameSystem: GameSystem){
+        this.gameSystem = gameSystem;
+        this.gameSystem.event.on(GameSystem.ON_BUFF_APPLY, this.onBuffApply, this);
+        this.gameSystem.event.on(GameSystem.ON_PLAYER_HP_CHANGE, this.onHPChange, this);
+        this.gameSystem.event.on(GameSystem.ON_CREATE_PLAYER,this.createPlayer, this);
     }
 
     public clearAllChara(){
@@ -94,12 +87,12 @@ export default class PlayerManager extends cc.Component {
 
 
     // HELPERS
-    private createPlayer({uid, charaId}){
+    private createPlayer({uid, charaId, isLocal}){
         if (this.isLocalPlayer[uid]) return;
         this.playerIds.push(uid);
         this.playerChara[uid] = charaId;
         this.playerDeltaHp[uid] = 0;
-        this.isLocalPlayer[uid] = false;
+        this.isLocalPlayer[uid] = isLocal;
     }
 
     private onInput(input: Input){

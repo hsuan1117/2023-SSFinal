@@ -6,15 +6,9 @@ import {Direction, padZ} from "../Helper/utils";
 const {ccclass, property} = cc._decorator;
 
 /*
-init with nodes to be focus
-
-listen onInput
-    emit event: confirm, uid, node
-    select left
-    select right
-
-focus on (uid, node)
-remove focus(uid)
+通過 focusOn(uid, index) 來使 uid 鎖定在特定 index 上
+接著會聆聽來自 InputManager 的 ON_LOCAL_INPUT 事件，
+如果該 uid 在 PlayerFocus 裡有資料，則會根據該 uid 的 input 來移動 focus
  */
 
 @ccclass
