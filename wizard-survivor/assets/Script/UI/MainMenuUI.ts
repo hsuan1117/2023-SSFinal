@@ -19,7 +19,7 @@ export type GameInfo = {
 @ccclass
 export default class MainMenuUI extends cc.Component {
 
-    private readonly child: string[] = ['Login', 'Offline1p', 'Offline2p', 'Leaderboard']
+    private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p', 'Leaderboard'];
     private uid: string;
 
     private playerFocus: PlayerFocus;
@@ -40,13 +40,17 @@ export default class MainMenuUI extends cc.Component {
 
         this.playerFocus.init(focusTarget, cc.v2(0, 50), true);
         this.playerFocus.focusOnIndex(this.uid, 0);
+
         this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
     }
 
     /*
      */
     public async getStartGameInfo(): Promise<GameInfo> {
-
+        let res: GameInfo = {
+            localUids: ['p1', 'p2']
+        }
+        return res;
     }
 
 
@@ -63,10 +67,10 @@ export default class MainMenuUI extends cc.Component {
     }
 
     private offline1p(): GameInfo {
-        return null;
+        console.log('offline1p')
     }
     private offline2p() : GameInfo{
-        return null;
+        console.log('offline2p')
     }
     private onlineWithNewRoom(): GameInfo {
         return null;
