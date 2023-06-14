@@ -24,9 +24,15 @@ export default class PlayerHPUI extends cc.Component {
 
     private onPlayerAttrChange(){
         this.node.removeAllChildren();
-        for (let i=0; i<this.player.currentHP.value; i++){
+        for (let i=0; i<this.player.maxHp.value; i++){
             const hp = GameManager.instance.poolManager.createPrefab(this.hpIcon);
             hp.parent = this.node;
+            if (i < this.player.currentHP.value) {
+                hp.color = cc.Color.WHITE;
+            }
+            else{
+                hp.color = cc.Color.BLACK;
+            }
         }
     }
 }
