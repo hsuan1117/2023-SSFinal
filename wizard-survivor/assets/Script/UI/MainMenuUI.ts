@@ -109,7 +109,13 @@ export default class MainMenuUI extends cc.Component {
             console.log(err);
         })
         localStorage.setItem("token", token);
-        await this.getRoom();
+
+        if (this.roomType) {
+            this.node.getChildByName("AuthDialog").active = false;
+            this.node.getChildByName("RoomDialog").active = true;
+        } else {
+            await this.getRoom();
+        }
     }
 
     private async join() {
@@ -124,7 +130,7 @@ export default class MainMenuUI extends cc.Component {
         } else {
             room = await api("GET", "/rooms")
         }
-        if(typeof room.message !== "undefined") {
+        if (typeof room.message !== "undefined") {
             alert(`錯誤：${room.message}`);
             return;
         }
@@ -139,7 +145,6 @@ export default class MainMenuUI extends cc.Component {
         this.roomType = 0;
         if (localStorage.getItem("token") === null)
             this.node.getChildByName('AuthDialog').active = true;
-        else await this.getRoom();
         return null;
     }
 
