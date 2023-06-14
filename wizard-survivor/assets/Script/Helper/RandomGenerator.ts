@@ -46,5 +46,4 @@ export default class RandomGenerator {
             return (t >>> 0) / 4294967296;
         }
     }
-
 }

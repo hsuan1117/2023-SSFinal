@@ -1,5 +1,5 @@
 import GameManager from "../Manager/GameManager";
-import {ignoreZ} from "../Helper/utils";
+import {ignoreZ, loadResource} from "../Helper/utils";
 import {AttrNum} from "../Helper/Attributes";
 import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
 import WaveManager from "../Manager/WaveManager";
@@ -31,6 +31,14 @@ export default class EnemyController extends cc.Component {
     @property(AttrNum)
     public collideDamageCoolDown: AttrNum = new AttrNum();
 
+    @property(cc.Material)
+    public normalMaterial: cc.Material = null;
+
+    @property(cc.Material)
+    public hurtMaterial: cc.Material = null;
+
+    private sprite: cc.Sprite = null;
+
     protected skillCoolDownTime: number = 0;
 
 
@@ -43,6 +51,11 @@ export default class EnemyController extends cc.Component {
         this.addComponent(DamagePlayerOnCollide).init(this.collideDamage.value, this.collideDamageCoolDown.value);
         this.animCtrl = this.node.getComponent(EnemyAnimController);
         this.animCtrl.initState();
+        this.sprite = this.node.getChildByName("Sprite").getComponent(cc.Sprite);
+        this.normalMaterial = this.sprite.getMaterial(0);
+        loadResource("Material/Flash", cc.Material).then((mat: cc.Material) => {
+            this.hurtMaterial = mat;
+        });
     }
 
     playAnim() {
@@ -71,8 +84,15 @@ export default class EnemyController extends cc.Component {
          this.animCtrl.initState();
     }
 
+    private flashEnd() {
+         this.sprite.setMaterial(0, this.normalMaterial);
+    }
+
     public hurt(damage: number, byUid: string) {
         this.hp.addFactor -= damage;
+        this.sprite.setMaterial(0, this.hurtMaterial);
+        this.unschedule(this.flashEnd);
+        this.schedule(this.flashEnd, 0.1);
         if (this.hp.value <= 0) {
             this.dead(byUid);
         }
