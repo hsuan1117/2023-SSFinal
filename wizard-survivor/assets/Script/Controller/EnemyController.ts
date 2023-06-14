@@ -69,7 +69,6 @@ export default class EnemyController extends cc.Component {
          this.hp.reset();
          this.skillCoolDownTime = 0;
          this.animCtrl.initState();
-         cc.log("EnemyController init", this.animCtrl.state);
     }
 
     public hurt(damage: number, byUid: string) {

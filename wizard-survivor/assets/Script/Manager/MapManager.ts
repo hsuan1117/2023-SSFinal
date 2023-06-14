@@ -1,10 +1,13 @@
 import GameManager from "./GameManager";
+import {loadResource} from "../Helper/utils";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MapManager extends cc.Component {
 
-    private stageName: string = "ForestStage";
+    private stageNames: string[] = ["ForestStage", "FireStage", "IceStage", "SwampStage", "UndergroundStage"];
+
+    private stageMaps: {[stageName: string]: cc.TiledMap} = {};
 
     private stageMap: cc.TiledMap = null;
 
@@ -23,11 +26,12 @@ export default class MapManager extends cc.Component {
     // onLoad () {}
 
     start () {
-        cc.resources.load("Map/" + this.stageName, cc.TiledMapAsset,(err, map: cc.TiledMap) => {
-            this.stageMap = map;
-            this.mapWidth = 512;
-            this.mapHeight = 512;
-        });
+        this.mapWidth = this.mapHeight = 512;
+        for (const stageName of this.stageNames) {
+            cc.resources.load("Map/" + stageName, cc.TiledMapAsset, (err, map: cc.TiledMap) => {
+                this.stageMaps[stageName] = map;
+            });
+        }
         for (let i = 0; i < this.decorationPrefabName.length; i++) {
             cc.resources.load("Prefab/Decoration/" + this.decorationPrefabName[i], cc.Prefab, (err, prefab: cc.Prefab) => {
                 this.decorationPrefabs[i] = prefab;
@@ -40,6 +44,7 @@ export default class MapManager extends cc.Component {
     public init() {
         this.started = true;
         this.visPos = {};
+        this.stageMap = this.stageMaps[this.stageNames[Math.floor(Math.random() * this.stageNames.length)]];
     }
 
     public clearMap() {
@@ -55,6 +60,7 @@ export default class MapManager extends cc.Component {
         node.parent = GameManager.instance.backgroundLayer;
 
         /*
+        generate tree
         for (let i = -216 + 16; i <= 216 - 16; i += 32) {
             for (let j = -216 + 16; j <= 216 - 16; j += 32) {
                 let rnd = Math.random();
@@ -65,34 +71,21 @@ export default class MapManager extends cc.Component {
                 }
             }
         }
-         */
+        */
 
         if (Object.keys(this.visPos).length <= 20)
             return;
 
         // random generate fountain
-        let rand = Math.random();
-        if (rand < 0.01) {
-            let fountain = cc.instantiate(this.decorationPrefabs[0]);
-            fountain.parent = node;
-            return;
+        for (let i = 0; i < 3; i++) {
+            let rand = Math.random();
+            if (rand < 0.01) {
+                let fountain = cc.instantiate(this.decorationPrefabs[i]);
+                fountain.parent = node;
+                return;
+            }
         }
 
-        // random generate time gate
-        rand = Math.random();
-        if (rand < 0.01) {
-            let timeGate = cc.instantiate(this.decorationPrefabs[1]);
-            timeGate.parent = node;
-            return;
-        }
-
-        // random generate DF tower
-        rand = Math.random();
-        if (rand < 0.01) {
-            let dfTower = cc.instantiate(this.decorationPrefabs[2]);
-            dfTower.parent = node;
-            return;
-        }
     }
 
     private posHash(x, y) {
