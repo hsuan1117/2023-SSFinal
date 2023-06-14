@@ -2,6 +2,7 @@ import {ignoreZ, loadResource} from "../Helper/utils";
 import {padZ} from "../Helper/utils";
 import GameManager from "./GameManager";
 import winSize = cc.winSize;
+import RandomGenerator from "../Helper/RandomGenerator";
 
 const {ccclass, property} = cc._decorator;
 
@@ -35,6 +36,8 @@ export default class WaveManager extends cc.Component {
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
     private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
 
+    private rand: RandomGenerator = new RandomGenerator();
+
     private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit"];
 
     private waveData: cc.JsonAsset = null;
@@ -42,8 +45,6 @@ export default class WaveManager extends cc.Component {
     private waveDataName: string = "testwave";
 
     private enemyPrefabs: cc.Prefab[] = [];
-
-    private enemyPrefabPath: string = "Prefab/Enemy";
 
     private spawnRadius: number = 600; // 剛好在螢幕外
 
@@ -85,6 +86,9 @@ export default class WaveManager extends cc.Component {
                     this.enemyDropItems[type] = prefab;
                 });
         }
+
+        // init rand
+        this.rand.setSeed("loli");
     }
 
     onLoad(){
@@ -113,8 +117,9 @@ export default class WaveManager extends cc.Component {
     }
 
     private randomSpawnPos(){
-        let angle = Math.random() * 2 * Math.PI;
-        let vec = cc.v2(Math.cos(angle) * this.spawnRadius, Math.sin(angle) * this.spawnRadius);
+        let angle = this.rand.random() * 2 * Math.PI;
+        let radius = this.spawnRadius + this.rand.random() * 200;
+        let vec = cc.v2(Math.cos(angle) * radius, Math.sin(angle) * radius);
         return this.spawnCenter.add(vec);
     }
 
@@ -132,7 +137,7 @@ export default class WaveManager extends cc.Component {
     }
 
     private dropRandomItem(position: cc.Vec3){
-        const random = Math.random();
+        const random = this.rand.random();
         let sum = 0;
         for (let i = 0; i < this.enemyDropItemsType.length; i++){
             sum += this.enemyDropItemsRate[i];
