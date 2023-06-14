@@ -10,21 +10,21 @@ for (let i = 0; i < 8; i++) {
     eightDirections.push(cc.v2(Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)));
 }
 
-export function ignoreZ(v3: cc.Vec3){
+export function ignoreZ(v3: cc.Vec3) {
     return cc.v2(v3.x, v3.y);
 }
 
-export function padZ(v2: cc.Vec2){
+export function padZ(v2: cc.Vec2) {
     return cc.v3(v2.x, v2.y, 0);
 }
 
-export function nodeDistanceSqr(node1: cc.Node, node2: cc.Node){
+export function nodeDistanceSqr(node1: cc.Node, node2: cc.Node) {
     return node1.convertToWorldSpaceAR(cc.v2(0, 0))
         .sub(node2.convertToWorldSpaceAR(cc.v2(0, 0)))
         .magSqr();
 }
 
-export function loadResource(path: string, type: typeof cc.Asset){
+export function loadResource(path: string, type: typeof cc.Asset) {
     return new Promise<cc.Asset>((resolve, reject) => {
         cc.resources.load(path, type, (err, res) =>
             err ? reject(err) : resolve(res)
@@ -32,7 +32,7 @@ export function loadResource(path: string, type: typeof cc.Asset){
     })
 }
 
-export function shuffle(arr){
+export function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i));
         [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -87,10 +87,10 @@ export const DEV_ENV: EnvConfig = {
 // todo: you can change DEV_ENV to PROD_ENV to switch to production mode
 export const CURRENT_ENV = DEV_ENV;
 
-export async function api(method, endpoint, jsonBody) {
+export async function api(method, endpoint, jsonBody?) {
     return fetch(CURRENT_ENV.API_CONFIG.API_URL + endpoint, {
         method,
-        body: JSON.stringify(jsonBody),
+        body: (method === "GET" || typeof jsonBody === "undefined") ? null : JSON.stringify(jsonBody),
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
