@@ -128,7 +128,7 @@ export default class WaveManager extends cc.Component {
         enemy.position = padZ(pos);
         // cc.log(enemy);
         enemy.active = true;
-        enemy.parent = this.node;
+        enemy.parent = GameManager.instance.playerEnemyLayer;
         enemy.getComponent("EnemyController").init();
     }
 
