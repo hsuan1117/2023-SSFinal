@@ -54,6 +54,10 @@ export default class PlayerManager extends cc.Component {
         return this.playerControllers[id];
     }
 
+    public getPlayerChara(id: string): string{
+        return this.playerChara[id];
+    }
+
     public isLocal(id: string): boolean{
         return this.isLocalPlayer[id] == true;
     }
@@ -89,6 +93,7 @@ export default class PlayerManager extends cc.Component {
     // HELPERS
     private createPlayer({uid, charaId, isLocal}){
         if (this.isLocalPlayer[uid]) return;
+        if (this.playerIds.includes(uid)) return;
         this.playerIds.push(uid);
         this.playerChara[uid] = charaId;
         this.playerDeltaHp[uid] = 0;
