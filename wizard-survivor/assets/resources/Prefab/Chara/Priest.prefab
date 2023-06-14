@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "ab166082-7463-4d32-8df1-81877fafcd4e"
+      },
+      {
+        "__uuid__": "31a462d3-c243-415d-b8b9-36a3bc3c8a1f"
       }
     ],
     "playOnLoad": true,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "PriestWalk",
     "playerDashAnim": "PriestStand",
     "playerHurtAnim": "PriestStand",
-    "playerDeadAnim": "PriestStand",
+    "playerDeadAnim": "PriestDead",
     "_id": ""
   },
   {

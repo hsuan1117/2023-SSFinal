@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "DarkKnightStand",
+  "_name": "SkeletonDead",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.016666666666666666,
@@ -14,7 +14,7 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "fb4358a4-f791-48c6-87ec-73ec7731bd02"
+              "__uuid__": "703db37a-4bfc-4fff-aa1a-d11e930468d8"
             }
           }
         ]

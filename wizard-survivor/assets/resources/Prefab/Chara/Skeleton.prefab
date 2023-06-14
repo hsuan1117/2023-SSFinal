@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "d7a44610-592a-4fd7-8ebd-54728e044c75"
+      },
+      {
+        "__uuid__": "ad358327-de3b-4731-bf85-be4b01a9d058"
       }
     ],
     "playOnLoad": true,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "SkeletonWalk",
     "playerDashAnim": "SkeletonStand",
     "playerHurtAnim": "SkeletonStand",
-    "playerDeadAnim": "SkeletonStand",
+    "playerDeadAnim": "SkeletonDead",
     "_id": ""
   },
   {

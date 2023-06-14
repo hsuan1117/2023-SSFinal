@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "c6a79e7a-d342-4dc0-b66c-41869dd510fc"
+      },
+      {
+        "__uuid__": "5ef47e7b-4a79-4bf6-bb82-dce540e69772"
       }
     ],
     "playOnLoad": false,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "DarkKnightWalk",
     "playerDashAnim": "DarkKnightStand",
     "playerHurtAnim": "DarkKnightStand",
-    "playerDeadAnim": "DarkKnightStand",
+    "playerDeadAnim": "DarkKnightDead",
     "_id": ""
   },
   {

@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "DarkKnightStand",
+  "_name": "PriestDead",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.016666666666666666,
@@ -14,11 +14,19 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "fb4358a4-f791-48c6-87ec-73ec7731bd02"
+              "__uuid__": "15b3a78a-a210-42ca-8bc2-c812f30174d1"
             }
           }
         ]
       }
+    },
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 270
+        }
+      ]
     }
   },
   "events": []

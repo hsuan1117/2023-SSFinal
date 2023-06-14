@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
+      },
+      {
+        "__uuid__": "42930f3b-0912-4fac-8e74-28c78c2e3a15"
       }
     ],
     "playOnLoad": true,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "KnightWalk",
     "playerDashAnim": "KnightStand",
     "playerHurtAnim": "KnightStand",
-    "playerDeadAnim": "KnightStand",
+    "playerDeadAnim": "KnightDead",
     "_id": ""
   },
   {

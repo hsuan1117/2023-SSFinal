@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "1fbdc70e-5b11-4387-a885-c0994eecd79e"
+      },
+      {
+        "__uuid__": "1d353de0-d06b-47ea-8840-d8f0832ce71e"
       }
     ],
     "playOnLoad": true,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "VampireWalk",
     "playerDashAnim": "VampireStand",
     "playerHurtAnim": "VampireStand",
-    "playerDeadAnim": "VampireStand",
+    "playerDeadAnim": "VampireDead",
     "_id": ""
   },
   {

@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "414cd981-2734-4d1a-bacc-7f49eb063773"
+      },
+      {
+        "__uuid__": "166ba0a8-3f34-4ac7-b35a-e00ec13116b4"
       }
     ],
     "playOnLoad": true,
@@ -334,7 +337,7 @@
     "playerMoveAnim": "AssassinWalk",
     "playerDashAnim": "AssassinWalk",
     "playerHurtAnim": "AssassinStand",
-    "playerDeadAnim": "AssassinStand",
+    "playerDeadAnim": "AssassinDead",
     "_id": ""
   },
   {
