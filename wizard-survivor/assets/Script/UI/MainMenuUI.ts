@@ -110,16 +110,12 @@ export default class MainMenuUI extends cc.Component {
     }
 
     private onlineWithNewRoom(): GameInfo {
-        console.log('yes')
-        this.showAuthUI();
-        // get room
-
+        this.node.getChildByName('AuthDialog').active = true;
         return null;
     }
 
     private onlineJoinRoomId(): GameInfo {
-        console.log('yes')
-        this.showAuthUI();
+        this.node.getChildByName('AuthDialog').active = true;
         return null;
     }
 
