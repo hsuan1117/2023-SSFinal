@@ -17,12 +17,18 @@ export default class ParticleManager extends cc.Component {
 
     public createParticle(particleName: string, pos: cc.Vec3, parent: cc.Node = GameManager.instance.bulletLayer) {
         this.scheduleOnce(() => {
-            const particle = cc.instantiate(this.particlePrefabs[particleName]);
+            const particle: cc.Node = GameManager.instance.poolManager.createPrefab(this.particlePrefabs[particleName]);
             particle.parent = parent;
             particle.position = pos;
 
-            particle.stopAllActions();
+            particle.active = true;
+            particle.getComponent(cc.ParticleSystem).resetSystem();
+
+            this.scheduleOnce(() => {
+                GameManager.instance.poolManager.recycle(particle);
+            }, 1);
         }, 0.1);
+
     }
 
     start () {

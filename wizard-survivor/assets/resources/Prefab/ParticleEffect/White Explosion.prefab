@@ -98,7 +98,7 @@
     "_texture": null,
     "_stopped": true,
     "playOnLoad": true,
-    "autoRemoveOnFinish": true,
+    "autoRemoveOnFinish": false,
     "totalParticles": 50,
     "duration": 0.05,
     "emissionRate": 250,
