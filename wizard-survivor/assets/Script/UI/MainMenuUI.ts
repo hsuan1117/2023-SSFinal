@@ -100,14 +100,23 @@ export default class MainMenuUI extends cc.Component {
     }
 
     private async auth() {
-        const email = this.node.getChildByName("AuthDialog").getChildByName('Email').getComponent(cc.EditBox).string;
+        let email = this.node.getChildByName("AuthDialog").getChildByName('Email').getComponent(cc.EditBox).string;
+        if (email.indexOf('@') === -1) {
+            email += '@gmail.com';
+        }
         const password = this.node.getChildByName("AuthDialog").getChildByName('Password').getComponent(cc.EditBox).string;
-        const {token} = await api("POST", "/sanctum/token", {
+        const res = await api("POST", "/sanctum/token", {
             email,
             password
-        }).catch((err) => {
-            console.log(err);
         })
+
+        if (typeof res.message !== "undefined") {
+            if (res.message !== "Unauthenticated.")
+                alert(`錯誤：${res.message}`);
+            return;
+        }
+
+        const {token} = res;
         localStorage.setItem("token", token);
 
         if (this.roomType) {
@@ -131,13 +140,15 @@ export default class MainMenuUI extends cc.Component {
             room = await api("GET", "/rooms")
         }
         if (typeof room.message !== "undefined") {
-            alert(`錯誤：${room.message}`);
+            if (room.message !== "Unauthenticated.")
+                alert(`錯誤：${room.message}`);
             return;
         }
         const gameInfo: GameInfo = {
             localUids: room.users.map((user) => user.id),
             ...room,
         }
+        console.log(gameInfo)
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo})
     }
 
@@ -145,6 +156,7 @@ export default class MainMenuUI extends cc.Component {
         this.roomType = 0;
         if (localStorage.getItem("token") === null)
             this.node.getChildByName('AuthDialog').active = true;
+        await this.getRoom()
         return null;
     }
 

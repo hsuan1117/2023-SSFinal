@@ -96,5 +96,9 @@ export async function api(method, endpoint, jsonBody?) {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-    }).then(res => res.json())
+    }).then(res => {
+        if (res.status === 401)
+            localStorage.removeItem('token')
+        return res.json()
+    })
 }
