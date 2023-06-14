@@ -10,7 +10,8 @@ import MapManager from "./MapManager";
 import LobbyUI from "../UI/LobbyUI";
 import MainMenuUI, {GameInfo} from "../UI/MainMenuUI";
 import ParticleManager from "./ParticleManager";
-import Game = cc.Game;
+import GameEndUI from "../UI/GameEndUI";
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +37,13 @@ export default class GameManager extends cc.Component {
     callbackFn: () => void
      */
     public static readonly ON_GAME_LOGIC_READY: string = "GAME_READY";
+
+    /*
+    遊戲結束，玩家已經播完死亡動畫
+
+    callbackFn: () => void
+     */
+    public static readonly ON_GAME_END: string = "GAME_END";
 
     public static readonly SCENE_GAME = 'Game';
     public static readonly SCENE_MAIN_MENU = 'MainMenu';
@@ -236,14 +244,29 @@ export default class GameManager extends cc.Component {
         this._currentSceneType = sceneType;
     }
 
+    public async endGame() {
+        this.event.emit(GameManager.ON_GAME_END)
+        await this.node.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
+        this.changeScene(GameManager.SCENE_RESULT);
+    }
+
 
     // HELPERS:
+    private initGameSystem(gameInfo: GameInfo) {
+        this._gameSystem = createGameSystem(gameInfo);
+        this._playerManager.setGameSystem(this._gameSystem);
+        this._inputManager.setGameSystem(this._gameSystem);
+        this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
+        this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
+        this.gameSystem.event.on(GameSystem.ON_GAME_START, this.onGameStart, this);
+    }
+
     private onGameStart() {
         this.changeScene(GameManager.SCENE_GAME);
     }
 
-    private async generateMainMenuScene(){
-        const mainMenuUI =  await loadResource('Prefab/UI/MainMenuUI', cc.Prefab)
+    private async generateMainMenuScene() {
+        const mainMenuUI = await loadResource('Prefab/UI/MainMenuUI', cc.Prefab)
             .then((prefab) => (cc.instantiate(prefab) as unknown as cc.Node).getComponent(MainMenuUI));
         mainMenuUI.node.parent = this.node;
 
@@ -257,15 +280,7 @@ export default class GameManager extends cc.Component {
         this._localUids = gameInfo.localUids;
         this._localUids.sort();
 
-        let initGameSystem = (gameInfo: GameInfo) => {
-            this._gameSystem = createGameSystem(gameInfo);
-            this._playerManager.setGameSystem(this._gameSystem);
-            this._inputManager.setGameSystem(this._gameSystem);
-            this.gameSystem.event.on(GameSystem.ON_EXP_CHANGE, this.onExpChange, this);
-            this.gameSystem.event.on(GameSystem.ON_COIN_CHANGE, this.onCoinChange, this);
-            this.gameSystem.event.on(GameSystem.ON_GAME_START, this.onGameStart, this);
-        }
-        initGameSystem(gameInfo);
+        this.initGameSystem(gameInfo);
 
         // Set input for local player
         let conversion = [WASD_TO_CONTROLLER, ARROW_TO_CONTROLLER];
@@ -284,7 +299,7 @@ export default class GameManager extends cc.Component {
 
     private async generateGameScene() {
         this.buildLayers();
-        let fixedUI, enemy, drop, upgradeUI: cc.Node;
+        let fixedUI, enemy, drop, upgradeUI, gameEndUI: cc.Node;
 
         let promises = []
         promises.push(
@@ -299,6 +314,13 @@ export default class GameManager extends cc.Component {
                 upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
                 upgradeUI.parent = this.node;
                 upgradeUI.setPosition(0, 0);
+            })
+        )
+        promises.push(
+            loadResource('Prefab/UI/GameEndUI', cc.Prefab).then((prefab) => {
+                gameEndUI = cc.instantiate(prefab) as unknown as cc.Node;
+                gameEndUI.parent = this.node;
+                gameEndUI.setPosition(0, 0);
             })
         )
 

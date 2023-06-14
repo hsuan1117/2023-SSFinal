@@ -59,11 +59,18 @@ export default class PlayerController extends cc.Component{
     private readonly DASH_DURATION: number = 0.1;
     private dashCountDown: number = 0;
     private isDashing: boolean = false;
+    private _isDead: boolean = false;
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
 
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode}) => {
+            if (keyCode == cc.macro.KEY.o) {
+                this.hurt(1);
+            }
+        }, this);
+
         this.rb = this.node.getComponent(cc.RigidBody);
         this.addComponent(SearchDrop);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
@@ -91,14 +98,22 @@ export default class PlayerController extends cc.Component{
         this.mainWeapon.projectileAttr.existDuration.onChangeCallback.push(weaponOnCh);
         this.mainWeapon.projectileAttr.bounceOnEnemyTimes.onChangeCallback.push(weaponOnCh);
         this.mainWeapon.projectileAttr.penetrateTimes.onChangeCallback.push(weaponOnCh);
+
+        this.currentHP.onChangeCallback.push(this.checkIsDead.bind(this));
     }
 
     start(){
         this.event.emit(PlayerController.PLAYER_STOP_MOVE)
         this.currentHP.defaultValue = this.maxHp.value;
+        this._isDead = false;
     }
 
     update(dt: number) {
+        if (this._isDead){
+            this.rb.linearVelocity = cc.Vec2.ZERO;
+            return;
+        }
+
         this.dashCountDown -= dt;
         if (!this.isDashing){
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
@@ -109,16 +124,22 @@ export default class PlayerController extends cc.Component{
 
     // PUBLIC METHODS:
     public hurt(damage: number){
+        if (this._isDead) return;
+
         const deltaHP = Math.min(this.currentHP.value, damage);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
     }
 
     public recover(val: number) {
+        if (this._isDead) return;
+
         const deltaHP = Math.min(this.maxHp.value - this.currentHP.value, val);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, deltaHP);
     }
 
     public addWeapon(weaponPrefab: cc.Prefab): WeaponController {
+        if (this._isDead) return;
+
         const weapon = cc.instantiate(this.mainWeaponPrefab).getComponent(WeaponController);
         weapon.node.parent = this.node;
         weapon.init(this);
@@ -126,6 +147,8 @@ export default class PlayerController extends cc.Component{
     }
 
     public setMovingDir(newDir: cc.Vec2){
+        if (this._isDead) return;
+
         if (this.movingDir.equals(cc.v2(0, 0))  && !newDir.equals(cc.v2(0, 0))){
             this.event.emit(PlayerController.PLAYER_START_MOVE);
             this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
@@ -142,6 +165,8 @@ export default class PlayerController extends cc.Component{
     }
 
     public dash(){
+        if (this._isDead) return;
+
         if (this.isDashing || this.dashCountDown>0) return;
         this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
@@ -156,6 +181,8 @@ export default class PlayerController extends cc.Component{
     }
 
     public addBuff(buff: IBuff){
+        if (this._isDead) return;
+
         buff._apply(this);
         this.appliedBuff.push(buff);
         this.event.emit(PlayerController.PLAYER_ATTR_CHANGE, buff);
@@ -164,9 +191,30 @@ export default class PlayerController extends cc.Component{
 
     // HELPER METHODS:
     protected collectDrop() {
+        if (this._isDead) return;
+
         while (this.getComponent(SearchDrop).getTarget()) {
             let target = this.getComponent(SearchDrop).getTarget();
             target.getComponent(DropController).collectBy(this.node);
+        }
+    }
+
+    protected checkIsDead(){
+        if (this._isDead) return;
+
+        if (this.currentHP.value <= 0){
+            this._isDead = true;
+            this.node.getComponent(cc.PhysicsCollider).enabled = false;
+            // this.rb.type = cc.RigidBodyType.Kinematic;
+            this.rb.linearVelocity = cc.v2(0, 0);
+
+            this.animCtrl.afterDeadCallback = () => {
+                GameManager.instance.endGame();
+            }
+            this.animCtrl.state = {
+                ...this.animCtrl.state,
+                isDead: true
+            }
         }
     }
 }

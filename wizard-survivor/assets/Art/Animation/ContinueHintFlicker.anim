@@ -3,7 +3,7 @@
   "_name": "ContinueHintFlicker",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.6833333333333333,
+  "_duration": 1.2833333333333334,
   "sample": 60,
   "speed": 1,
   "wrapMode": 22,
@@ -12,15 +12,15 @@
       "opacity": [
         {
           "frame": 0,
-          "value": 255
+          "value": 0
         },
         {
           "frame": 0.7666666666666667,
           "value": 255
         },
         {
-          "frame": 1.6833333333333333,
-          "value": 0
+          "frame": 1.2833333333333334,
+          "value": 255
         }
       ]
     }

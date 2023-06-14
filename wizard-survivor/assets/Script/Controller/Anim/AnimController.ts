@@ -15,6 +15,10 @@ export default abstract class AnimController extends cc.Component {
         return this._state;
     }
 
+    onLoad(){
+
+    }
+
     protected abstract _state: {};
 
     public abstract initState()

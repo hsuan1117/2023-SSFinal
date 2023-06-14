@@ -52,6 +52,12 @@ export class GameSystem {
      */
     public static readonly ON_GAME_START: string = "ON_GAME_START";
 
+    /*事件：遊戲結束
+
+    passed event data: null
+     */
+    public static readonly ON_GAME_END: string = "ON_GAME_END";
+
     private buffReadyToApply: { uid: string, buffId: string }[] = [];
 
     constructor() {
