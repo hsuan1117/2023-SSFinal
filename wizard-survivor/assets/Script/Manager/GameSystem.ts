@@ -141,6 +141,7 @@ export class RemoteGameSystem extends GameSystem {
         this.gameInfo = gameInfo;
         this.echoInstance.join('room.' + this.gameInfo?.id).listenForWhisper('input', input => {
             this.event.emit(GameSystem.ON_INPUT, {input});
+            // @ts-ignore
         }).listenToAll((evt, data) => {
             console.log(evt, data)
         });
