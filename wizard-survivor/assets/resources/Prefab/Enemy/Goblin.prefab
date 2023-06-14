@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "DarkKnight",
+    "_name": "Goblin",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -82,8 +82,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": ""
   },
   {
@@ -116,8 +116,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 28,
-      "height": 34
+      "width": 30,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -149,8 +149,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": ""
   },
   {
@@ -169,10 +169,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "17e90d42-b390-4cc9-9458-aa22128cb6ca"
+      "__uuid__": "4e5743f3-7f73-41e1-b20f-1dab69290954"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -183,7 +183,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "22e89d36-931c-43c8-b1b1-1f3a5dbd2438"
+      "__uuid__": "81bc8fe3-fde8-44df-a35a-022effd704b3"
     },
     "_id": ""
   },
@@ -196,20 +196,17 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "dbfe9c7d-c6a4-4088-9b64-bd3ca726bc53"
+      "__uuid__": "28191104-69f6-498a-8d01-d64d27924034"
     },
     "_clips": [
       {
-        "__uuid__": "dbfe9c7d-c6a4-4088-9b64-bd3ca726bc53"
+        "__uuid__": "28191104-69f6-498a-8d01-d64d27924034"
       },
       {
-        "__uuid__": "c6a79e7a-d342-4dc0-b66c-41869dd510fc"
-      },
-      {
-        "__uuid__": "5ef47e7b-4a79-4bf6-bb82-dce540e69772"
+        "__uuid__": "9589ed1d-3e8b-4eed-8ccd-29ee8d1c6d1d"
       }
     ],
-    "playOnLoad": true,
+    "playOnLoad": false,
     "_id": ""
   },
   {
@@ -220,11 +217,11 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "00g8A7MT9POLPTAC0ISD62",
+    "fileId": "67etl1qyBOfb+0dJj4SwBh",
     "sync": false
   },
   {
-    "__type__": "bfa71Q353hKSZrSsOz7x96r",
+    "__type__": "f628d90jGVGxJqCeFG+5Vps",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -234,42 +231,41 @@
     "moveSpeed": {
       "__id__": 7
     },
-    "maxHp": {
+    "skillCoolDown": {
       "__id__": 8
     },
-    "expGainPercentage": {
+    "hp": {
       "__id__": 9
     },
-    "dashCoolDown": {
+    "collideDamage": {
       "__id__": 10
     },
-    "dashSpeed": {
+    "collideDamageCoolDown": {
       "__id__": 11
     },
-    "mainWeaponPrefab": {
-      "__uuid__": "b768c1ad-75ad-482a-9f5e-c3e10ced2606"
-    },
+    "normalMaterial": null,
+    "hurtMaterial": null,
     "_id": ""
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 100
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 100
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 1
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 0
   },
   {
     "__type__": "cc.RigidBody",
@@ -293,7 +289,7 @@
     "_fixedRotation": true,
     "enabledContactListener": false,
     "bullet": false,
-    "awakeOnLoad": false,
+    "awakeOnLoad": true,
     "_id": ""
   },
   {
@@ -317,13 +313,13 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 15.3,
-      "height": 30.7
+      "width": 32,
+      "height": 32
     },
     "_id": ""
   },
   {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "__type__": "48597dRxOJNkqge1dQfGu3a",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -333,11 +329,11 @@
     "anim": {
       "__id__": 4
     },
-    "playerIdleAnim": "DarkKnightStand",
-    "playerMoveAnim": "DarkKnightWalk",
-    "playerDashAnim": "DarkKnightStand",
-    "playerHurtAnim": "DarkKnightStand",
-    "playerDeadAnim": "DarkKnightDead",
+    "enemyIdleAnim": "GolinStand",
+    "enemyMoveAnim": "GolinWalk",
+    "enemyHurtAnim": "GolinStand",
+    "enemyDeadAnim": "GolinStand",
+    "enemySkillAnim": "GolinStand",
     "_id": ""
   },
   {

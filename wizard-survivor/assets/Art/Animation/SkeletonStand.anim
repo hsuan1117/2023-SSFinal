@@ -1,9 +1,49 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "",
+  "_name": "SkeletonStand",
   "_objFlags": 0,
-  "_duration": 0,
+  "_native": "",
+  "_duration": 0.6833333333333333,
   "sample": 60,
-  "curveData": {},
+  "speed": 1.1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "341ebf9d-f26c-40e2-abde-2029b372a12d"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "a091974c-dae9-4e49-b89d-670a213d2a0e"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "9df51ccc-ccc2-416b-a729-3b3cb9ac928b"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "5aebeac2-c5c5-4c8a-8568-ca523e22a753"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "341ebf9d-f26c-40e2-abde-2029b372a12d"
+            }
+          }
+        ]
+      }
+    }
+  },
   "events": []
 }

@@ -3,10 +3,10 @@
   "_name": "VampireStand",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.016666666666666666,
+  "_duration": 0.6833333333333333,
   "sample": 60,
-  "speed": 1,
-  "wrapMode": 1,
+  "speed": 1.2,
+  "wrapMode": 2,
   "curveData": {
     "comps": {
       "cc.Sprite": {
@@ -14,7 +14,31 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "c7ba7860-699d-4389-a1c7-8eb7105a4266"
+              "__uuid__": "b79dde40-20b7-4bc6-8297-647f83432322"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "73470cfb-3757-4a6c-83f2-6179b194589c"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "570d0ef3-ffdb-4333-8f0c-ac395407a9b1"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "c2fe2382-ff61-4f6e-ab69-e07523f7090a"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "b79dde40-20b7-4bc6-8297-647f83432322"
             }
           }
         ]
