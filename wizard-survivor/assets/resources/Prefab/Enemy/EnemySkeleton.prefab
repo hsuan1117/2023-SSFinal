@@ -252,7 +252,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 50
   },
   {
     "__type__": "AttrNum",
@@ -260,7 +260,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 500
   },
   {
     "__type__": "AttrNum",
@@ -311,13 +311,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -0.8,
+      "y": -1
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 17,
+      "height": 25.2
     },
     "_id": ""
   },

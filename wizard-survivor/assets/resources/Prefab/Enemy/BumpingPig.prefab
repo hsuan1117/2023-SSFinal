@@ -261,13 +261,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -0.1,
+      "y": -0.7
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 21.8,
+      "height": 20.7
     },
     "_id": ""
   },
@@ -294,6 +294,8 @@
     "collideDamageCoolDown": {
       "__id__": 13
     },
+    "normalMaterial": null,
+    "hurtMaterial": null,
     "triggerRadius": {
       "__id__": 14
     },

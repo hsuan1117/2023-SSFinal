@@ -38,7 +38,7 @@ export default class WaveManager extends cc.Component {
 
     private rand: RandomGenerator = new RandomGenerator();
 
-    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit"];
+    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton"];
 
     private waveData: cc.JsonAsset = null;
 

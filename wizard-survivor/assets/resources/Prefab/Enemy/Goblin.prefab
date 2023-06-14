@@ -61,8 +61,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        214,
+        174,
         0,
         0,
         0,
@@ -249,7 +249,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 50
   },
   {
     "__type__": "AttrNum",
@@ -257,7 +257,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 100
   },
   {
     "__type__": "AttrNum",
@@ -308,13 +308,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 0.8,
+      "y": -1.9
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 18.3,
+      "height": 19.4
     },
     "_id": ""
   },
