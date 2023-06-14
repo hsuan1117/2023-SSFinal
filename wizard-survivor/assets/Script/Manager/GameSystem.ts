@@ -1,7 +1,7 @@
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
-import {GameInfo} from "../UI/MainMenuUI";
+import {GameInfo, GameType} from "../UI/MainMenuUI";
 import {api, CURRENT_ENV} from "../Helper/utils";
 
 /*
@@ -112,9 +112,7 @@ export class GameSystem {
 
 export class RemoteGameSystem extends GameSystem {
     public echoInstance: Echo;
-
-    // TODO: 將 emit 改到 listener 裡面
-    private room = null;
+    private gameInfo: GameInfo;
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
@@ -137,12 +135,15 @@ export class RemoteGameSystem extends GameSystem {
         });
     }
 
-    constructor() {
+    constructor(gameInfo: GameInfo) {
         super();
         this.createEchoInstanceFromToken(localStorage.getItem('token'))
-        this.echoInstance.join('game.' + this.room).listenForWhisper('input', (e) => {
-
-        })
+        this.gameInfo = gameInfo;
+        this.echoInstance.join('room.' + this.gameInfo?.id).listenForWhisper('input', input => {
+            this.event.emit(GameSystem.ON_INPUT, {input});
+        }).listenToAll((evt, data) => {
+            console.log(evt, data)
+        });
     }
 
     // === PUBLIC METHODS ===
@@ -191,7 +192,7 @@ export class RemoteGameSystem extends GameSystem {
 
     public emitInput(input: Input) {
         this.event.emit(GameSystem.ON_INPUT, {input: input});
-        this.echoInstance.join('game.' + this.room).whisper('input', input);
+        this.echoInstance.join('room.' + this.gameInfo?.id).whisper('input', input);
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
@@ -221,6 +222,18 @@ export class RemoteGameSystem extends GameSystem {
     }
 }
 
+/**
+ * GameSystem Factory
+ * @param gameInfo : GameInfo
+ * @return GameSystem
+ * */
 export function createGameSystem(gameInfo: GameInfo): GameSystem {
-    return new GameSystem();
+    if (gameInfo.gameType === GameType.OFFLINE)
+        return new GameSystem();
+    else if (gameInfo.gameType === GameType.ONLINE) {
+        // @ts-ignore
+        window.Pusher = require('pusher-js');
+        return new RemoteGameSystem(gameInfo);
+    } else
+        throw new Error("GameType not supported");
 }

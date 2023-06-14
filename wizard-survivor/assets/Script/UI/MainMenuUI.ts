@@ -13,8 +13,20 @@ const {ccclass, property} = cc._decorator;
 並回傳 uid
  */
 
+export enum GameType {
+    ONLINE,
+    OFFLINE
+}
+
 export type GameInfo = {
     localUids: string[];
+    id?: string|number;
+    users?: {
+        id: string|number;
+        name: string;
+        email: string;
+    }[];
+    gameType?: GameType;
 }
 
 @ccclass
@@ -87,6 +99,7 @@ export default class MainMenuUI extends cc.Component {
 
     private offline1p(): void {
         const gameInfo: GameInfo = {
+            gameType: GameType.OFFLINE,
             localUids: ['p1']
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
@@ -94,6 +107,7 @@ export default class MainMenuUI extends cc.Component {
 
     private offline2p(): void {
         const gameInfo: GameInfo = {
+            gameType: GameType.OFFLINE,
             localUids: ['p1', 'p2']
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
@@ -145,6 +159,7 @@ export default class MainMenuUI extends cc.Component {
             return;
         }
         const gameInfo: GameInfo = {
+            gameType: GameType.ONLINE,
             localUids: room.users.map((user) => user.id),
             ...room,
         }
