@@ -250,8 +250,10 @@ export default class GameManager extends cc.Component {
         this.inputManager.addLocalPlayerInput('anonymous', WASD_TO_CONTROLLER);
         mainMenuUI.init('anonymous');
 
-        let gameInfo: GameInfo = await mainMenuUI.getStartGameInfo();
+        mainMenuUI.event.once(MainMenuUI.ON_AUTH_COMPLETED, this.onAuthComplete, this);
+    }
 
+    private onAuthComplete({gameInfo}) {
         this._localUids = gameInfo.localUids;
         this._localUids.sort();
 
