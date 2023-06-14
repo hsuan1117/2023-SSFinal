@@ -31,6 +31,7 @@ export default class MainMenuUI extends cc.Component {
     private uid: string;
 
     private playerFocus: PlayerFocus;
+    private roomType = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -50,6 +51,8 @@ export default class MainMenuUI extends cc.Component {
         this.playerFocus.init(focusTarget, cc.v2(0, 50), true);
         this.playerFocus.focusOnIndex(this.uid, 0);
 
+        this.node.getChildByName("AuthDialog").getChildByName('AuthButton').on(cc.Node.EventType.TOUCH_END, this.auth.bind(this), this);
+        this.node.getChildByName("RoomDialog").getChildByName('JoinButton').on(cc.Node.EventType.TOUCH_END, this.join.bind(this), this);
         this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
     }
 
@@ -74,7 +77,7 @@ export default class MainMenuUI extends cc.Component {
     private onConfirm({uid, node}) {
         const execute = {};
         execute['OnlineWithNewRoom'] = this.onlineWithNewRoom.bind(this);
-        execute['OnlineJoinRoomId'] = this.onlineJoinRoomId.bind(this);
+        execute['OnlineJoinRoom'] = this.onlineJoinRoomId.bind(this);
         execute['Offline1p'] = this.offline1p.bind(this);
         execute['Offline2p'] = this.offline2p.bind(this);
         execute['Leaderboard'] = this.leaderboard;
@@ -96,26 +99,55 @@ export default class MainMenuUI extends cc.Component {
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
     }
 
-    private async auth(email: string, password: string) {
+    private async auth() {
+        const email = this.node.getChildByName("AuthDialog").getChildByName('Email').getComponent(cc.EditBox).string;
+        const password = this.node.getChildByName("AuthDialog").getChildByName('Password').getComponent(cc.EditBox).string;
         const {token} = await api("POST", "/sanctum/token", {
             email,
             password
+        }).catch((err) => {
+            console.log(err);
         })
         localStorage.setItem("token", token);
+        await this.getRoom();
     }
 
-    private showAuthUI() {
-        // show a dialog to login or register
-        console.log('auth')
+    private async join() {
+        const code = this.node.getChildByName("RoomDialog").getChildByName('Code').getComponent(cc.EditBox).string;
+        await this.getRoom(code);
     }
 
-    private onlineWithNewRoom(): GameInfo {
-        this.node.getChildByName('AuthDialog').active = true;
+    private async getRoom(code?) {
+        let room;
+        if (this.roomType) {
+            room = await api("POST", "/rooms/add", {code})
+        } else {
+            room = await api("GET", "/rooms")
+        }
+        if(typeof room.message !== "undefined") {
+            alert(`錯誤：${room.message}`);
+            return;
+        }
+        const gameInfo: GameInfo = {
+            localUids: room.users.map((user) => user.id),
+            ...room,
+        }
+        this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo})
+    }
+
+    private async onlineWithNewRoom(): Promise<GameInfo> {
+        this.roomType = 0;
+        if (localStorage.getItem("token") === null)
+            this.node.getChildByName('AuthDialog').active = true;
+        else await this.getRoom();
         return null;
     }
 
-    private onlineJoinRoomId(): GameInfo {
-        this.node.getChildByName('AuthDialog').active = true;
+    private async onlineJoinRoomId(): Promise<GameInfo> {
+        this.roomType = 1;
+        if (localStorage.getItem("token") === null)
+            this.node.getChildByName('AuthDialog').active = true;
+        this.node.getChildByName("RoomDialog").active = true;
         return null;
     }
 
