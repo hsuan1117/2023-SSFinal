@@ -38,3 +38,63 @@ export function shuffle(arr){
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
+
+type EnvConfig = {
+    PUSHER_CONFIG: {
+        broadcaster: string,
+        key: string,
+        cluster: string,
+        forceTLS: boolean,
+        wsHost: string,
+        wsPath: string,
+        wsPort: number
+    },
+    API_CONFIG: {
+        API_URL: string
+    }
+}
+
+export const PROD_ENV: EnvConfig = {
+    PUSHER_CONFIG: {
+        broadcaster: 'pusher',
+        key: "app-key",
+        cluster: "mt1",
+        forceTLS: false,
+        wsHost: "final.hsuan.app",
+        wsPath: "/websockets",
+        wsPort: null
+    },
+    API_CONFIG: {
+        API_URL: "https://final.hsuan.app/api"
+    }
+}
+
+export const DEV_ENV: EnvConfig = {
+    PUSHER_CONFIG: {
+        broadcaster: 'pusher',
+        key: "app-key",
+        cluster: "mt1",
+        forceTLS: false,
+        wsHost: "localhost",
+        wsPath: "",
+        wsPort: 6001
+    },
+    API_CONFIG: {
+        API_URL: "http://localhost:8000/api"
+    },
+}
+
+// todo: you can change DEV_ENV to PROD_ENV to switch to production mode
+export const CURRENT_ENV = DEV_ENV;
+
+export async function api(method, endpoint, jsonBody) {
+    return fetch(CURRENT_ENV.API_CONFIG.API_URL + endpoint, {
+        method,
+        body: JSON.stringify(jsonBody),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }).then(res => res.json())
+}
