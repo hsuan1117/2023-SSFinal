@@ -1,9 +1,25 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "",
+  "_name": "VampireDead",
   "_objFlags": 0,
-  "_duration": 0,
+  "_native": "",
+  "_duration": 0.016666666666666666,
   "sample": 60,
-  "curveData": {},
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "c7ba7860-699d-4389-a1c7-8eb7105a4266"
+            }
+          }
+        ]
+      }
+    }
+  },
   "events": []
 }
