@@ -1,9 +1,49 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "",
+  "_name": "DarkKnightStand",
   "_objFlags": 0,
-  "_duration": 0,
+  "_native": "",
+  "_duration": 0.6833333333333333,
   "sample": 60,
-  "curveData": {},
+  "speed": 1.5,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "17e90d42-b390-4cc9-9458-aa22128cb6ca"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "3379ec4a-7447-4db0-a69d-ef59e3c8abe9"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "a7780cbc-e72f-43ab-8940-c05dd554b8ea"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "c5463335-ffa3-46df-a638-d8fdbdcf62b8"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "17e90d42-b390-4cc9-9458-aa22128cb6ca"
+            }
+          }
+        ]
+      }
+    }
+  },
   "events": []
 }
