@@ -1,0 +1,61 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "EnemySkeletonDie",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 2,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "849e6062-64b8-4c1b-82f0-4a7b3feea1b0"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "23595a06-3e06-4a28-82e9-828294e38603"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "6cf6a02a-fd27-4bc8-b958-d685d17b6309"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "a5bfc690-d26b-416f-b610-5a60822cbb15"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "46765bf2-ba1a-4eef-a5c0-4b3124270fe8"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "8a349fe1-d946-482d-b148-b9030db9ef91"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "4cc4b019-93ae-4f67-91e6-10cd000e8179"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

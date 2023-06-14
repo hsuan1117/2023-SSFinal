@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "EnemySkeletonWalk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 2.5,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "6d15a6e7-61dc-4c4c-8878-f598597bd1b5"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "fedd56d8-b484-451a-a668-1ab9aed0e5c1"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "17185783-f176-46f5-8b15-3764ed969053"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "4556c64e-6faa-4156-9614-b18c04fa0184"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "e2cb0695-e5c0-4c38-a284-cfcbd7dce0a9"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "b29ae85b-1e89-402c-a6e0-a3e09b8e4314"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "debd9164-c054-4e47-b1b0-59463e485d80"
+            }
+          },
+          {
+            "frame": 1.1666666666666667,
+            "value": {
+              "__uuid__": "f88177fe-af44-46e8-bbbf-a7a440636632"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "6d15a6e7-61dc-4c4c-8878-f598597bd1b5"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
