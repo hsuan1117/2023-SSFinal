@@ -305,7 +305,7 @@ export default class GameManager extends cc.Component {
         async function instantiateHP(uid: string): Promise<void>{
             const hpOffset = cc.v3(0, -20);
 
-            loadResource('Prefab/UI/PlayerHPUI', cc.Prefab)
+            await loadResource('Prefab/UI/PlayerHPUI', cc.Prefab)
                 .then((prefab) => {
                     let hp = cc.instantiate(prefab) as unknown as cc.Node;
                     hp.parent = GameManager.instance.playerManager.getPlayerNodeByID(uid);
