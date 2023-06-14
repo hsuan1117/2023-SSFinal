@@ -27,30 +27,41 @@ export default class MainMenuUI extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        const focusTarget = [];
-        for (let i = 0; i < this.child.length; i++) {
-            focusTarget.push(this.node.getChildByName(this.child[i]));
-        }
         this.playerFocus = this.node.getComponent(PlayerFocus);
-        this.playerFocus.init(focusTarget, cc.v2(0, 50), true);
-        this.playerFocus.focusOnIndex(this.uid, 0);
     }
 
     public init(performerUid: string){
         this.uid = performerUid;
+
+        const focusTarget = [];
+        for (let i = 0; i < this.child.length; i++) {
+            focusTarget.push(this.node.getChildByName(this.child[i]));
+        }
+
+        this.playerFocus.init(focusTarget, cc.v2(0, 50), true);
+        this.playerFocus.focusOnIndex(this.uid, 0);
+        this.playerFocus.event.on(PlayerFocus.ON_CONFIRM, this.onConfirm, this);
     }
 
     /*
      */
     public async getStartGameInfo(): Promise<GameInfo> {
-        let res: GameInfo = {
-            localUids: ['p1', 'p2']
-        }
-        return res;
+
     }
 
 
     // HELPERS:
+    private onConfirm({uid, node}){
+        const execute = {};
+        execute['OnlineWithNewRoom'] = this.onlineWithNewRoom;
+        execute['OnlineJoinRoomId'] = this.onlineJoinRoomId;
+        execute['Offline1p'] = this.offline1p;
+        execute['Offline2p'] = this.offline2p;
+        execute['Leaderboard'] = this.leaderboard;
+
+        execute[node.name]();
+    }
+
     private offline1p(): GameInfo {
         return null;
     }
@@ -62,5 +73,8 @@ export default class MainMenuUI extends cc.Component {
     }
     private onlineJoinRoomId() : GameInfo{
         return null;
+    }
+    private leaderboard(){
+
     }
 }
