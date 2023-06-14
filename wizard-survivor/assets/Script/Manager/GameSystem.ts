@@ -2,6 +2,7 @@ import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
 import {GameInfo} from "../UI/MainMenuUI";
+import {api, CURRENT_ENV} from "../Helper/utils";
 
 /*
 1. 負責轉發需要和其他客戶端、伺服器同步的事件。
@@ -103,65 +104,20 @@ export class GameSystem {
     //      this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
 }
 
-type EnvConfig = {
-    PUSHER_CONFIG: {
-        broadcaster: string,
-        key: string,
-        cluster: string,
-        forceTLS: boolean,
-        wsHost: string,
-        wsPath: string,
-        wsPort: number
-    },
-    API_CONFIG: {
-        API_URL: string
-    }
-}
-
-export const PROD_ENV: EnvConfig = {
-    PUSHER_CONFIG: {
-        broadcaster: 'pusher',
-        key: "app-key",
-        cluster: "mt1",
-        forceTLS: false,
-        wsHost: "final.hsuan.app",
-        wsPath: "/websockets",
-        wsPort: null
-    },
-    API_CONFIG: {
-        API_URL: "https://final.hsuan.app/api"
-    }
-}
-
-export const DEV_ENV: EnvConfig = {
-    PUSHER_CONFIG: {
-        broadcaster: 'pusher',
-        key: "app-key",
-        cluster: "mt1",
-        forceTLS: false,
-        wsHost: "localhost",
-        wsPath: "",
-        wsPort: 6001
-    },
-    API_CONFIG: {
-        API_URL: "http://localhost:8000/api"
-    },
-}
-
 export class RemoteGameSystem extends GameSystem {
     public echoInstance: Echo;
 
     // TODO: 將 emit 改到 listener 裡面
-    private env: EnvConfig = DEV_ENV;
+    private room = null;
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
         this.echoInstance = new Echo({
-            ...this.env.PUSHER_CONFIG,
+            ...CURRENT_ENV.PUSHER_CONFIG,
             authorizer: (channel, options) => {
                 return {
                     authorize: (socketId, callback) => {
-                        this.api("POST", '/broadcasting/auth', {
+                        api("POST", '/broadcasting/auth', {
                             socket_id: socketId,
                             channel_name: channel.name
                         }).then(response => {
@@ -175,26 +131,12 @@ export class RemoteGameSystem extends GameSystem {
         });
     }
 
-    private async api(method, endpoint, jsonBody) {
-        return fetch(this.env.API_CONFIG.API_URL + endpoint, {
-            method,
-            body: JSON.stringify(jsonBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-    }
-
     constructor() {
         super();
-        // TODO: change
-        this.env = DEV_ENV;
-        if (window.location.href.indexOf('localhost') === -1)
-            this.env = PROD_ENV;
+        this.createEchoInstanceFromToken(localStorage.getItem('token'))
+        this.echoInstance.join('game.' + this.room).listenForWhisper('input', (e) => {
 
-        this.api('POST', '/room', {})
+        })
     }
 
     // === PUBLIC METHODS ===
@@ -242,16 +184,8 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     public emitInput(input: Input) {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
         this.event.emit(GameSystem.ON_INPUT, {input: input});
+        this.echoInstance.join('game.' + this.room).whisper('input', input);
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
@@ -278,51 +212,6 @@ export class RemoteGameSystem extends GameSystem {
             }
         }).then(res => res.json())
         this.event.emit(GameSystem.ON_GAME_START);
-    }
-
-    /**
-     * 登入用戶，並儲存 token
-     * @param email
-     * @param password
-     * */
-    public login(email: string, password: string) {
-        fetch('https://final.hsuan.app/api/sanctum/token', {
-            method: 'POST',
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        }).then(res => res.json()).then(response => {
-            localStorage.setItem('token', response.token);
-            this.createEchoInstanceFromToken(response.token);
-        })
-    }
-
-    /**
-     * 註冊用戶，並儲存 token
-     * @param name
-     * @param email
-     * @param password
-     * */
-    public register(name: string, email: string, password: string) {
-        fetch('https://final.hsuan.app/api/sanctum/token', {
-            method: 'POST',
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        }).then(res => res.json()).then(response => {
-            localStorage.setItem('token', response.token);
-            this.createEchoInstanceFromToken(response.token);
-        })
     }
 }
 
