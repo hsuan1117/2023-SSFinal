@@ -43,23 +43,25 @@ export default class ProjectileController extends cc.Component {
 
             enemy.hurt(this.projectileAttr.damage.value, this.shootByUid);
 
-            if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
-                this.bounceCnt++;
-                const newDir =
-                    this.bounceDir
-                    .mul(this.bounceMixRandomRate)
-                    .add(this.rb.linearVelocity.normalize().neg().mul(1 - this.bounceMixRandomRate))
-                    .normalize();
+            if (!this.projectileAttr.notFly){
+                if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
+                    this.bounceCnt++;
+                    const newDir =
+                        this.bounceDir
+                        .mul(this.bounceMixRandomRate)
+                        .add(this.rb.linearVelocity.normalize().neg().mul(1 - this.bounceMixRandomRate))
+                        .normalize();
 
-                this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
-            }
-            else if (this.penetrateCnt < this.projectileAttr.penetrateTimes.value) {
-                this.penetrateCnt++;
-            }
-            else {
-                // Testing
-                GameManager.instance.particleManager.createParticle("White Explosion", this.node.position);
-                this.deleteProjectile();
+                    this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
+                }
+                else if (this.penetrateCnt < this.projectileAttr.penetrateTimes.value) {
+                    this.penetrateCnt++;
+                }
+                else {
+                    // Testing
+                    GameManager.instance.particleManager.createParticle("White Explosion", this.node.position);
+                    this.deleteProjectile();
+                }
             }
         }
     }

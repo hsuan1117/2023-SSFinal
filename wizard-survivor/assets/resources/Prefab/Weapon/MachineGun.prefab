@@ -227,7 +227,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 10
   },
   {
     "__type__": "AttrNum",
@@ -257,7 +257,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 10
+    "_defaultValue": 15
   },
   {
     "__type__": "AttrNum",

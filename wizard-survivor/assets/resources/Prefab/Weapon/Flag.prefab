@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Skeleton",
+    "_name": "Weapon",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -27,17 +27,17 @@
         "__id__": 6
       },
       {
-        "__id__": 12
+        "__id__": 18
       },
       {
-        "__id__": 13
+        "__id__": 19
       },
       {
-        "__id__": 14
+        "__id__": 20
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 21
     },
     "_opacity": 255,
     "_color": {
@@ -82,8 +82,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -116,25 +116,25 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 25,
-      "height": 25
+      "width": 17,
+      "height": 20
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0,
+      "y": 0
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
         0,
+        -5,
         0,
         0,
         0,
-        0,
-        0,
-        1,
+        -0.25881904510252074,
+        0.9659258262890683,
         1,
         1,
         1
@@ -144,13 +144,13 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": -30
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -169,10 +169,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "341ebf9d-f26c-40e2-abde-2029b372a12d"
+      "__uuid__": "97d3a3ad-158b-4656-abea-9c2bcf178ab8"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -182,9 +182,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "74488066-c1d8-4d3c-8c03-7b16975c7464"
-    },
+    "_atlas": null,
     "_id": ""
   },
   {
@@ -196,17 +194,14 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
+      "__uuid__": "49fb63bc-5198-4e98-9f78-b1a40e5279f5"
     },
     "_clips": [
       {
-        "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
+        "__uuid__": "8fc8fba8-598f-4e6a-b49e-f4ba2e6e1497"
       },
       {
-        "__uuid__": "d7a44610-592a-4fd7-8ebd-54728e044c75"
-      },
-      {
-        "__uuid__": "ad358327-de3b-4731-bf85-be4b01a9d058"
+        "__uuid__": "49fb63bc-5198-4e98-9f78-b1a40e5279f5"
       }
     ],
     "playOnLoad": true,
@@ -220,110 +215,121 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "00g8A7MT9POLPTAC0ISD62",
+    "fileId": "8588ULIDNPirxfHsLs0K83",
     "sync": false
   },
   {
-    "__type__": "bfa71Q353hKSZrSsOz7x96r",
+    "__type__": "55b95yvGJxEn65jBcYaTb3x",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "moveSpeed": {
+    "attackSpeed": {
       "__id__": 7
     },
-    "maxHp": {
+    "shotPerAttack": {
       "__id__": 8
     },
-    "expGainPercentage": {
+    "shootSpeed": {
       "__id__": 9
     },
-    "dashCoolDown": {
+    "projectileAttr": {
       "__id__": 10
     },
-    "dashSpeed": {
+    "castTime": {
+      "__id__": 16
+    },
+    "range": {
+      "__id__": 17
+    },
+    "projectilePrefab": {
+      "__uuid__": "5d9c4c63-88b0-4ba1-98f5-cb6356445ee6"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 30
+  },
+  {
+    "__type__": "ProjectileAttr",
+    "flySpeed": {
       "__id__": 11
     },
-    "mainWeaponPrefab": {
-      "__uuid__": "fe1b44cb-5393-4c03-bb03-947644299c4a"
+    "damage": {
+      "__id__": 12
     },
-    "_id": ""
+    "existDuration": {
+      "__id__": 13
+    },
+    "bounceOnEnemyTimes": {
+      "__id__": 14
+    },
+    "penetrateTimes": {
+      "__id__": 15
+    },
+    "notFly": true
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 120
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 200
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 100
+    "_defaultValue": 0.5
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 4
+    "_defaultValue": 0
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 0
   },
   {
-    "__type__": "cc.RigidBody",
+    "__type__": "AttrNum",
+    "_defaultValue": 3
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 300
+  },
+  {
+    "__type__": "23c54wm2K1AF4/xHJ8qHxFl",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": false,
     "_id": ""
   },
   {
-    "__type__": "cc.PhysicsBoxCollider",
+    "__type__": "609dbdUOcJDO7c4q0MYaHM4",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 15.3,
-      "height": 30.7
-    },
     "_id": ""
   },
   {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "__type__": "539d4kLTLFHA5AxpwAPwfee",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -333,11 +339,8 @@
     "anim": {
       "__id__": 4
     },
-    "playerIdleAnim": "SkeletonStand",
-    "playerMoveAnim": "SkeletonWalk",
-    "playerDashAnim": "SkeletonStand",
-    "playerHurtAnim": "SkeletonStand",
-    "playerDeadAnim": "SkeletonDead",
+    "attackAnim": "FlagOn",
+    "idleAnim": "FlagOff",
     "_id": ""
   },
   {

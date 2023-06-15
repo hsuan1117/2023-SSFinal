@@ -247,29 +247,29 @@
       "__id__": 11
     },
     "mainWeaponPrefab": {
-      "__uuid__": "0972d291-1121-4f88-8e95-485edbd757d0"
+      "__uuid__": "2a4e343b-3fac-4d5d-a0a7-4d0c66d7b387"
     },
     "_id": ""
   },
   {
     "__type__": "AttrNum",
+    "_defaultValue": 150
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 4
+  },
+  {
+    "__type__": "AttrNum",
     "_defaultValue": 100
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 2
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 1
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 700
   },
   {
     "__type__": "cc.RigidBody",

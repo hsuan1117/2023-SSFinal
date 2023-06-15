@@ -219,6 +219,8 @@
     "projectilePrefab": {
       "__uuid__": "f35abea1-901a-42aa-b98d-5e9266a2c458"
     },
+    "attackingAnim": "",
+    "idleAnim": "",
     "_id": ""
   },
   {

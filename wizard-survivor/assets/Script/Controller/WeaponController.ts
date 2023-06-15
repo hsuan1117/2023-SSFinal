@@ -8,6 +8,7 @@ import SearchEnemy from "../Helper/SearchEnemy";
 import {ISearchTarget} from "../Helper/ISearchTarget";
 import Game = cc.Game;
 import FaceTo from "./FaceTo";
+import WeaponAnimController from "./Anim/WeaponAnimController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -38,6 +39,7 @@ export default class WeaponController extends cc.Component {
     private player: PlayerController = null;
 
     private searchTarget: ISearchTarget = null;
+    private animCtrl: WeaponAnimController = null;
 
     private canAttack: boolean = false;
     private shotCnt: number = 0;
@@ -49,6 +51,7 @@ export default class WeaponController extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.node.getComponent(FaceTo).init(this.node)
+        this.animCtrl = this.node.getComponent(WeaponAnimController);
         this.searchTarget = this.node.addComponent(SearchEnemy);
         // this.range.onChangeCallback.push((val) => {
         //     console.log('Range changed:', val);
@@ -68,6 +71,7 @@ export default class WeaponController extends cc.Component {
         }
 
         if (this.canAttack && this.shotCnt<this.shotPerAttack.value && this.nextShotCountDown <= 0){
+            if(this.animCtrl) this.animCtrl.state = {...this.animCtrl.state, isAttacking: true};
             this.shoot();
             this.nextShotCountDown = 1/this.shootSpeed.value;
             this.shotCnt++;
@@ -93,6 +97,7 @@ export default class WeaponController extends cc.Component {
     private stopAttack(){
         this.canAttack = false;
         this.shotCnt = Infinity;
+        if (this.animCtrl) this.animCtrl.state = {...this.animCtrl.state, isAttacking: false};
     }
 
     private shoot() {

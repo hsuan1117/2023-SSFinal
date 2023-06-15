@@ -80,6 +80,9 @@ export class ProjectileAttr {
     @property(AttrNum)
     public penetrateTimes: AttrNum = new AttrNum();
 
+    @property()
+    public notFly: boolean = false;
+
     constructor(flySpeed = 0,
                 damage = 0,
                 existDuration = 0,
