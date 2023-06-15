@@ -31,12 +31,8 @@ export default class EnemyController extends cc.Component {
     @property(AttrNum)
     public collideDamageCoolDown: AttrNum = new AttrNum();
 
-    @property(cc.Material)
     public normalMaterial: cc.Material = null;
-
-    @property(cc.Material)
     public hurtMaterial: cc.Material = null;
-
     private sprite: cc.Sprite = null;
 
     protected skillCoolDownTime: number = 0;
@@ -97,7 +93,6 @@ export default class EnemyController extends cc.Component {
             this.dead(byUid);
         }
     }
-
 
     protected runAwayFromPlayer() { // For Boss fight
         let target = this.findClosestPlayer();

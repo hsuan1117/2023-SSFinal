@@ -1,5 +1,5 @@
 import GameManager from "../Manager/GameManager";
-import {Direction, ignoreZ} from "../Helper/utils";
+import {Direction, ignoreZ, loadResource} from "../Helper/utils";
 import {AttrNum} from "../Helper/Attributes";
 import WeaponController from "./WeaponController";
 import {ISearchTarget} from "../Helper/ISearchTarget";
@@ -64,6 +64,10 @@ export default class PlayerController extends cc.Component{
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
 
+    public normalMaterial: cc.Material = null;
+    public hurtMaterial: cc.Material = null;
+    private sprite: cc.Sprite = null;
+
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, ({keyCode}) => {
@@ -102,6 +106,12 @@ export default class PlayerController extends cc.Component{
         this.mainWeapon.projectileAttr.penetrateTimes.onChangeCallback.push(weaponOnCh);
 
         this.currentHP.onChangeCallback.push(this.checkIsDead.bind(this));
+
+        this.sprite = this.node.getChildByName("Sprite").getComponent(cc.Sprite);
+        this.normalMaterial = this.sprite.getMaterial(0);
+        loadResource("Material/Blood", cc.Material).then((mat: cc.Material) => {
+            this.hurtMaterial = mat;
+        });
     }
 
     start(){
@@ -130,6 +140,14 @@ export default class PlayerController extends cc.Component{
 
         const deltaHP = Math.min(this.currentHP.value, damage);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
+
+        let bloodEnd = () => {
+            this.sprite.setMaterial(0, this.normalMaterial);
+        };
+
+        this.sprite.setMaterial(0, this.hurtMaterial);
+        this.unschedule(bloodEnd);
+        this.schedule(bloodEnd, 0.1);
     }
 
     public recover(val: number) {
