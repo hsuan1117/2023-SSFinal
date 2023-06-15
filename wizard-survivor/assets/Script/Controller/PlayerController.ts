@@ -52,6 +52,7 @@ export default class PlayerController extends cc.Component{
 
     private animCtrl: PlayerAnimController = null;
     private rb: cc.RigidBody = null;
+    private phyCollider: cc.PhysicsCollider = null;
     private searchTarget: ISearchTarget = new SearchDrop;
 
     private readonly DENSITY: number = 1;
@@ -72,6 +73,7 @@ export default class PlayerController extends cc.Component{
         }, this);
 
         this.rb = this.node.getComponent(cc.RigidBody);
+        this.phyCollider = this.node.getComponent(cc.PhysicsCollider);
         this.addComponent(SearchDrop);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.animCtrl = this.node.getComponent(PlayerAnimController);
@@ -166,8 +168,8 @@ export default class PlayerController extends cc.Component{
 
     public dash(){
         if (this._isDead) return;
-
         if (this.isDashing || this.dashCountDown>0) return;
+        this.phyCollider.enabled = false;
         this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
@@ -177,6 +179,7 @@ export default class PlayerController extends cc.Component{
             this.isDashing = false;
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
             this.animCtrl.state = {...this.animCtrl.state, isDashing: false};
+            this.phyCollider.enabled = true;
         }, this.DASH_DURATION);
     }
 
@@ -204,7 +207,7 @@ export default class PlayerController extends cc.Component{
 
         if (this.currentHP.value <= 0){
             this._isDead = true;
-            this.node.getComponent(cc.PhysicsCollider).enabled = false;
+            this.phyCollider.enabled = false;
             // this.rb.type = cc.RigidBodyType.Kinematic;
             this.rb.linearVelocity = cc.v2(0, 0);
 
