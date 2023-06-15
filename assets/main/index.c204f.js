@@ -5151,6 +5151,7 @@ window.__require = function e(t, n, r) {
         this.existDuration = new AttrNum();
         this.bounceOnEnemyTimes = new AttrNum();
         this.penetrateTimes = new AttrNum();
+        this.notFly = false;
         this.flySpeed.defaultValue = flySpeed;
         this.damage.defaultValue = damage;
         this.existDuration.defaultValue = existDuration;
@@ -5166,6 +5167,7 @@ window.__require = function e(t, n, r) {
       tooltip: "\u5728\u6575\u4eba\u9593\u5f48\u8df3\u7684\u6b21\u6578\u3002\u5982\u679c\u7a7f\u900f\u6b21\u6578\u548c\u5f48\u8df3\u6b21\u6578\u90fd\u4e0d\u70ba 0\uff0c\u5247\u6703\u4e9b\u628a\u5f48\u8df3\u6b21\u6578\u7528\u5b8c\u518d\u7a7f\u900f"
     }) ], ProjectileAttr.prototype, "bounceOnEnemyTimes", void 0);
     __decorate([ property(AttrNum) ], ProjectileAttr.prototype, "penetrateTimes", void 0);
+    __decorate([ property() ], ProjectileAttr.prototype, "notFly", void 0);
     ProjectileAttr = __decorate([ ccclass("ProjectileAttr") ], ProjectileAttr);
     exports.ProjectileAttr = ProjectileAttr;
     cc._RF.pop();
@@ -7078,6 +7080,7 @@ window.__require = function e(t, n, r) {
         this.appliedBuff = [];
         this.animCtrl = null;
         this.rb = null;
+        this.phyCollider = null;
         this.searchTarget = new SearchDrop_1.default();
         this.DENSITY = 1;
         this.DASH_DURATION = .1;
@@ -7091,6 +7094,7 @@ window.__require = function e(t, n, r) {
           keyCode == cc.macro.KEY.o && this.hurt(1);
         }, this);
         this.rb = this.node.getComponent(cc.RigidBody);
+        this.phyCollider = this.node.getComponent(cc.PhysicsCollider);
         this.addComponent(SearchDrop_1.default);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.animCtrl = this.node.getComponent(PlayerAnimController_1.default);
@@ -7170,6 +7174,7 @@ window.__require = function e(t, n, r) {
       dash() {
         if (this._isDead) return;
         if (this.isDashing || this.dashCountDown > 0) return;
+        this.phyCollider.enabled = false;
         this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           isDashing: true
         });
@@ -7183,6 +7188,7 @@ window.__require = function e(t, n, r) {
           this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
             isDashing: false
           });
+          this.phyCollider.enabled = true;
         }, this.DASH_DURATION);
       }
       addBuff(buff) {
@@ -7202,7 +7208,7 @@ window.__require = function e(t, n, r) {
         if (this._isDead) return;
         if (this.currentHP.value <= 0) {
           this._isDead = true;
-          this.node.getComponent(cc.PhysicsCollider).enabled = false;
+          this.phyCollider.enabled = false;
           this.rb.linearVelocity = cc.v2(0, 0);
           this.animCtrl.afterDeadCallback = () => {
             GameManager_1.default.instance.endGame();
@@ -7724,7 +7730,7 @@ window.__require = function e(t, n, r) {
             projectile: this
           });
           enemy.hurt(this.projectileAttr.damage.value, this.shootByUid);
-          if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
+          if (!this.projectileAttr.notFly) if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
             this.bounceCnt++;
             const newDir = this.bounceDir.mul(this.bounceMixRandomRate).add(this.rb.linearVelocity.normalize().neg().mul(1 - this.bounceMixRandomRate)).normalize();
             this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
@@ -8245,6 +8251,44 @@ window.__require = function e(t, n, r) {
     "../Helper/utils": "utils",
     "./GameManager": "GameManager"
   } ],
+  WeaponAnimController: [ function(require, module, exports) {
+    "use strict";
+    cc._RF.push(module, "539d4kLTLFHA5AxpwAPwfee", "WeaponAnimController");
+    "use strict";
+    var __decorate = this && this.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : null === desc ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if ("object" === typeof Reflect && "function" === typeof Reflect.decorate) r = Reflect.decorate(decorators, target, key, desc); else for (var i = decorators.length - 1; i >= 0; i--) (d = decorators[i]) && (r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r);
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    const AnimController_1 = require("./AnimController");
+    const {ccclass: ccclass, property: property} = cc._decorator;
+    let WeaponAnimController = class WeaponAnimController extends AnimController_1.default {
+      constructor() {
+        super(...arguments);
+        this.attackAnim = "attack";
+        this.idleAnim = "idle";
+      }
+      initState() {
+        this._state = {
+          isAttacking: false
+        };
+      }
+      onStateChange(oldState, newState) {
+        if (oldState === newState) return;
+        newState.isAttacking ? this.anim.play(this.attackAnim) : this.anim.play(this.idleAnim);
+      }
+    };
+    __decorate([ property() ], WeaponAnimController.prototype, "attackAnim", void 0);
+    __decorate([ property() ], WeaponAnimController.prototype, "idleAnim", void 0);
+    WeaponAnimController = __decorate([ ccclass ], WeaponAnimController);
+    exports.default = WeaponAnimController;
+    cc._RF.pop();
+  }, {
+    "./AnimController": "AnimController"
+  } ],
   WeaponController: [ function(require, module, exports) {
     "use strict";
     cc._RF.push(module, "55b95yvGJxEn65jBcYaTb3x", "WeaponController");
@@ -8264,6 +8308,7 @@ window.__require = function e(t, n, r) {
     const utils_1 = require("../Helper/utils");
     const SearchEnemy_1 = require("../Helper/SearchEnemy");
     const FaceTo_1 = require("./FaceTo");
+    const WeaponAnimController_1 = require("./Anim/WeaponAnimController");
     const {ccclass: ccclass, property: property} = cc._decorator;
     let WeaponController = class WeaponController extends cc.Component {
       constructor() {
@@ -8277,6 +8322,7 @@ window.__require = function e(t, n, r) {
         this.projectilePrefab = null;
         this.player = null;
         this.searchTarget = null;
+        this.animCtrl = null;
         this.canAttack = false;
         this.shotCnt = 0;
         this.nextShotCountDown = 0;
@@ -8285,6 +8331,7 @@ window.__require = function e(t, n, r) {
       }
       onLoad() {
         this.node.getComponent(FaceTo_1.default).init(this.node);
+        this.animCtrl = this.node.getComponent(WeaponAnimController_1.default);
         this.searchTarget = this.node.addComponent(SearchEnemy_1.default);
       }
       update(dt) {
@@ -8297,6 +8344,9 @@ window.__require = function e(t, n, r) {
           this.bounceDirIdx = Math.floor(8 * Math.random());
         }
         if (this.canAttack && this.shotCnt < this.shotPerAttack.value && this.nextShotCountDown <= 0) {
+          this.animCtrl && (this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
+            isAttacking: true
+          }));
           this.shoot();
           this.nextShotCountDown = 1 / this.shootSpeed.value;
           this.shotCnt++;
@@ -8315,6 +8365,9 @@ window.__require = function e(t, n, r) {
       stopAttack() {
         this.canAttack = false;
         this.shotCnt = Infinity;
+        this.animCtrl && (this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
+          isAttacking: false
+        }));
       }
       shoot() {
         const target = this.searchTarget.getTarget();
@@ -8355,6 +8408,7 @@ window.__require = function e(t, n, r) {
     "../Helper/SearchEnemy": "SearchEnemy",
     "../Helper/utils": "utils",
     "../Manager/GameManager": "GameManager",
+    "./Anim/WeaponAnimController": "WeaponAnimController",
     "./FaceTo": "FaceTo",
     "./PlayerController": "PlayerController",
     "./ProjectileController": "ProjectileController"
@@ -8475,4 +8529,4 @@ window.__require = function e(t, n, r) {
     exports.api = api;
     cc._RF.pop();
   }, {} ]
-}, {}, [ "AnimController", "EnemyAnimController", "PlayerAnimController", "CameraController", "DamagePlayerOnCollide", "DropController", "EnemyController", "FaceTo", "PlayerController", "ProjectileController", "WeaponController", "Attributes", "Buff", "ISearchTarget", "RandomGenerator", "SearchDrop", "SearchEnemy", "utils", "GameManager", "GameSystem", "InputManager", "MapManager", "ParticleManager", "PlayerManager", "PoolManager", "WaveManager", "BumpingMonster", "EnterGameUI", "ExpBarUI", "FixedUI", "GameEndUI", "LobbyUI", "MainMenuUI", "PlayerFocus", "PlayerHPUI", "PlayerStatUI", "ResultUI", "SettingUI", "UpgradeUI" ]);
+}, {}, [ "AnimController", "EnemyAnimController", "PlayerAnimController", "WeaponAnimController", "CameraController", "DamagePlayerOnCollide", "DropController", "EnemyController", "FaceTo", "PlayerController", "ProjectileController", "WeaponController", "Attributes", "Buff", "ISearchTarget", "RandomGenerator", "SearchDrop", "SearchEnemy", "utils", "GameManager", "GameSystem", "InputManager", "MapManager", "ParticleManager", "PlayerManager", "PoolManager", "WaveManager", "BumpingMonster", "EnterGameUI", "ExpBarUI", "FixedUI", "GameEndUI", "LobbyUI", "MainMenuUI", "PlayerFocus", "PlayerHPUI", "PlayerStatUI", "ResultUI", "SettingUI", "UpgradeUI" ]);

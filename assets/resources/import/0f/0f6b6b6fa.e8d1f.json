@@ -1,14 +1,14 @@
 [
   1,
   [
-    "0cwUCvIPBPb54Em/FJb2sv",
-    "c7unhgaZ1DiaHHjrcQWkJm",
+    "72DiyqxW1I3q11rF3A9JkP",
+    "b8gOliLpxMG6DobWsbzXLp",
     "ecpdLyjvZBwrvm+cedCcQy",
-    "b7nd5AILdLxoKXZH+DQyMi",
-    "1fvccOWxFDh6iFwJlO7Nee",
-    "1dNT3g0GtH6ohA2PCDLOce",
-    "b7aMGtda1IKp9ew+EM7SYG",
-    "212FfvcRVDIZUlps01SJUy"
+    "dfR94D+Z9N3KPAWKuALN6S",
+    "41TNmBJzRNGrrMf0nrBjdz",
+    "16a6CoPzRKx7Na4A7BMRa0",
+    "2aTjQ7P6xNXaCnTQxm17OH",
+    "5e9htMiQBBdrU6heEj3io6"
   ],
   [
     "node",
@@ -274,7 +274,7 @@
       [
         [
           1,
-          "VampireDead",
+          "AssassinDead",
           0.016666666666666666,
           [
             {},
@@ -322,11 +322,11 @@
       [
         [
           2,
-          "Vampire"
+          "Assassin"
         ],
         [
           3,
-          "Vampire",
+          "Assassin",
           1,
           [
             -7
@@ -337,23 +337,23 @@
               -2,
               [
                 0,
+                150
+              ],
+              [
+                0,
+                4
+              ],
+              [
+                0,
                 100
               ],
               [
                 0,
-                5
+                2
               ],
               [
                 0,
-                100
-              ],
-              [
-                0,
-                1
-              ],
-              [
-                0,
-                500
+                700
               ],
               5
             ],
@@ -375,11 +375,11 @@
             ],
             [
               8,
-              "VampireStand",
-              "VampireWalk",
-              "VampireStand",
-              "VampireStand",
-              "VampireDead",
+              "AssassinStand",
+              "AssassinWalk",
+              "AssassinWalk",
+              "AssassinStand",
+              "AssassinDead",
               -6,
               -5
             ]
@@ -418,8 +418,8 @@
           ],
           [
             5,
-            24,
-            30
+            31,
+            25
           ]
         ],
         [
@@ -498,11 +498,11 @@
     [
       [
         {
-          "name": "vampire_8",
+          "name": "c02_8",
           "rect": [
-            194,
             0,
-            29,
+            0,
+            28,
             19
           ],
           "offset": [
@@ -510,7 +510,7 @@
             0
           ],
           "originalSize": [
-            29,
+            28,
             19
           ],
           "capInsets": [

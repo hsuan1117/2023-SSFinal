@@ -1,14 +1,14 @@
 [
   1,
   [
-    "72DiyqxW1I3q11rF3A9JkP",
-    "b8gOliLpxMG6DobWsbzXLp",
+    "0cwUCvIPBPb54Em/FJb2sv",
+    "c7unhgaZ1DiaHHjrcQWkJm",
     "ecpdLyjvZBwrvm+cedCcQy",
-    "dfR94D+Z9N3KPAWKuALN6S",
-    "41TNmBJzRNGrrMf0nrBjdz",
-    "16a6CoPzRKx7Na4A7BMRa0",
-    "09ctKRESFPiI6VSF7b11fQ",
-    "5e9htMiQBBdrU6heEj3io6"
+    "b7nd5AILdLxoKXZH+DQyMi",
+    "1fvccOWxFDh6iFwJlO7Nee",
+    "1dNT3g0GtH6ohA2PCDLOce",
+    "29lICZwTFDjpjAsNVA3CJj",
+    "212FfvcRVDIZUlps01SJUy"
   ],
   [
     "node",
@@ -274,7 +274,7 @@
       [
         [
           1,
-          "AssassinDead",
+          "VampireDead",
           0.016666666666666666,
           [
             {},
@@ -322,11 +322,11 @@
       [
         [
           2,
-          "Assassin"
+          "Vampire"
         ],
         [
           3,
-          "Assassin",
+          "Vampire",
           1,
           [
             -7
@@ -375,11 +375,11 @@
             ],
             [
               8,
-              "AssassinStand",
-              "AssassinWalk",
-              "AssassinWalk",
-              "AssassinStand",
-              "AssassinDead",
+              "VampireStand",
+              "VampireWalk",
+              "VampireStand",
+              "VampireStand",
+              "VampireDead",
               -6,
               -5
             ]
@@ -418,8 +418,8 @@
           ],
           [
             5,
-            31,
-            25
+            24,
+            30
           ]
         ],
         [
@@ -498,11 +498,11 @@
     [
       [
         {
-          "name": "c02_8",
+          "name": "vampire_8",
           "rect": [
+            194,
             0,
-            0,
-            28,
+            29,
             19
           ],
           "offset": [
@@ -510,7 +510,7 @@
             0
           ],
           "originalSize": [
-            28,
+            29,
             19
           ],
           "capInsets": [
