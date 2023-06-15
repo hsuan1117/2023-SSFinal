@@ -36,6 +36,9 @@ export default class WeaponController extends cc.Component {
     @property(cc.Prefab)
     public projectilePrefab: cc.Prefab = null;
 
+    @property()
+    public aimWeaponOwner: boolean = false;
+
     private player: PlayerController = null;
 
     private searchTarget: ISearchTarget = null;
@@ -110,6 +113,14 @@ export default class WeaponController extends cc.Component {
         projectile.node.setPosition(pos);
         projectile.init({...this.projectileAttr}, null, this.bounceDirIdx, this.player.uid);
         projectile.node.parent = GameManager.instance.bulletLayer;
-        projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
+
+        if (this.aimWeaponOwner) {
+            // projectile.node.parent = this.player.node;
+            // projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
+            projectile.shootToTarget(this.player.node);
+        }
+        else {
+            projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
+        }
     }
 }

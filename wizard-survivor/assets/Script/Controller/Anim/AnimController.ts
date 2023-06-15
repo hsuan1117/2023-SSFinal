@@ -7,8 +7,9 @@ export default abstract class AnimController extends cc.Component {
     protected anim: cc.Animation = null;
 
     public set state(state: {}) {
-        this.onStateChange(this._state, state);
+        const oldState = this._state;
         this._state = state;
+        this.onStateChange(oldState, state);
     }
 
     public get state(): {} {

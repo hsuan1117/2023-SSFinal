@@ -18,23 +18,32 @@ export default class WeaponAnimController extends AnimController {
     @property()
     public idleAnim: string = 'idle';
 
+    private currentAnimState: cc.AnimationState;
+
     protected _state: {
         isAttacking: boolean,
+        dontBreakAttackAnimCnt: number
     };
 
     initState() {
         this._state = {
             isAttacking: false,
+            dontBreakAttackAnimCnt: 0
         }
     }
 
     protected onStateChange(oldState, newState): void {
         if (oldState === newState) return;
-        if (newState.isAttacking){
-            this.anim.play(this.attackAnim);
+        if (newState.isAttacking ){
+            this.currentAnimState = this.anim.play(this.attackAnim);
         }
-        else{
-            this.anim.play(this.idleAnim)
+        else if (newState.isAttacking === false){
+            if (this.currentAnimState.name == this.attackAnim){
+                this.anim.on('lastframe', () => this.currentAnimState = this.anim.play(this.idleAnim), this);
+            }
+            else{
+                this.currentAnimState = this.anim.play(this.idleAnim)
+            }
         }
     }
 }

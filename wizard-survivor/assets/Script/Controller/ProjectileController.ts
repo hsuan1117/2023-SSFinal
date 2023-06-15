@@ -3,7 +3,8 @@ import {ProjectileAttr} from "../Helper/Attributes";
 import GameManager from "../Manager/GameManager";
 import requireComponent = cc._decorator.requireComponent;
 import Collider = cc.Collider;
-import {eightDirections} from "../Helper/utils";
+import {eightDirections, ignoreZ} from "../Helper/utils";
+import director = cc.director;
 
 const {ccclass, property} = cc._decorator;
 
@@ -27,6 +28,7 @@ export default class ProjectileController extends cc.Component {
     private penetrateCnt: number = 0;
 
     private existCountDown: number = 0;
+    private lockTarget: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -67,6 +69,9 @@ export default class ProjectileController extends cc.Component {
     }
 
     update(dt: number) {
+        if (this.lockTarget){
+            this.node.setPosition(this.node.position.lerp(this.lockTarget.position, this.projectileAttr.lockTargetLerpRatio));
+        }
         this.existCountDown -= dt;
         if (this.existCountDown <= 0){
             this.deleteProjectile();
@@ -87,6 +92,13 @@ export default class ProjectileController extends cc.Component {
     public shootToDirection(direction: cc.Vec2) {
         this.rb.linearVelocity = direction.mul(this.projectileAttr.flySpeed.value);
         this.existCountDown = this.projectileAttr.existDuration.value;
+    }
+
+    public shootToTarget(lockTarget: cc.Node) {
+        const dir = lockTarget.position.sub(this.node.position).normalize();
+        this.lockTarget = lockTarget;
+        // this.node.parent = lockTarget.parent;
+        this.shootToDirection(ignoreZ(dir));
     }
 
 

@@ -83,6 +83,9 @@ export class ProjectileAttr {
     @property()
     public notFly: boolean = false;
 
+    @property()
+    public lockTargetLerpRatio: number = 1;
+
     constructor(flySpeed = 0,
                 damage = 0,
                 existDuration = 0,
