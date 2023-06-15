@@ -1,7 +1,7 @@
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
-import {GameInfo, GameType} from "../UI/MainMenuUI";
+import {GameInfo, GameStartType, GameType} from "../UI/MainMenuUI";
 import {api, CURRENT_ENV} from "../Helper/utils";
 
 /*
@@ -113,6 +113,7 @@ export class GameSystem {
 export class RemoteGameSystem extends GameSystem {
     public echoInstance: Echo;
     private gameInfo: GameInfo;
+    private mem_createPlayer: { uid: string, charaId: string }[] = [];
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
@@ -144,8 +145,15 @@ export class RemoteGameSystem extends GameSystem {
         this.echoInstance.join('room.' + this.gameInfo?.id).listenToAll((evt, data) => {
             console.log('receive event', evt, data)
             if (evt.startsWith('.client-')) {
-                console.log('dispatch event', evt.split('client-')[1], data)
-                this.event.emit(evt.split('client-')[1], data);
+                const evt_name =    evt.split('client-')[1];
+                if(evt_name === "ON_CREATE_PLAYER"){
+                    this.mem_createPlayer.push(data);
+                }
+                if(evt_name === "ON_GAME_START"){
+                    this.dispatchCreatePlayers();
+                }
+                console.log('dispatch event', evt_name, data)
+                this.event.emit(evt_name, data);
             }
         });
     }
@@ -177,13 +185,26 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
+        this.mem_createPlayer.push({uid: uid, charaId: charaId});
         this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
             uid: uid,
             charaId: charaId
         });
     }
 
+    private dispatchCreatePlayers(){
+        if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
+            for (let p of this.mem_createPlayer) {
+                this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
+                    uid: p.uid,
+                    charaId: p.charaId
+                });
+            }
+        }
+    }
+
     public emitGameStart() {
+        this.dispatchCreatePlayers();
         this.dispatchEvent(GameSystem.ON_GAME_START, {});
     }
 }

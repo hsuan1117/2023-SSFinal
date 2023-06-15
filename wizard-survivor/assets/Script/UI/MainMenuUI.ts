@@ -18,6 +18,13 @@ export enum GameType {
     OFFLINE
 }
 
+export enum GameStartType {
+    OFFLINE_1P,
+    OFFLINE_2P,
+    ONLINE_NEW_ROOM,
+    ONLINE_JOIN_ROOM
+}
+
 export type GameInfo = {
     localUids: string[];
     id?: string | number;
@@ -26,6 +33,7 @@ export type GameInfo = {
         name: string;
         email: string;
     }[];
+    gameStartType?: GameStartType;
     gameType?: GameType;
 }
 
@@ -100,7 +108,8 @@ export default class MainMenuUI extends cc.Component {
     private offline1p(): void {
         const gameInfo: GameInfo = {
             gameType: GameType.OFFLINE,
-            localUids: ['p1']
+            localUids: ['p1'],
+            gameStartType: GameStartType.OFFLINE_1P
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
     }
@@ -108,7 +117,8 @@ export default class MainMenuUI extends cc.Component {
     private offline2p(): void {
         const gameInfo: GameInfo = {
             gameType: GameType.OFFLINE,
-            localUids: ['p1', 'p2']
+            localUids: ['p1', 'p2'],
+            gameStartType: GameStartType.OFFLINE_2P
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
     }
@@ -158,14 +168,16 @@ export default class MainMenuUI extends cc.Component {
                 alert(`錯誤：${room.message}`);
             return;
         }
-        console.log(room)
         const userId = room.user_id
         room = room.room;
+        if (typeof code === "undefined")
+            alert(room.code)
 
         const gameInfo: GameInfo = {
             gameType: GameType.ONLINE,
             localUids: [userId],
             ...room,
+            gameStartType: typeof code === "undefined" ? GameStartType.ONLINE_NEW_ROOM : GameStartType.ONLINE_JOIN_ROOM
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo})
     }
