@@ -1,7 +1,7 @@
 import {Input} from "./InputManager";
 import GameManager from "./GameManager";
 import Echo from "laravel-echo";
-import {GameInfo, GameType} from "../UI/MainMenuUI";
+import {GameInfo, GameStartType, GameType} from "../UI/MainMenuUI";
 import {api, CURRENT_ENV} from "../Helper/utils";
 
 /*
@@ -113,6 +113,7 @@ export class GameSystem {
 export class RemoteGameSystem extends GameSystem {
     public echoInstance: Echo;
     private gameInfo: GameInfo;
+    private mem_createPlayer: { uid: string, charaId: string }[] = [];
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
@@ -139,12 +140,27 @@ export class RemoteGameSystem extends GameSystem {
         super();
         this.createEchoInstanceFromToken(localStorage.getItem('token'))
         this.gameInfo = gameInfo;
-        this.echoInstance.join('room.' + this.gameInfo?.id).listenForWhisper('input', input => {
-            this.event.emit(GameSystem.ON_INPUT, {input});
-            // @ts-ignore
-        }).listenToAll((evt, data) => {
-            console.log(evt, data)
+
+        // @ts-ignore
+        this.echoInstance.join('room.' + this.gameInfo?.id).listenToAll((evt, data) => {
+            console.log('receive event', evt, data)
+            if (evt.startsWith('.client-')) {
+                const evt_name =    evt.split('client-')[1];
+                if(evt_name === "ON_CREATE_PLAYER"){
+                    this.mem_createPlayer.push(data);
+                }
+                if(evt_name === "ON_GAME_START"){
+                    this.dispatchCreatePlayers();
+                }
+                console.log('dispatch event', evt_name, data)
+                this.event.emit(evt_name, data);
+            }
         });
+    }
+
+    private dispatchEvent(evt, data) {
+        this.event.emit(evt, data);
+        this.echoInstance.join('room.' + this.gameInfo?.id).whisper(evt, data);
     }
 
     // === PUBLIC METHODS ===
@@ -153,73 +169,43 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-        // this.event.emit(GameSystem.ON_PLAYER_HP_CHANGE, {uid: uid, deltaHP: deltaHP});
+        this.dispatchEvent(GameSystem.ON_PLAYER_HP_CHANGE, {uid: uid, deltaHP: deltaHP});
     }
 
     public emitExpChange(deltaExp: number) {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-        this.event.emit(GameSystem.ON_EXP_CHANGE, {deltaExp: deltaExp});
+        this.dispatchEvent(GameSystem.ON_EXP_CHANGE, {deltaExp: deltaExp});
     }
 
     public emitCoinChange(deltaCoin: number) {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-        this.event.emit(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
+        this.dispatchEvent(GameSystem.ON_COIN_CHANGE, {deltaCoin: deltaCoin});
     }
 
     public emitInput(input: Input) {
-        this.event.emit(GameSystem.ON_INPUT, {input: input});
-        this.echoInstance.join('room.' + this.gameInfo?.id).whisper('input', input);
+        this.dispatchEvent(GameSystem.ON_INPUT, {input: input});
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+        this.mem_createPlayer.push({uid: uid, charaId: charaId});
+        this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
+            uid: uid,
+            charaId: charaId
+        });
+    }
+
+    private dispatchCreatePlayers(){
+        if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
+            for (let p of this.mem_createPlayer) {
+                this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
+                    uid: p.uid,
+                    charaId: p.charaId
+                });
             }
-        }).then(res => res.json())
-        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
+        }
     }
 
     public emitGameStart() {
-        fetch('https://final.hsuan.app/api/', {
-            method: 'POST',
-            body: JSON.stringify({}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-        this.event.emit(GameSystem.ON_GAME_START);
+        this.dispatchCreatePlayers();
+        this.dispatchEvent(GameSystem.ON_GAME_START, {});
     }
 }
 
