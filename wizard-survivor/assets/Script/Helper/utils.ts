@@ -85,7 +85,7 @@ export const DEV_ENV: EnvConfig = {
 }
 
 // todo: you can change DEV_ENV to PROD_ENV to switch to production mode
-export const CURRENT_ENV = DEV_ENV;
+export const CURRENT_ENV = PROD_ENV;
 
 export async function api(method, endpoint, jsonBody?) {
     return fetch(CURRENT_ENV.API_CONFIG.API_URL + endpoint, {
