@@ -1,11 +1,12 @@
 import GameManager from "./GameManager";
+import delayTime = cc.delayTime;
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ParticleManager extends cc.Component {
 
     @property(Array)
-    public particleList: string[] = ["White Explosion"];
+    public particleList: string[] = ["White Explosion", "Red Explosion"];
 
     private particlePrefabs: {[particleName: string]: cc.Prefab} = {};
 
@@ -15,7 +16,7 @@ export default class ParticleManager extends cc.Component {
 
     // onLoad () {}
 
-    public createParticle(particleName: string, pos: cc.Vec3, parent: cc.Node = GameManager.instance.bulletLayer) {
+    public createParticle(particleName: string, pos: cc.Vec3, delaytime: number, parent: cc.Node = GameManager.instance.bulletLayer) {
         this.scheduleOnce(() => {
             const particle: cc.Node = GameManager.instance.poolManager.createPrefab(this.particlePrefabs[particleName]);
             particle.parent = parent;
@@ -27,7 +28,7 @@ export default class ParticleManager extends cc.Component {
             this.scheduleOnce(() => {
                 GameManager.instance.poolManager.recycle(particle);
             }, 1);
-        }, 0.1);
+        }, delaytime);
 
     }
 
