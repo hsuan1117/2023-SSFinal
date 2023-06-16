@@ -503,7 +503,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
+      "width": 189.47,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -522,8 +522,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -557,11 +557,13 @@
     "_dstBlendFactor": 771,
     "_string": "衝刺時爆炸",
     "_N$string": "衝刺時爆炸",
-    "_fontSize": 10,
+    "_fontSize": 60,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -923,7 +925,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
+      "width": 189.47,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -942,8 +944,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -977,11 +979,13 @@
     "_dstBlendFactor": 771,
     "_string": "衝刺時爆炸",
     "_N$string": "衝刺時爆炸",
-    "_fontSize": 10,
+    "_fontSize": 60,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -1327,7 +1331,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
+      "width": 190.42,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -1346,8 +1350,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -1381,11 +1385,13 @@
     "_dstBlendFactor": 771,
     "_string": "衝刺時爆炸",
     "_N$string": "衝刺時爆炸",
-    "_fontSize": 10,
+    "_fontSize": 60.3,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,

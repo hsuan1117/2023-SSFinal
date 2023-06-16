@@ -253,8 +253,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 88.42,
-      "height": 50.4
+      "width": 353.68,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -265,15 +265,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        386.94,
+        384.464,
         -236.797,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -307,8 +307,8 @@
     "_dstBlendFactor": 771,
     "_string": "載入中 ...",
     "_N$string": "載入中 ...",
-    "_fontSize": 30,
-    "_lineHeight": 40,
+    "_fontSize": 120,
+    "_lineHeight": 100,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
@@ -363,8 +363,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 290.53,
-      "height": 25.2
+      "width": 1452.63,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -382,8 +382,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -417,8 +417,8 @@
     "_dstBlendFactor": 771,
     "_string": "Hints：被怪物團團包圍？ 不用怕， 利用衝刺穿過敵人",
     "_N$string": "Hints：被怪物團團包圍？ 不用怕， 利用衝刺穿過敵人",
-    "_fontSize": 20,
-    "_lineHeight": 20,
+    "_fontSize": 100,
+    "_lineHeight": 100,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
@@ -473,8 +473,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 389.47,
-      "height": 210.4
+      "width": 1557.89,
+      "height": 1052
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -492,8 +492,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -527,8 +527,8 @@
     "_dstBlendFactor": 771,
     "_string": "P1 :  WASD + <Space>\n\nP2 :  ↑ ← ↓ → + <Shift>\n \nP3 : 8 4 6 5 + <Enter>",
     "_N$string": "P1 :  WASD + <Space>\n\nP2 :  ↑ ← ↓ → + <Shift>\n \nP3 : 8 4 6 5 + <Enter>",
-    "_fontSize": 50,
-    "_lineHeight": 40,
+    "_fontSize": 200,
+    "_lineHeight": 200,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"

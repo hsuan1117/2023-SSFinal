@@ -266,8 +266,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -301,8 +301,8 @@
     "_dstBlendFactor": 771,
     "_string": "！遊戲 開始 ！",
     "_N$string": "！遊戲 開始 ！",
-    "_fontSize": 80,
-    "_lineHeight": 80,
+    "_fontSize": 320,
+    "_lineHeight": 300,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"

@@ -212,8 +212,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.27,
-      "height": 50.4
+      "width": 152.63,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -224,15 +224,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -54.154,
-        1.641,
+        -58.404,
+        2.855,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -266,11 +266,13 @@
     "_dstBlendFactor": 771,
     "_string": "X 999",
     "_N$string": "X 999",
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_fontSize": 100,
+    "_lineHeight": 100.3,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,

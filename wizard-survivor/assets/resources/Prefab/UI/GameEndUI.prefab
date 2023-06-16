@@ -253,8 +253,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 193.68,
-      "height": 100.8
+      "width": 774.74,
+      "height": 378
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -272,8 +272,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -307,8 +307,8 @@
     "_dstBlendFactor": 771,
     "_string": "YOU DIED",
     "_N$string": "YOU DIED",
-    "_fontSize": 80,
-    "_lineHeight": 80,
+    "_fontSize": 320,
+    "_lineHeight": 300.2,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
@@ -366,7 +366,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106.68,
+      "width": 378.95,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -385,8 +385,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -420,11 +420,13 @@
     "_dstBlendFactor": 771,
     "_string": "按 A 繼續 ...",
     "_N$string": "按 A 繼續 ...",
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_fontSize": 100,
+    "_lineHeight": 80,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
