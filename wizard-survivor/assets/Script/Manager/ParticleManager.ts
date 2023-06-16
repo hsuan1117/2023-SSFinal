@@ -6,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 export default class ParticleManager extends cc.Component {
 
     @property(Array)
-    public particleList: string[] = ["White Explosion", "Red Explosion"];
+    public particleList: string[] = ["White Explosion", "Red Explosion", "Smoke", "Level Up"];
 
     private particlePrefabs: {[particleName: string]: cc.Prefab} = {};
 
@@ -16,7 +16,7 @@ export default class ParticleManager extends cc.Component {
 
     // onLoad () {}
 
-    public createParticle(particleName: string, pos: cc.Vec3, delaytime: number, parent: cc.Node = GameManager.instance.bulletLayer) {
+    public createParticle(particleName: string, pos: cc.Vec3, delaytime: number, durationtime: number, parent: cc.Node = GameManager.instance.bulletLayer) {
         this.scheduleOnce(() => {
             const particle: cc.Node = GameManager.instance.poolManager.createPrefab(this.particlePrefabs[particleName]);
             particle.parent = parent;
@@ -27,15 +27,15 @@ export default class ParticleManager extends cc.Component {
 
             this.scheduleOnce(() => {
                 GameManager.instance.poolManager.recycle(particle);
-            }, 1);
+            }, durationtime);
         }, delaytime);
 
     }
 
     start () {
-        for (const enemyType of this.particleList) {
-            cc.resources.load("Prefab/ParticleEffect/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
-                this.particlePrefabs[enemyType] = prefab;
+        for (const particleType of this.particleList) {
+            cc.resources.load("Prefab/ParticleEffect/" + particleType, cc.Prefab, (err, prefab: cc.Prefab) => {
+                this.particlePrefabs[particleType] = prefab;
             });
         }
     }

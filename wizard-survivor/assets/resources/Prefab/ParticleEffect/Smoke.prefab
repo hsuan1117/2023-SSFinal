@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Red Explosion",
+    "_name": "Smoke",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -48,15 +48,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        321,
-        319,
+        -23,
+        174,
         0,
         0,
         0,
         0,
         1,
-        0.2,
-        0.2,
+        0.01,
+        0.01,
         1
       ]
     },
@@ -86,43 +86,43 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_srcBlendFactor": 770,
+    "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_custom": true,
     "_file": {
-      "__uuid__": "49ec8ccc-8c1a-474d-8aa6-78319505d0b2"
+      "__uuid__": "63a8bad3-898d-42e3-8fcf-df15dedc7b1b"
     },
     "_spriteFrame": {
       "__uuid__": "38fd975b-181e-431b-864d-9e95fd0e633f"
     },
     "_texture": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
-    "totalParticles": 50,
-    "duration": 0.05,
-    "emissionRate": 250,
-    "life": 0.2,
-    "lifeVar": 0.05,
+    "totalParticles": 200,
+    "duration": -1,
+    "emissionRate": 446.3636363636363,
+    "life": 1.1,
+    "lifeVar": 0.4,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 134,
-      "g": 2,
-      "b": 2,
+      "r": 153,
+      "g": 102,
+      "b": 51,
       "a": 255
     },
     "_startColorVar": {
       "__type__": "cc.Color",
       "r": 0,
       "g": 0,
-      "b": 0,
-      "a": 0
+      "b": 51,
+      "a": 25
     },
     "_endColor": {
       "__type__": "cc.Color",
-      "r": 175,
-      "g": 5,
-      "b": 5,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_endColorVar": {
@@ -132,13 +132,13 @@
       "b": 0,
       "a": 0
     },
-    "angle": -180,
-    "angleVar": 180,
-    "startSize": 4,
-    "startSizeVar": 0,
-    "endSize": 4,
+    "angle": 180,
+    "angleVar": 0,
+    "startSize": 3,
+    "startSizeVar": 10,
+    "endSize": 2,
     "endSizeVar": 0,
-    "startSpin": 0,
+    "startSpin": 720,
     "startSpinVar": 0,
     "endSpin": 0,
     "endSpinVar": 0,
@@ -150,18 +150,18 @@
     "posVar": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -3
     },
     "_positionType": 1,
     "positionType": 1,
     "emitterMode": 0,
     "gravity": {
       "__type__": "cc.Vec2",
-      "x": 10,
-      "y": -15
+      "x": 0,
+      "y": 0
     },
-    "speed": 50,
-    "speedVar": 5,
+    "speed": 100,
+    "speedVar": 10,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
     "radialAccel": 0,

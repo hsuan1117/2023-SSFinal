@@ -141,7 +141,7 @@ export default class PlayerController extends cc.Component{
         const deltaHP = Math.min(this.currentHP.value, damage);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
 
-        GameManager.instance.particleManager.createParticle("Red Explosion", this.node.position, 0.005);
+        GameManager.instance.particleManager.createParticle("Red Explosion", this.node.position, 0.005, 1);
 
         let bloodEnd = () => {
             this.sprite.setMaterial(0, this.normalMaterial);

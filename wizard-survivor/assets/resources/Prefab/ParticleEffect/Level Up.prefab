@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Red Explosion",
+    "_name": "Level Up",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -48,15 +48,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        321,
-        319,
+        -51,
+        164,
         0,
         0,
         0,
         0,
         1,
-        0.2,
-        0.2,
+        0.01,
+        0.01,
         1
       ]
     },
@@ -86,60 +86,60 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_srcBlendFactor": 1,
+    "_dstBlendFactor": 1,
     "_custom": true,
     "_file": {
-      "__uuid__": "49ec8ccc-8c1a-474d-8aa6-78319505d0b2"
+      "__uuid__": "b16f14fc-7ea4-4e39-9f59-ed5320dc0ef2"
     },
     "_spriteFrame": {
       "__uuid__": "38fd975b-181e-431b-864d-9e95fd0e633f"
     },
     "_texture": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
-    "totalParticles": 50,
-    "duration": 0.05,
-    "emissionRate": 250,
-    "life": 0.2,
-    "lifeVar": 0.05,
+    "totalParticles": 64,
+    "duration": -1,
+    "emissionRate": 40,
+    "life": 1.6,
+    "lifeVar": 0.2,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 134,
-      "g": 2,
-      "b": 2,
-      "a": 255
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 191
     },
     "_startColorVar": {
       "__type__": "cc.Color",
       "r": 0,
       "g": 0,
-      "b": 0,
-      "a": 0
+      "b": 255,
+      "a": 63
     },
     "_endColor": {
       "__type__": "cc.Color",
-      "r": 175,
-      "g": 5,
-      "b": 5,
-      "a": 255
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 0
     },
     "_endColorVar": {
       "__type__": "cc.Color",
       "r": 0,
       "g": 0,
-      "b": 0,
+      "b": 255,
       "a": 0
     },
-    "angle": -180,
-    "angleVar": 180,
-    "startSize": 4,
-    "startSizeVar": 0,
-    "endSize": 4,
+    "angle": 90,
+    "angleVar": 45,
+    "startSize": 3,
+    "startSizeVar": 2,
+    "endSize": -1,
     "endSizeVar": 0,
     "startSpin": 0,
-    "startSpinVar": 0,
+    "startSpinVar": 236,
     "endSpin": 0,
     "endSpinVar": 0,
     "sourcePos": {
@@ -149,7 +149,7 @@
     },
     "posVar": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 10,
       "y": 0
     },
     "_positionType": 1,
@@ -157,11 +157,11 @@
     "emitterMode": 0,
     "gravity": {
       "__type__": "cc.Vec2",
-      "x": 10,
-      "y": -15
+      "x": 0,
+      "y": -66
     },
-    "speed": 50,
-    "speedVar": 5,
+    "speed": 80,
+    "speedVar": 20,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
     "radialAccel": 0,

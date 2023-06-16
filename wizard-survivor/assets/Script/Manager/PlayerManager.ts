@@ -118,6 +118,7 @@ export default class PlayerManager extends cc.Component {
 
     private onBuffApply({uid, buffId}){
         this.playerControllers[uid].addBuff(new Buffs[buffId]());
+        GameManager.instance.particleManager.createParticle("Level Up", cc.v3(0, 0, 0), 0, 2, this.playerControllers[uid].node);
     }
 
     private onHPChange({uid, deltaHP}){
