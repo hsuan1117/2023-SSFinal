@@ -29,11 +29,9 @@ export default class PlayerController extends cc.Component{
     * callbackFn: () => void
      */
     public static readonly PLAYER_DASH: string = "PLAYER_DASH";
-    /*
-    * 事件：當玩家受傷害時觸發
+    /* 事件：當玩家受傷害時觸發。可以通過修改 damageInfo.damage 來修改傷害數值
     *
-    * callbackFn: (hurt: number) => void
-     */
+    * callbackFn: (damageInfo: {damage: number}) => void */
     public static readonly PLAYER_HURT: string = "PLAYER_HURT";
 
     // Player Attributes:
@@ -56,6 +54,8 @@ export default class PlayerController extends cc.Component{
     public mainWeaponPrefab: cc.Prefab = null;
 
     public set dashCountDown(value: number){ this._dashCountDown = value }
+    public get isInvincible(): number { return this._isInvincible }
+    public set isInvincible(value: number){ this._isInvincible = value }
 
     public uid: string = "";
     public mainWeapon: WeaponController = null;
@@ -73,6 +73,7 @@ export default class PlayerController extends cc.Component{
     private _dashCountDown: number = 0;
     private isDashing: boolean = false;
     private _isDead: boolean = false;
+    private _isInvincible: number = 0;
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
 
@@ -149,7 +150,12 @@ export default class PlayerController extends cc.Component{
     // PUBLIC METHODS:
     public hurt(damage: number){
         if (this._isDead) return;
-        this.event.emit(PlayerController.PLAYER_HURT, damage);
+        if (this._isInvincible > 0) return;
+
+        const damageInfo = {damage: damage};
+        this.event.emit(PlayerController.PLAYER_HURT, damageInfo);
+        damage = damageInfo.damage; // 讓事件的 callback 可以修改傷害數值
+
         const deltaHP = Math.min(this.currentHP.value, damage);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
 

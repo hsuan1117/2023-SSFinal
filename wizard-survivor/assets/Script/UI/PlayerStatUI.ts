@@ -1,5 +1,8 @@
 import PlayerController from "../Controller/PlayerController";
 import {loadResource} from "../Helper/utils";
+import {IBuff} from "../Helper/Buff";
+import GameManager from "../Manager/GameManager";
+import BuffIconUI from "./BuffIconUI";
 
 const {ccclass, property} = cc._decorator;
 
@@ -8,14 +11,17 @@ export default class PlayerStatUI extends cc.Component {
 
     public player: PlayerController = null;
 
+    private _buffIconPrefab: cc.Prefab = null;
     private label;
     private buffIconContainer: cc.Node;
-    private showedBuff: string[] = [];
+    private showedBuff: IBuff[] = [];
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.label = this.node.getChildByName('AttrLabel').getComponent(cc.Label);
         this.buffIconContainer = this.node.getChildByName('Buff');
+        loadResource('Prefab/UI/BuffIcon', cc.Prefab)
+            .then((prefab: cc.Prefab) => this._buffIconPrefab = prefab);
     }
 
     // PUBLIC METHODS:
@@ -49,19 +55,18 @@ export default class PlayerStatUI extends cc.Component {
         //     label.string += `${buff.description}\n`;
         // }
 
-        let toAdds = [];
+        let toAdds: IBuff[] = [];
         let i = 0;
-        while (i < this.showedBuff.length && this.showedBuff[i] === this.player.appliedBuff[i].id) i++;
-        toAdds = this.player.appliedBuff.slice(i).map(buff => buff.id);
+        while (i < this.showedBuff.length && this.showedBuff[i] === this.player.appliedBuff[i]) i++;
+        toAdds = this.player.appliedBuff.slice(i);
         this.showedBuff = [...this.showedBuff, ...toAdds];
 
         for (const toAdd of toAdds) {
-            const spriteFrame: cc.SpriteFrame =  await loadResource('Art/BuffCard/' + toAdd, cc.SpriteFrame) as unknown as cc.SpriteFrame;
-            const buffIcon = new cc.Node();
-            buffIcon.addComponent(cc.Sprite).spriteFrame = spriteFrame;
-            buffIcon.parent = this.buffIconContainer;
-            buffIcon.width = 30;
-            buffIcon.height = 30;
+            const buffIcon =
+                GameManager.instance.poolManager.createPrefab(this._buffIconPrefab)
+                    .getComponent(BuffIconUI);
+            await buffIcon.init(toAdd);
+            buffIcon.node.parent = this.buffIconContainer;
         }
     }
 }

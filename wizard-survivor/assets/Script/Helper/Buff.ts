@@ -14,6 +14,8 @@ export class IBuff {
     public description: string;
     public id: string;
 
+    public get isAvailable(): boolean { return this._coolDownTimer === 0 || this._coolDown == 0; }
+
     protected _coolDown: number = 0;
     protected _coolDownTimer: number = 0;
 
@@ -164,7 +166,6 @@ class Tiamat extends EffectOnce {
     constructor(coolDown: number = 0.5 ,damageFactor: number = 20) {
         super(coolDown);
         this._dealDamagePercentage = damageFactor;
-
     }
 
     public _apply(player: PlayerController) {
@@ -196,9 +197,37 @@ class Tiamat extends EffectOnce {
     }
 }
 
+class GA extends EffectOnce {
+    public showName = "〈傳說技能〉 守護天使\n"
+    public description = "當你受到致命傷害，立即回復所有生命值，並且無敵一秒。冷卻時間 100 秒。\n"
+    public id = "GA";
+
+    private _invincibleTime: number;
+
+    constructor(invincibleTime: number = 1 ,coolDown: number = 100) {
+        super(coolDown);
+        this._invincibleTime = invincibleTime;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        player.event.on(PlayerController.PLAYER_HURT, (damageInfo) => {
+            if (this._coolDownTimer > 0) return;
+            if (player.currentHP.value > damageInfo.damage) return;
+
+            this.intoCoolDown(player);
+            this.showBuffTriggered(player);
+            damageInfo.damage = 0;
+            player.recover(player.maxHp.value);
+            player.isInvincible++;
+            player.scheduleOnce(() => {player.isInvincible--}, this._invincibleTime);
+        })
+    }
+}
 
 
-let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo, Tiamat];
+
+let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo, Tiamat, GA];
 
 export let Buffs = {};
 export let BuffsName: {[key: string]: string} = {};
