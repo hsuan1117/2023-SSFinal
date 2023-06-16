@@ -109,7 +109,7 @@ export default class PlayerManager extends cc.Component {
         if (input.type == InputType.STICK){
             this.playerControllers[input.uid].setMovingDir(cc.v2(input.lX/1000, input.lY/1000));
         }
-        else if (input.type == InputType.BUTTON_DOWN){
+        else if (input.type == InputType.BUTTON_DOWN && !GameManager.instance.isPaused){
             if (input.btnCode == 'A'){
                 this.playerControllers[input.uid].dash();
             }

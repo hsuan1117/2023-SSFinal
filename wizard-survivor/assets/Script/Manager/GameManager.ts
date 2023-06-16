@@ -69,6 +69,7 @@ export default class GameManager extends cc.Component {
     public get itemLayer(): cc.Node {return this._itemLayer;}
     public get backgroundLayer(): cc.Node {return this._backgroundLayer;}
     public get currentSceneType(): string {return this._currentSceneType;}
+    public get isPaused(): boolean {return this._isPaused;}
     public get gameRecord(): GameRecord {
         return {
             level: this.level.value,
@@ -100,6 +101,7 @@ export default class GameManager extends cc.Component {
     private _particleManager: ParticleManager;
 
     private _currentSceneType: string;
+    private _isPaused: boolean = false;
 
     /* == 場景分層 == */
     private _backgroundLayer: cc.Node;
@@ -128,6 +130,7 @@ export default class GameManager extends cc.Component {
 
         this.event = new cc.EventTarget();
 
+        this._isPaused = false;
         this._currentSceneType = 'UNKNOWN';
 
 
@@ -187,11 +190,13 @@ export default class GameManager extends cc.Component {
 
     /* === PUBLIC METHODS === */
     public pauseGame() {
+        this._isPaused = true;
         cc.director.pause();
     }
 
     public resumeGame() {
         cc.director.resume();
+        this._isPaused = false;
     }
 
     public async changeScene(sceneType: string) {
