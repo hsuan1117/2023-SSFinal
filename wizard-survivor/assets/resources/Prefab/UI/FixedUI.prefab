@@ -336,8 +336,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100.88,
-      "height": 25.2
+      "width": 397.89,
+      "height": 100.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -355,8 +355,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -390,11 +390,13 @@
     "_dstBlendFactor": 771,
     "_string": "[PlayerStatUI1]",
     "_N$string": "[PlayerStatUI1]",
-    "_fontSize": 15,
-    "_lineHeight": 20,
+    "_fontSize": 90,
+    "_lineHeight": 80,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -843,8 +845,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100.88,
-      "height": 45.2
+      "width": 407.37,
+      "height": 180.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -862,8 +864,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -897,11 +899,13 @@
     "_dstBlendFactor": 771,
     "_string": "[PlayerStatUI2]\n",
     "_N$string": "[PlayerStatUI2]\n",
-    "_fontSize": 15,
-    "_lineHeight": 20,
+    "_fontSize": 90,
+    "_lineHeight": 80,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -1427,8 +1431,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97.87,
-      "height": 50.4
+      "width": 235.79,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1446,8 +1450,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -1481,11 +1485,13 @@
     "_dstBlendFactor": 771,
     "_string": "Label",
     "_N$string": "Label",
-    "_fontSize": 40,
-    "_lineHeight": 40,
+    "_fontSize": 160,
+    "_lineHeight": 100,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -1679,7 +1685,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -105.026,
+        -203.98,
         0,
         0,
         0,
@@ -1776,8 +1782,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 33.37,
-      "height": 50.4
+      "width": 151.58,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1789,14 +1795,14 @@
       "ctor": "Float64Array",
       "array": [
         -148.633,
-        1.641,
+        5.537,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -1830,11 +1836,13 @@
     "_dstBlendFactor": 771,
     "_string": "999",
     "_N$string": "999",
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_fontSize": 160,
+    "_lineHeight": 100,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -2069,8 +2077,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 83.41,
-      "height": 50.4
+      "width": 421.05,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2081,15 +2089,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -54.154,
+        -67.4,
         1.641,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -2123,11 +2131,13 @@
     "_dstBlendFactor": 771,
     "_string": "999 : 999",
     "_N$string": "999 : 999",
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_fontSize": 160,
+    "_lineHeight": 100,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
