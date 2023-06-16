@@ -58,6 +58,8 @@ export default class UpgradeUI extends cc.Component {
         // this.node.active = true;
         this.node.opacity = 255;
 
+        buffAmount = 1;
+
         this.buffCards = [].fill(null, 0, buffAmount);
         this.buffs = Object.keys(Buffs);
         shuffle(this.buffs);
