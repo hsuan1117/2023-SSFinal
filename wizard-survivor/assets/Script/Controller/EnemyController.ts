@@ -128,6 +128,7 @@ export default class EnemyController extends cc.Component {
          });
 
          GameManager.instance.poolManager.recycle(this.node);
+         GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0.001, 1);
     }
 
     protected selfDestroy() {
