@@ -333,6 +333,11 @@ export default class GameManager extends cc.Component {
                 gameEndUI.setPosition(0, 0);
             })
         )
+        promises.push(
+            loadResource('Prefab/UI/GameStartUI', cc.Prefab).then((prefab) => {
+                gameStartUIPrefab = prefab as unknown as cc.Prefab;
+            })
+        )
 
         async function instantiateHP(uid: string): Promise<void>{
             const hpOffset = cc.v3(0, -20);
@@ -356,6 +361,8 @@ export default class GameManager extends cc.Component {
         await Promise.all(promises);
 
         this.event.emit(GameManager.ON_GAME_LOGIC_READY);
+        this.hideLoading();
+        cc.instantiate(gameStartUIPrefab).parent = this.bulletLayer;
     }
 
     private async generateLobbyScene() {
