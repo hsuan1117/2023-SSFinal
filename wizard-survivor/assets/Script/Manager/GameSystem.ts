@@ -225,6 +225,10 @@ export class RemoteGameSystem extends GameSystem {
             personal_coin
         }).then(r => r);
     }
+
+    public async getUserData() {
+        return await api("GET", `/my`)
+    }
 }
 
 /**
