@@ -28,29 +28,33 @@ export class EffectOnce extends IBuff {
             return;
         }
     }
+
+    protected showBuffTriggered(player: PlayerController) {
+        console.log(this.showName);
+    }
 }
 
 export class GetExited extends EffectOnce {
     public showName = "〈傳說技能〉狂躁\n"
-    public description = "當累計殺死十個敵人，大幅增加傷害和跑速，持續五秒\n"
+    public description = "當累計殺死十個敵人，大幅增加傷害和跑速，持續五秒。效果可以疊加。\n"
     public id = "GetExited";
 
-    private readonly killToEnable: number;
-    private readonly duration: number;
-    private readonly damageFactor: number;
-    private readonly speedFactor: number;
+    private readonly _killToEnable: number;
+    private readonly _duration: number;
+    private readonly _damageFactor: number;
+    private readonly _speedFactor: number;
 
     killCount: number = 0;
 
     constructor(killToEnable: number = 10, duration: number = 5, damageFactor: number = 150, speedFactor: number = 200) {
         super();
-        this.killToEnable = killToEnable;
-        this.duration = duration;
-        this.damageFactor = damageFactor;
-        this.speedFactor = speedFactor;
+        this._killToEnable = killToEnable;
+        this._duration = duration;
+        this._damageFactor = damageFactor;
+        this._speedFactor = speedFactor;
     }
 
-    _apply(player: PlayerController) {
+    public _apply(player: PlayerController) {
         super._apply(player);
         GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, () => {
 
@@ -58,20 +62,85 @@ export class GetExited extends EffectOnce {
 
             this.killCount++;
 
-            if (this.killCount > 0 && this.killCount % this.killToEnable == 0){
+            if (this.killCount > 0 && this.killCount % this._killToEnable == 0){
 
-                console.log('GetExited Triggered!')
+                this.showBuffTriggered(player);
 
-                player.mainWeapon.projectileAttr.damage.addFactor += this.damageFactor;
-                player.moveSpeed.addFactor += this.speedFactor;
-
-                console.log(player.moveSpeed.value);
+                player.mainWeapon.projectileAttr.damage.percentageFactor += this._damageFactor;
+                player.moveSpeed.addFactor += this._speedFactor;
 
                 player.scheduleOnce(() => {
-                    player.mainWeapon.projectileAttr.damage.addFactor -= this.damageFactor;
-                    player.moveSpeed.addFactor -= this.speedFactor;
-                }, this.duration)
+                    player.mainWeapon.projectileAttr.damage.percentageFactor -= this._damageFactor;
+                    player.moveSpeed.addFactor -= this._speedFactor;
+                }, this._duration)
             }
+        })
+    }
+}
+
+class RunAway extends EffectOnce {
+    public showName = "〈傳說技能〉走為上策\n"
+    public description = "當你受傷，立即重置衝刺的冷卻時間。冷卻時間一秒。"
+    public id = "RunAway";
+
+    private readonly _coolDown: number = 1;
+    private _coolDownTimer: number = 0;
+
+    constructor(coolDown: number = 1) {
+        super();
+        this._coolDown = coolDown;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+
+        player.event.on(PlayerController.PLAYER_HURT, () => {
+
+            if (this._coolDownTimer > 0) return;
+            this.showBuffTriggered(player);
+
+            player.dashCountDown = 0;
+
+            this._coolDownTimer = 1;
+            player.scheduleOnce(() => {
+                this._coolDownTimer = 0;
+            }, this._coolDown)
+        })
+    }
+}
+
+class Guinsoo extends EffectOnce {
+    public showName = "鬼索的狂暴之拳\n"
+    public description = "當傷害敵人，增加攻擊速度，持續五秒。效果疊加最多五次。\n"
+    public id = "Guinsoo";
+
+    private readonly _duration: number;
+    private readonly _attackSpeedFactor: number = 20;
+    private readonly _maxStack: number = 5;
+    private curStack: number = 0;
+
+    constructor(duration: number = 5, attackSpeedFactor: number = 20, maxStack: number = 5) {
+        super();
+        this._attackSpeedFactor = attackSpeedFactor;
+        this._maxStack = maxStack;
+        this._duration = duration;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, ({enemyPosition, killByUid}) => {
+            if (this.curStack >= this._maxStack) return;
+            if (killByUid != player.uid) return;
+
+            this.showBuffTriggered(player);
+            this.curStack++;
+            player.mainWeapon.attackSpeed.percentageFactor += this._attackSpeedFactor;
+
+            player.scheduleOnce(() => {
+                this.curStack--;
+                player.mainWeapon.attackSpeed.percentageFactor -= this._attackSpeedFactor;
+            }, this._duration)
         })
     }
 }
@@ -154,7 +223,7 @@ class ExplosionOnDash implements IBuff {
     }
 }
 
-let BuffsList: (typeof IBuff)[] = [GetExited];
+let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo];
 
 export let Buffs = {};
 export let BuffsName: {[key: string]: string} = {};

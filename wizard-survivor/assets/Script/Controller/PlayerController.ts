@@ -55,6 +55,8 @@ export default class PlayerController extends cc.Component{
     @property(cc.Prefab)
     public mainWeaponPrefab: cc.Prefab = null;
 
+    public set dashCountDown(value: number){ this._dashCountDown = value }
+
     public uid: string = "";
     public mainWeapon: WeaponController = null;
     public currentHP: AttrNum = new AttrNum();
@@ -68,7 +70,7 @@ export default class PlayerController extends cc.Component{
     private readonly DENSITY: number = 1;
 
     private readonly DASH_DURATION: number = 0.1;
-    private dashCountDown: number = 0;
+    private _dashCountDown: number = 0;
     private isDashing: boolean = false;
     private _isDead: boolean = false;
 
@@ -136,7 +138,7 @@ export default class PlayerController extends cc.Component{
             return;
         }
 
-        this.dashCountDown -= dt;
+        this._dashCountDown -= dt;
         if (!this.isDashing){
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }
@@ -199,12 +201,12 @@ export default class PlayerController extends cc.Component{
 
     public dash(){
         if (this._isDead) return;
-        if (this.isDashing || this.dashCountDown>0) return;
+        if (this.isDashing || this._dashCountDown>0) return;
         this.phyCollider.enabled = false;
         this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
         this.isDashing = true;
-        this.dashCountDown = this.dashCoolDown.value;
+        this._dashCountDown = this.dashCoolDown.value;
         this.rb.linearVelocity = this.movingDir.mul(this.dashSpeed.value);
         this.scheduleOnce(()=>{
             this.isDashing = false;

@@ -85,6 +85,13 @@ export default class EnemyController extends cc.Component {
     }
 
     public hurt(damage: number, byUid: string) {
+        GameManager.instance.waveManager.event.emit(
+            WaveManager.ON_ENEMY_HIT,
+            {
+                enemyPosition: this.node.getPosition(),
+                killByUid: byUid
+            }
+        )
         this.hp.addFactor -= damage;
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
