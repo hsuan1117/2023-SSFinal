@@ -48,8 +48,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -51,
-        164,
+        1116,
+        176,
         0,
         0,
         0,
@@ -102,8 +102,8 @@
     "totalParticles": 64,
     "duration": -1,
     "emissionRate": 40,
-    "life": 1.6,
-    "lifeVar": 0.2,
+    "life": 2,
+    "lifeVar": 0.5,
     "_startColor": {
       "__type__": "cc.Color",
       "r": 255,
