@@ -219,6 +219,7 @@
     "projectilePrefab": {
       "__uuid__": "5fb4be36-8f76-4cc6-b5b7-f766082b37de"
     },
+    "aimWeaponOwner": false,
     "_id": ""
   },
   {
@@ -250,7 +251,8 @@
     "penetrateTimes": {
       "__id__": 14
     },
-    "notFly": false
+    "notFly": false,
+    "lockTargetLerpRatio": 1
   },
   {
     "__type__": "AttrNum",
@@ -274,7 +276,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 0.1
   },
   {
     "__type__": "AttrNum",
