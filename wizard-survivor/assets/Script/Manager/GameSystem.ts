@@ -7,6 +7,12 @@ import {api, CURRENT_ENV} from "../Helper/utils";
 /*
 1. 負責轉發需要和其他客戶端、伺服器同步的事件。
  */
+
+export type GameRecord = {
+    level: number,
+    personal_coin: number
+}
+
 export class GameSystem {
 
     // === Define Events ===
@@ -102,6 +108,10 @@ export class GameSystem {
 
     public emitGameStart() {
         this.event.emit(GameSystem.ON_GAME_START);
+    }
+
+    public saveGameRecord(gameRecord: GameRecord){
+        console.log('GameSystem.saveGameRecord; gameRecord', gameRecord);
     }
 
     //public emitCreatePlayer(uid: string, charaId: string){

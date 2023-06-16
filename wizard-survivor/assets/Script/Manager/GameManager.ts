@@ -4,7 +4,7 @@ import PlayerManager from "./PlayerManager";
 import WaveManager from "./WaveManager";
 import {AttrNum} from "../Helper/Attributes";
 import {loadResource} from "../Helper/utils";
-import {createGameSystem, GameSystem} from "./GameSystem";
+import {createGameSystem, GameRecord, GameSystem} from "./GameSystem";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
 import LobbyUI from "../UI/LobbyUI";
@@ -57,52 +57,23 @@ export default class GameManager extends cc.Component {
         return GameManager._instance;
     }
 
-    public get inputManager(): InputManager {
-        return this._inputManager;
-    };
-
-    public get poolManager(): PoolManager {
-        return this._poolManager;
-    }
-
-    public get playerManager(): PlayerManager {
-        return this._playerManager;
-    }
-
-    public get waveManager(): WaveManager {
-        return this._waveManager;
-    }
-
-    public get mapManager(): MapManager {
-        return this._mapManager;
-    }
-
-    public get particleManager(): ParticleManager {
-        return this._particleManager;
-    }
-
-    public get gameSystem(): GameSystem {
-        return this._gameSystem;
-    }
-
-    public get playerEnemyLayer(): cc.Node {
-        return this._playerEnemyLayer;
-    }
-
-    public get bulletLayer(): cc.Node {
-        return this._bulletLayer;
-    }
-
-    public get itemLayer(): cc.Node {
-        return this._itemLayer;
-    }
-
-    public get backgroundLayer(): cc.Node {
-        return this._backgroundLayer;
-    }
-
-    public get currentSceneType(): string {
-        return this._currentSceneType;
+    public get inputManager(): InputManager {return this._inputManager;};
+    public get poolManager(): PoolManager { return this._poolManager;}
+    public get playerManager(): PlayerManager {return this._playerManager;}
+    public get waveManager(): WaveManager {return this._waveManager;}
+    public get mapManager(): MapManager {return this._mapManager;}
+    public get particleManager(): ParticleManager {return this._particleManager;}
+    public get gameSystem(): GameSystem {return this._gameSystem;}
+    public get playerEnemyLayer(): cc.Node {return this._playerEnemyLayer;}
+    public get bulletLayer(): cc.Node {return this._bulletLayer;}
+    public get itemLayer(): cc.Node {return this._itemLayer;}
+    public get backgroundLayer(): cc.Node {return this._backgroundLayer;}
+    public get currentSceneType(): string {return this._currentSceneType;}
+    public get gameRecord(): GameRecord {
+        return {
+            level: this.level.value,
+            personal_coin: this.coinCnt.value
+        };
     }
 
     @property(cc.Prefab)
@@ -182,7 +153,7 @@ export default class GameManager extends cc.Component {
                     cc.director.pause()
                 }
             } else if (keyCode == cc.macro.KEY.x) {
-                this.changeScene(GameManager.SCENE_RESULT);
+                this.endGame();
             } else if (keyCode == cc.macro.KEY.h) {
                 this.gameSystem.emitPlayerHPChange('p1', -1)
             } else if (keyCode == cc.macro.KEY.e) {
@@ -249,9 +220,11 @@ export default class GameManager extends cc.Component {
 
     public async endGame() {
         console.log('!!Game End!!');
+        this.gameSystem.saveGameRecord(this.gameRecord);
         this.event.emit(GameManager.ON_GAME_END)
         await this.backgroundLayer.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
         this.changeScene(GameManager.SCENE_RESULT);
+
     }
 
 
