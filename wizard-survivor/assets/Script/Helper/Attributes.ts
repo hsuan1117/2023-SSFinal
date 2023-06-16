@@ -90,7 +90,9 @@ export class ProjectileAttr {
                 damage = 0,
                 existDuration = 0,
                 bounceOnEnemyTimes = 0,
-                penetrateTimes = 0) {
+                penetrateTimes = 0,
+                notFly = false,
+                lockTargetLerpRatio = 1) {
         this.flySpeed.defaultValue = flySpeed;
         this.damage.defaultValue = damage;
         this.existDuration.defaultValue = existDuration;

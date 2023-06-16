@@ -29,11 +29,13 @@ export default class ProjectileController extends cc.Component {
 
     private existCountDown: number = 0;
     private lockTarget: cc.Node = null;
+    private _animation: cc.Animation = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.rb = this.getComponent(cc.RigidBody);
         this.rb.bullet = true
+        this._animation = this.node.getChildByName('Sprite').getComponent(cc.Animation);
     }
 
     onCollisionEnter(other: Collider, self: Collider){}
@@ -92,6 +94,7 @@ export default class ProjectileController extends cc.Component {
     public shootToDirection(direction: cc.Vec2) {
         this.rb.linearVelocity = direction.mul(this.projectileAttr.flySpeed.value);
         this.existCountDown = this.projectileAttr.existDuration.value;
+        if (this._animation) this._animation.play();
     }
 
     public shootToTarget(lockTarget: cc.Node) {
@@ -100,7 +103,6 @@ export default class ProjectileController extends cc.Component {
         // this.node.parent = lockTarget.parent;
         this.shootToDirection(ignoreZ(dir));
     }
-
 
     // HELPERS:
     private deleteProjectile(){

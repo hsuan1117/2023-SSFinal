@@ -7,22 +7,34 @@ import resources = cc.resources;
 import Game = cc.Game;
 import BUILTIN_NAME = cc.Material.BUILTIN_NAME;
 import WaveManager from "../Manager/WaveManager";
+import {loadResource} from "./utils";
 
 export class IBuff {
     public showName: string;
     public description: string;
     public id: string;
 
-    public constructor() {}
+    protected _coolDown: number = 0;
+    protected _coolDownTimer: number = 0;
+
+    public constructor(coolDown: number) {
+        this._coolDown = coolDown;
+    }
+
     /*
     * 建議 PlayerController.applyBuff 套用 Buff。
     * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
      */
-    public _apply(Any): void {}
+    public _apply(player: PlayerController): void {}
+
+    public intoCoolDown(player: PlayerController) {
+        this._coolDownTimer = 1;
+        player.schedule(() => this._coolDownTimer = 0, this._coolDown);
+    }
 }
 
 export class EffectOnce extends IBuff {
-    constructor() {super()};
+    constructor(coolDown) {super(coolDown)};
     public _apply(player: PlayerController): void {
         if (player.appliedBuff.find((buff) => buff.id === this.id)) {
             return;
@@ -35,7 +47,7 @@ export class EffectOnce extends IBuff {
 }
 
 export class GetExited extends EffectOnce {
-    public showName = "〈傳說技能〉狂躁\n"
+    public showName = "〈傳說技能〉 狂躁\n"
     public description = "當累計殺死十個敵人，大幅增加傷害和跑速，持續五秒。效果可以疊加。\n"
     public id = "GetExited";
 
@@ -47,7 +59,7 @@ export class GetExited extends EffectOnce {
     killCount: number = 0;
 
     constructor(killToEnable: number = 10, duration: number = 5, damageFactor: number = 150, speedFactor: number = 200) {
-        super();
+        super(0);
         this._killToEnable = killToEnable;
         this._duration = duration;
         this._damageFactor = damageFactor;
@@ -79,16 +91,12 @@ export class GetExited extends EffectOnce {
 }
 
 class RunAway extends EffectOnce {
-    public showName = "〈傳說技能〉走為上策\n"
+    public showName = "〈傳說技能〉 走為上策\n"
     public description = "當你受傷，立即重置衝刺的冷卻時間。冷卻時間一秒。"
     public id = "RunAway";
 
-    private readonly _coolDown: number = 1;
-    private _coolDownTimer: number = 0;
-
     constructor(coolDown: number = 1) {
-        super();
-        this._coolDown = coolDown;
+        super(coolDown);
     }
 
     public _apply(player: PlayerController) {
@@ -97,20 +105,17 @@ class RunAway extends EffectOnce {
         player.event.on(PlayerController.PLAYER_HURT, () => {
 
             if (this._coolDownTimer > 0) return;
+
+            this.intoCoolDown(player);
             this.showBuffTriggered(player);
 
             player.dashCountDown = 0;
-
-            this._coolDownTimer = 1;
-            player.scheduleOnce(() => {
-                this._coolDownTimer = 0;
-            }, this._coolDown)
         })
     }
 }
 
 class Guinsoo extends EffectOnce {
-    public showName = "鬼索的狂暴之拳\n"
+    public showName = "〈傳說技能〉 鬼索的狂暴之拳\n"
     public description = "當傷害敵人，增加攻擊速度，持續五秒。效果疊加最多五次。\n"
     public id = "Guinsoo";
 
@@ -120,7 +125,7 @@ class Guinsoo extends EffectOnce {
     private curStack: number = 0;
 
     constructor(duration: number = 5, attackSpeedFactor: number = 20, maxStack: number = 5) {
-        super();
+        super(0);
         this._attackSpeedFactor = attackSpeedFactor;
         this._maxStack = maxStack;
         this._duration = duration;
@@ -145,91 +150,61 @@ class Guinsoo extends EffectOnce {
     }
 }
 
-class IncreaseAttackSpeed implements IBuff {
-    public readonly id = "IncreaseAttackSpeed";
-    public readonly showName: string = "提升攻擊速度";
-    public get description(): string {
-        return `Increase attack speed by ${this.addPercentage}%`;
-    }
+class Tiamat extends EffectOnce {
+    public showName = "〈傳說技能〉 提亞瑪特\n"
+    public description = "當傷害敵人，對周圍敵人造成傷害。冷卻時間 0.5 秒。\n"
+    public id = "Tiamat";
 
-    private readonly addPercentage: number = 0;
+    private readonly _prefabPath = 'Prefab/Projectile/Tiamat'
+    private _prefab: cc.Prefab;
 
-    constructor(addPercentage: number = 20) {
-        this.addPercentage = addPercentage;
-    }
 
-    public _apply(player: PlayerController): void {
-        player.mainWeapon.attackSpeed.percentageFactor += this.addPercentage;
-    }
-}
+    private readonly _dealDamagePercentage: number = 20;
 
-class IncreaseMaxHP implements IBuff{
-    public readonly id = "IncreaseMaxHP";
-    public readonly showName: string = "增加最大血量";
+    constructor(coolDown: number = 0.5 ,damageFactor: number = 20) {
+        super(coolDown);
+        this._dealDamagePercentage = damageFactor;
 
-    public get description(): string {
-        return `Increase max HP by ${this.incHP}`;
-    }
-
-    private readonly incHP: number = 0;
-
-    constructor(incHP: number = 1) {
-        this.incHP = incHP;
     }
 
     public _apply(player: PlayerController) {
-        player.maxHp.addFactor += this.incHP;
-        player.currentHP.addFactor += this.incHP;
-    }
-}
+        super._apply(player);
+        loadResource(this._prefabPath, cc.Prefab).then(
+            (prefab) => this._prefab = prefab as unknown as cc.Prefab
+        );
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, ({enemyPosition, killByUid}) => {
+            if (killByUid != player.uid) return;
+            if (this._coolDownTimer > 0) return;
 
-class ExplosionOnDash implements IBuff {
-    public readonly id = "ExplosionOnDash";
-    public readonly showName: string = "衝刺時炸傷周圍敵軍";
-    private readonly damage: number = 0;
-    private readonly DURATION: number = 0.3;
-    private prefabPath: string = "Prefab/Projectile/Explosion";
-    private prefab: cc.Prefab = null;
+            this.intoCoolDown(player);
+            this.showBuffTriggered(player);
 
-    public get description(): string {
-        return `Explosion on dash`;
-    }
-
-    constructor(damage: number = 10) {
-        this.damage = damage;
-    }
-
-    public _apply(player: PlayerController): void {
-        cc.resources.load(this.prefabPath, cc.Prefab, (err, prefab: cc.Prefab) => {
-            this.prefab = prefab;
-        })
-
-        player.event.on(PlayerController.PLAYER_DASH, ()=> {
             const proj = GameManager.instance.poolManager
-                .createPrefab(this.prefab)
+                .createPrefab(this._prefab)
                 .getComponent(ProjectileController);
 
-            proj.node.position = player.node.position;
-            // proj.node.parent = GameManager.instance.node;
+            proj.node.setPosition(enemyPosition);
             proj.node.parent = GameManager.instance.bulletLayer;
             proj.init(
-                new ProjectileAttr(0, this.damage,
-                    this.DURATION, 0, 0),
-                null,
-                0
+                new ProjectileAttr(
+                    0, 200,
+                    0.5, 0,
+                    0, true),
             );
             proj.shootToDirection(cc.Vec2.ZERO);
-        }, this);
+        })
     }
 }
 
-let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo];
+
+
+let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo, Tiamat];
 
 export let Buffs = {};
 export let BuffsName: {[key: string]: string} = {};
 
 for (let i = 0; i < BuffsList.length; i++) {
-    const inst = new BuffsList[i]();
+    const inst = new BuffsList[i](0);
     Buffs[inst.id] = BuffsList[i];
     BuffsName[inst.id] = inst.showName;
 }
