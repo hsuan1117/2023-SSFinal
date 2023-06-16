@@ -45,7 +45,7 @@ export default class MainMenuUI extends cc.Component {
     callbackFn: ({gameInfo: GameInfo}) => void
      */
     public static readonly ON_AUTH_COMPLETED: string = "ON_START_GAME_INFO_PREPARED";
-    // public static readonly ON_LEADERBOARD_LOADED: string = "ON_LEADERBOARD_LOADED";
+    public static readonly ON_LEADERBOARD_CLICKED: string = "ON_LEADERBOARD_CLICKED";
     public event: cc.EventTarget;
 
     private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p', 'Leaderboard'];
@@ -101,7 +101,7 @@ export default class MainMenuUI extends cc.Component {
         execute['OnlineJoinRoom'] = this.onlineJoinRoomId.bind(this);
         execute['Offline1p'] = this.offline1p.bind(this);
         execute['Offline2p'] = this.offline2p.bind(this);
-        // execute['Leaderboard'] = this.leaderboard;
+        execute['Leaderboard'] = this.leaderboard.bind(this);
 
         execute[node.name]();
     }
@@ -203,17 +203,7 @@ export default class MainMenuUI extends cc.Component {
         return await api("GET", `/my`)
     }
 
-    /**
-     * @description 排行榜數據
-     * @param queryLimit {number} - 查詢數量
-     * @return {Promise<UserData>}
-     * */
-    public async getScoreBoard(queryLimit = 8) {
-        return await api("GET", `/scoreboard?limit=${queryLimit}`)
+    private async leaderboard() {
+        this.event.emit(MainMenuUI.ON_LEADERBOARD_CLICKED)
     }
-
-    // private async leaderboard() {
-    //     await
-    //         this.event.emit(MainMenuUI.ON_LEADERBOARD_LOADED)
-    // }
 }
