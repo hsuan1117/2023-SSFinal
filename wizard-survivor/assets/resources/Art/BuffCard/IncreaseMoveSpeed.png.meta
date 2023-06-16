@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "98766343-b7f2-4f2c-a983-b30b738b167c",
+  "uuid": "f709c454-f0b2-40b7-abb8-5dedc6d2072e",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -12,11 +12,11 @@
   "height": 32,
   "platformSettings": {},
   "subMetas": {
-    "IncreaseAttackSpeed": {
+    "IncreaseMoveSpeed": {
       "ver": "1.0.6",
-      "uuid": "d4c3dd03-5c24-4497-a119-ca441ef58d07",
+      "uuid": "d165084b-3b25-496f-9b1f-d6c23b51acfc",
       "importer": "sprite-frame",
-      "rawTextureUuid": "98766343-b7f2-4f2c-a983-b30b738b167c",
+      "rawTextureUuid": "f709c454-f0b2-40b7-abb8-5dedc6d2072e",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "2250fa51-b2c8-4967-a7c8-836b56dd07a5",
+  "uuid": "f644f2e6-dc79-4cb3-a077-e3acaeac6c07",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -12,11 +12,11 @@
   "height": 32,
   "platformSettings": {},
   "subMetas": {
-    "DecreaseDashCD": {
+    "Guinsoo": {
       "ver": "1.0.6",
-      "uuid": "9a953465-7c98-453a-b2d2-6e75329ed1e9",
+      "uuid": "91ecb731-5d80-41fb-a529-e536866b4474",
       "importer": "sprite-frame",
-      "rawTextureUuid": "2250fa51-b2c8-4967-a7c8-836b56dd07a5",
+      "rawTextureUuid": "f644f2e6-dc79-4cb3-a077-e3acaeac6c07",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

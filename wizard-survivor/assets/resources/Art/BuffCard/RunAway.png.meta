@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "1e437d87-2b42-42cc-b196-52f34ce59a26",
+  "uuid": "552593a0-b297-4c78-8600-d99f97944c13",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -12,11 +12,11 @@
   "height": 32,
   "platformSettings": {},
   "subMetas": {
-    "ScaleShotPerAttack": {
+    "RunAway": {
       "ver": "1.0.6",
-      "uuid": "be1dfd49-1ef3-4920-93a5-a56a0f77e3e8",
+      "uuid": "621c4563-b58f-4d57-b976-279599910b34",
       "importer": "sprite-frame",
-      "rawTextureUuid": "1e437d87-2b42-42cc-b196-52f34ce59a26",
+      "rawTextureUuid": "552593a0-b297-4c78-8600-d99f97944c13",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
