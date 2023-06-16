@@ -11,6 +11,7 @@ import LobbyUI from "../UI/LobbyUI";
 import MainMenuUI, {GameInfo} from "../UI/MainMenuUI";
 import ParticleManager from "./ParticleManager";
 import GameEndUI from "../UI/GameEndUI";
+import AudioManager from "./AudioManager";
 
 
 const {ccclass, property} = cc._decorator;
@@ -63,6 +64,7 @@ export default class GameManager extends cc.Component {
     public get waveManager(): WaveManager {return this._waveManager;}
     public get mapManager(): MapManager {return this._mapManager;}
     public get particleManager(): ParticleManager {return this._particleManager;}
+    public get audioManager(): AudioManager {return this._audioManager;}
     public get gameSystem(): GameSystem {return this._gameSystem;}
     public get playerEnemyLayer(): cc.Node {return this._playerEnemyLayer;}
     public get bulletLayer(): cc.Node {return this._bulletLayer;}
@@ -99,6 +101,7 @@ export default class GameManager extends cc.Component {
     private _gameSystem: GameSystem;
     private _mapManager: MapManager;
     private _particleManager: ParticleManager;
+    private _audioManager: AudioManager;
 
     private _currentSceneType: string;
     private _isPaused: boolean = false;
@@ -126,6 +129,7 @@ export default class GameManager extends cc.Component {
         this._waveManager = this.node.addComponent(WaveManager);
         this._mapManager = this.node.addComponent(MapManager);
         this._particleManager = this.node.addComponent(ParticleManager);
+        this._audioManager = this.node.addComponent(AudioManager);
         this._gameSystem = null; // this will be set before LobbyUI is loaded
 
         this.event = new cc.EventTarget();
@@ -171,6 +175,7 @@ export default class GameManager extends cc.Component {
         // 當經驗值 or 等級改變
         this.exp.onChangeCallback.push(()=> {
             while (this.exp.value >= this.upgradeExp.value) {
+                this._audioManager.playEffect('level_up');
                 this.exp.addFactor -= this.upgradeExp.value;
                 this.level.addFactor += 1;
                 this.upgradeExp.percentageFactor += this.UPGRADE_EXP_GROWTH;
@@ -204,17 +209,21 @@ export default class GameManager extends cc.Component {
             this._mapManager.clearMap();
             this._waveManager.clearWave();
         }
+        this._audioManager.stopBGM();
         this.destroyScene();
 
         if (sceneType === GameManager.SCENE_MAIN_MENU) {
             await this.generateMainMenuScene();
+            this._audioManager.playBGM('game1');
         }
         else if (sceneType === GameManager.SCENE_LOBBY){
+            this._audioManager.playBGM('bgm_room');
             await this.generateLobbyScene();
         }
         else if (sceneType === GameManager.SCENE_GAME) {
             this._waveManager.setWave(1);
             this._mapManager.init();
+            this._audioManager.playBGM('game2');
             await this.generateGameScene();
         } else if (sceneType === GameManager.SCENE_RESULT) {
             this.playerManager.clearAllChara();
@@ -225,6 +234,7 @@ export default class GameManager extends cc.Component {
 
     public async endGame() {
         console.log('!!Game End!!');
+        this._audioManager.stopBGM();
         this.gameSystem.saveGameRecord(this.gameRecord);
         this.event.emit(GameManager.ON_GAME_END)
         await this.backgroundLayer.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
@@ -275,6 +285,8 @@ export default class GameManager extends cc.Component {
         for (let i=0, len=this._localUids.length; i<len; i++) {
             this.inputManager.addLocalPlayerInput(this._localUids[i], conversion[i%conversion.length]);
         }
+
+        this._audioManager.playEffect('btn');
 
         // console.log('GameManager.generateMainMenuScene: gameInfo, this._localUids, this._gameSystem', gameInfo, this._localUids, this._gameSystem);
         // console.log('GameManager.generateMainMenuScene: this._inputManager', this._inputManager);

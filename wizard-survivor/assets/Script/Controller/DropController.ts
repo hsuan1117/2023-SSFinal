@@ -58,14 +58,18 @@ export default class DropController extends cc.Component {
         this.node.position = this.node.position.lerp(collectorPos, this.speedRatio * 0.1);
         if (this.node.position.sub(collectorPos).magSqr() < 15) {
             if (this.dropType == DropController.DROP_TYPE_EXP) {
-                GameManager.instance.gameSystem.emitExpChange(this.dropValue)
+                GameManager.instance.gameSystem.emitExpChange(this.dropValue);
+                GameManager.instance.audioManager.playEffect('collect_exp');
             }
             else if (this.dropType == DropController.DROP_TYPE_COIN) {
                 GameManager.instance.gameSystem.emitCoinChange(this.dropValue);
+                GameManager.instance.audioManager.playEffect('collect_coin');
             }
             else if (this.dropType == DropController.DROP_TYPE_HEALTH_PACK){
                 this.collector.getComponent(PlayerController).recover(this.dropValue);
+                GameManager.instance.audioManager.playEffect('heal');
             }
+
             this.node.destroy();
         }
     }
