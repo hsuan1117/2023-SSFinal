@@ -120,7 +120,7 @@ export default class GameManager extends cc.Component {
         cc.game.setFrameRate(59);
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
+        // cc.director.getCollisionManager().enabledDebugDraw = true;
         cc.game.addPersistRootNode(this.node);
 
         this._inputManager = this.node.addComponent(InputManager);
