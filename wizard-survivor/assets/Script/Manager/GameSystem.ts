@@ -232,19 +232,6 @@ export class RemoteGameSystem extends GameSystem {
             personal_coin
         }).then(r => r);
     }
-
-    public async getUserData() {
-        return await api("GET", `/my`)
-    }
-
-    /**
-     * @description 排行榜數據
-     * @param queryLimit {number} - 查詢數量
-     * @return {Promise<UserData>}
-     * */
-    public async getScoreBoard(queryLimit = 8) {
-        return await api("GET", `/scoreboard?limit=${queryLimit}`)
-    }
 }
 
 /**
