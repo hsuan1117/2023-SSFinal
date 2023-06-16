@@ -13,6 +13,13 @@ export type GameRecord = {
     personal_coin: number
 }
 
+export type UserData = {
+    id: string,
+    email: string,
+    level: number,
+    coin: number,
+}
+
 export class GameSystem {
 
     // === Define Events ===
@@ -228,6 +235,15 @@ export class RemoteGameSystem extends GameSystem {
 
     public async getUserData() {
         return await api("GET", `/my`)
+    }
+
+    /**
+     * @description 排行榜數據
+     * @param queryLimit {number} - 查詢數量
+     * @return {Promise<UserData>}
+     * */
+    public async getScoreBoard(queryLimit = 8) {
+        return await api("GET", `/scoreboard?limit=${queryLimit}`)
     }
 }
 
