@@ -145,7 +145,7 @@
       "ctor": "Float64Array",
       "array": [
         12.043,
-        102.649,
+        140.749,
         0,
         0,
         0,
@@ -556,8 +556,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 50.4
+      "width": 252.63,
+      "height": 88.2
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -569,7 +569,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        203.011,
+        235.636,
         0,
         0,
         0,
@@ -610,16 +610,18 @@
     "_dstBlendFactor": 771,
     "_string": "遊戲結束",
     "_N$string": "遊戲結束",
-    "_fontSize": 40,
-    "_lineHeight": 40,
+    "_fontSize": 100,
+    "_lineHeight": 70,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
     "_underlineHeight": 0,
-    "_N$horizontalAlign": 0,
+    "_N$horizontalAlign": 1,
     "_N$verticalAlign": 0,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
@@ -677,7 +679,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -100,
+        -70,
         0,
         0,
         0,
@@ -789,7 +791,7 @@
       "ctor": "Float64Array",
       "array": [
         -96.558,
-        -49.509,
+        -10,
         0,
         0,
         0,
@@ -942,14 +944,14 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.27,
+      "width": 45.79,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -961,8 +963,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -54.154,
-        1.641,
+        -58.313,
+        3.441,
         0,
         0,
         0,
@@ -1003,11 +1005,13 @@
     "_dstBlendFactor": 771,
     "_string": "X 999",
     "_N$string": "X 999",
-    "_fontSize": 20,
+    "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "3316e539-4ce6-418b-90d4-bedba28e2fb4"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
