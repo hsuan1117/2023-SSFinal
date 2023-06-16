@@ -102,7 +102,7 @@ export default class WaveManager extends cc.Component {
 
         for (const key in this.currentWave){
             if (this.countDowns[key] === undefined) {
-                this.countDowns[key] = 0;
+                this.countDowns[key] = 5;
             }
 
             if (this.countDowns[key] <= 0){
