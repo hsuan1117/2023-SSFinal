@@ -25,12 +25,16 @@ json 格式：
 export default class WaveManager extends cc.Component {
 
     public event: cc.EventTarget;
-    /*
-    * 事件：當敵人死亡時觸發
+
+    /* 事件：當敵人死亡時觸發
     *
-    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void
-     */
+    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void */
     public static readonly ON_ENEMY_DIE: string = "onEnemyDie";
+
+    /* 事件：當敵人受擊時觸發
+    *
+    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void */
+    public static readonly ON_ENEMY_HIT: string = "onEnemyHit";
 
     private enemyDropItems: {[itemType: string]: cc.Prefab};
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];

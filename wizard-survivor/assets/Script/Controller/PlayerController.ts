@@ -23,8 +23,18 @@ export default class PlayerController extends cc.Component{
     public event: cc.EventTarget;
     public static readonly PLAYER_START_MOVE: string = "PLAYER_START_MOVE";
     public static readonly PLAYER_STOP_MOVE: string = "PLAYER_STOP_MOVE";
-    public static readonly PLAYER_DASH: string = "PLAYER_DASH";
     public static readonly PLAYER_ATTR_CHANGE: string = "PLAYER_ATTR_CHANGE";
+    /* 事件：當玩家衝刺時觸發
+    *
+    * callbackFn: () => void
+     */
+    public static readonly PLAYER_DASH: string = "PLAYER_DASH";
+    /*
+    * 事件：當玩家受傷害時觸發
+    *
+    * callbackFn: (hurt: number) => void
+     */
+    public static readonly PLAYER_HURT: string = "PLAYER_HURT";
 
     // Player Attributes:
     @property(AttrNum)
@@ -137,7 +147,7 @@ export default class PlayerController extends cc.Component{
     // PUBLIC METHODS:
     public hurt(damage: number){
         if (this._isDead) return;
-
+        this.event.emit(PlayerController.PLAYER_HURT, damage);
         const deltaHP = Math.min(this.currentHP.value, damage);
         GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
 
