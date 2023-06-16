@@ -306,7 +306,10 @@ export default class GameManager extends cc.Component {
 
     private async generateGameScene() {
         this.buildLayers();
+        await this.showLoading(1000);
+
         let fixedUI, enemy, drop, upgradeUI, gameEndUI: cc.Node;
+        let gameStartUIPrefab: cc.Prefab;
 
         let promises = []
         promises.push(
@@ -357,6 +360,7 @@ export default class GameManager extends cc.Component {
 
     private async generateLobbyScene() {
         this.buildLayers();
+        await this.showLoading(500);
         /*
         可在 Lobby Prefab 下放入各種 GO，包含待選取的角色（角色預覽）。
         如果該物件有 PlayerController，則會被抓取為角色預覽。
@@ -372,6 +376,9 @@ export default class GameManager extends cc.Component {
         lobby.node.parent = this.backgroundLayer;
         lobby.node.setPosition(0, 0);
         lobby.init(this._localUids);
+
+        this.hideLoading();
+
         await lobby.chooseCharaFor();
         await lobby.createCharaFromChooseResult();
     }
