@@ -131,6 +131,7 @@ export class RemoteGameSystem extends GameSystem {
     public echoInstance: Echo;
     private gameInfo: GameInfo;
     private mem_createPlayer: { uid: string, charaId: string }[] = [];
+    private _buffReadyToApply: { uid: string, buffId: string }[] = [];
 
     private createEchoInstanceFromToken(token) {
         localStorage.setItem('token', token)
@@ -182,7 +183,14 @@ export class RemoteGameSystem extends GameSystem {
 
     // === PUBLIC METHODS ===
     public emitApplyBuff(uid: string, buffId: string): void {
-        // TODO
+        this._buffReadyToApply.push({uid: uid, buffId: buffId});
+
+        if (this._buffReadyToApply.length >= GameManager.instance.playerManager.allPlayerIDs.length) {
+            for (let bf of this._buffReadyToApply) {
+                this.dispatchEvent(GameSystem.ON_BUFF_APPLY, bf);
+            }
+        }
+        this._buffReadyToApply = [];
     }
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void {
