@@ -158,7 +158,7 @@ export default class PlayerController extends cc.Component{
         };
 
         this.sprite.setMaterial(0, this.hurtMaterial);
-        this.schedule(bloodEnd, 0.1);
+        this.schedule(bloodEnd, 0.5);
     }
 
     public recover(val: number) {
