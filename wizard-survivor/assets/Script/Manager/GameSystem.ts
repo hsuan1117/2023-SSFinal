@@ -110,7 +110,7 @@ export class GameSystem {
         this.event.emit(GameSystem.ON_GAME_START);
     }
 
-    public saveGameRecord(gameRecord: GameRecord){
+    public saveGameRecord(gameRecord: GameRecord) {
         console.log('GameSystem.saveGameRecord; gameRecord', gameRecord);
     }
 
@@ -155,11 +155,11 @@ export class RemoteGameSystem extends GameSystem {
         this.echoInstance.join('room.' + this.gameInfo?.id).listenToAll((evt, data) => {
             console.log('receive event', evt, data)
             if (evt.startsWith('.client-')) {
-                const evt_name =    evt.split('client-')[1];
-                if(evt_name === "ON_CREATE_PLAYER"){
+                const evt_name = evt.split('client-')[1];
+                if (evt_name === "ON_CREATE_PLAYER") {
                     this.mem_createPlayer.push(data);
                 }
-                if(evt_name === "ON_GAME_START"){
+                if (evt_name === "ON_GAME_START") {
                     this.dispatchCreatePlayers();
                 }
                 console.log('dispatch event', evt_name, data)
@@ -202,7 +202,7 @@ export class RemoteGameSystem extends GameSystem {
         });
     }
 
-    private dispatchCreatePlayers(){
+    private dispatchCreatePlayers() {
         if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
             for (let p of this.mem_createPlayer) {
                 this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
@@ -214,8 +214,16 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     public emitGameStart() {
+        api("POST", `/rooms/${this.gameInfo.id}/start`, {}).then(r => r);
         this.dispatchCreatePlayers();
         this.dispatchEvent(GameSystem.ON_GAME_START, {});
+    }
+
+    public saveGameRecord({level, personal_coin}: GameRecord) {
+        api("POST", `/rooms/${this.gameInfo.id}/end`, {
+            level,
+            personal_coin
+        }).then(r => r);
     }
 }
 
