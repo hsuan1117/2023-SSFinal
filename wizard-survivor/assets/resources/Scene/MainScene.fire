@@ -602,6 +602,9 @@
       "__id__": 15
     },
     "_enabled": true,
+    "loadingUIPrefab": {
+      "__uuid__": "4bb7b711-87a5-4acb-a4bf-5ca6de04155b"
+    },
     "_id": "b3f3E+4t1PzqkbDA9mowGJ"
   }
 ]

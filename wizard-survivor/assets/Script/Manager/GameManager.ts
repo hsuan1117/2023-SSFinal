@@ -105,6 +105,9 @@ export default class GameManager extends cc.Component {
         return this._currentSceneType;
     }
 
+    @property(cc.Prefab)
+    public loadingUIPrefab: cc.Prefab = null;
+
     /*每升一等，升等需要的經驗會增加多少百分比*/
     private readonly UPGRADE_EXP_GROWTH: number = 20;
 
@@ -266,14 +269,18 @@ export default class GameManager extends cc.Component {
     }
 
     private async generateMainMenuScene() {
+        this.buildLayers();
+        await this.showLoading(2000);
+
         const mainMenuUI = await loadResource('Prefab/UI/MainMenuUI', cc.Prefab)
             .then((prefab) => (cc.instantiate(prefab) as unknown as cc.Node).getComponent(MainMenuUI));
-        mainMenuUI.node.parent = this.node;
+        mainMenuUI.node.parent = this.backgroundLayer;
 
         this.inputManager.addLocalPlayerInput('anonymous', WASD_TO_CONTROLLER);
         mainMenuUI.init('anonymous');
 
         mainMenuUI.event.once(MainMenuUI.ON_AUTH_COMPLETED, this.onAuthComplete, this);
+        this.hideLoading();
     }
 
     private onAuthComplete({gameInfo}) {
@@ -305,21 +312,21 @@ export default class GameManager extends cc.Component {
         promises.push(
             loadResource('Prefab/UI/FixedUI', cc.Prefab).then((prefab) => {
                 fixedUI = cc.instantiate(prefab) as unknown as cc.Node;
-                fixedUI.parent = this.node;
+                fixedUI.parent = this.backgroundLayer;
                 fixedUI.setPosition(0, 0);
             })
         )
         promises.push(
             loadResource('Prefab/UI/UpgradeUI', cc.Prefab).then((prefab) => {
                 upgradeUI = cc.instantiate(prefab) as unknown as cc.Node;
-                upgradeUI.parent = this.node;
+                upgradeUI.parent = this.backgroundLayer;
                 upgradeUI.setPosition(0, 0);
             })
         )
         promises.push(
             loadResource('Prefab/UI/GameEndUI', cc.Prefab).then((prefab) => {
                 gameEndUI = cc.instantiate(prefab) as unknown as cc.Node;
-                gameEndUI.parent = this.node;
+                gameEndUI.parent = this.backgroundLayer;
                 gameEndUI.setPosition(0, 0);
             })
         )
@@ -414,11 +421,17 @@ export default class GameManager extends cc.Component {
         this.pauseGame();
     }
 
-    private showLoading() {
-
+    private showLoading(timeOutMilliseconds: number) {
+        return new Promise<void>((resolve, reject) => {
+            const loadingUI = cc.instantiate(this.loadingUIPrefab);
+            loadingUI.parent = this.node;
+            setTimeout(() => {
+                resolve();
+            }, timeOutMilliseconds);
+        });
     }
 
     private hideLoading() {
-
+        this.node.removeChild(this.node.getChildByName('LoadingUI'));
     }
 }
