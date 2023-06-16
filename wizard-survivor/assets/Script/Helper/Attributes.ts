@@ -98,5 +98,7 @@ export class ProjectileAttr {
         this.existDuration.defaultValue = existDuration;
         this.bounceOnEnemyTimes.defaultValue = bounceOnEnemyTimes;
         this.penetrateTimes.defaultValue = penetrateTimes;
+        this.notFly = notFly;
+        this.lockTargetLerpRatio = lockTargetLerpRatio;
     }
 }
