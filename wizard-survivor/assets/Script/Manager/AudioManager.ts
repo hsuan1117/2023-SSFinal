@@ -25,6 +25,15 @@ export default class AudioManager extends cc.Component {
         });
     }
 
+    // Set a volume between 0 and 1
+    public setBGMVolume(volume: number){
+        cc.audioEngine.setMusicVolume(volume);
+    }
+
+    public setEffectVolume(volume: number){
+        cc.audioEngine.setEffectsVolume(volume);
+    }
+
     public stopBGM(){
         cc.audioEngine.stopMusic();
     }

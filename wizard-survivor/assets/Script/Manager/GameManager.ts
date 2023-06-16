@@ -223,8 +223,8 @@ export default class GameManager extends cc.Component {
         else if (sceneType === GameManager.SCENE_GAME) {
             this._waveManager.setWave(1);
             this._mapManager.init();
-            this._audioManager.playBGM('game2');
             await this.generateGameScene();
+            this._audioManager.playBGM('game2');
         } else if (sceneType === GameManager.SCENE_RESULT) {
             this.playerManager.clearAllChara();
             await this.generateResultScene();
