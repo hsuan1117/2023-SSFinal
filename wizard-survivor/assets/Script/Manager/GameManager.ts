@@ -248,8 +248,9 @@ export default class GameManager extends cc.Component {
     }
 
     public async endGame() {
+        console.log('!!Game End!!');
         this.event.emit(GameManager.ON_GAME_END)
-        await this.node.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
+        await this.backgroundLayer.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
         this.changeScene(GameManager.SCENE_RESULT);
     }
 
