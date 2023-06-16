@@ -159,6 +159,8 @@ export default class PlayerController extends cc.Component{
 
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.schedule(bloodEnd, 0.5);
+
+        GameManager.instance.audioManager.playEffect("hurt");
     }
 
     public recover(val: number) {
