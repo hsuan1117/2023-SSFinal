@@ -89,6 +89,7 @@ export default class EnemyController extends cc.Component {
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
         this.schedule(this.flashEnd, 0.1);
+        GameManager.instance.audioManager.playEffect("miner_s3_hurt");
         if (this.hp.value <= 0) {
             this.dead(byUid);
         }
