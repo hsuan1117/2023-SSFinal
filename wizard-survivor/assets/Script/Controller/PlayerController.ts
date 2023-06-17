@@ -65,7 +65,8 @@ export default class PlayerController extends cc.Component{
     private animCtrl: PlayerAnimController = null;
     private rb: cc.RigidBody = null;
     private phyCollider: cc.PhysicsCollider = null;
-    private searchTarget: ISearchTarget = new SearchDrop;
+    private dropCollider: cc.CircleCollider = null;
+    // private searchTarget: ISearchTarget = new SearchDrop;
 
     private readonly DENSITY: number = 1;
 
@@ -94,6 +95,7 @@ export default class PlayerController extends cc.Component{
         this.addComponent(SearchDrop);
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.animCtrl = this.node.getComponent(PlayerAnimController);
+        this.dropCollider = this.node.getComponent(cc.CircleCollider);
 
         this.event = new cc.EventTarget();
 
@@ -143,7 +145,11 @@ export default class PlayerController extends cc.Component{
         if (!this.isDashing){
             this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
         }
-        this.collectDrop();
+    }
+
+    onCollisionEnter(other: cc.Collider, self: cc.Collider){
+        const drop = other.node.getComponent(DropController);
+        drop && drop.collectBy(this.node);
     }
 
 
@@ -232,14 +238,14 @@ export default class PlayerController extends cc.Component{
 
 
     // HELPER METHODS:
-    protected collectDrop() {
-        if (this._isDead) return;
-
-        while (this.getComponent(SearchDrop).getTarget()) {
-            let target = this.getComponent(SearchDrop).getTarget();
-            target.getComponent(DropController).collectBy(this.node);
-        }
-    }
+    // protected collectDrop() {
+    //     if (this._isDead) return;
+    //
+    //     while (this.getComponent(SearchDrop).getTarget()) {
+    //         let target = this.getComponent(SearchDrop).getTarget();
+    //         target.getComponent(DropController).collectBy(this.node);
+    //     }
+    // }
 
     protected checkIsDead(){
         if (this._isDead) return;
