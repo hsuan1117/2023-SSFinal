@@ -44,7 +44,8 @@ export default class MapManager extends cc.Component {
     public init() {
         this.started = true;
         this.visPos = {};
-        this.stageMap = this.stageMaps[this.stageNames[Math.floor(Math.random() * this.stageNames.length)]];
+        let rand = GameManager.instance.rand;
+        this.stageMap = this.stageMaps[this.stageNames[Math.floor(rand.random() * this.stageNames.length - 0.0000001)]];
     }
 
     public clearMap() {
@@ -97,8 +98,8 @@ export default class MapManager extends cc.Component {
         let tx = Math.floor(pos.x / this.mapWidth);
         let ty = Math.floor(pos.y / this.mapHeight);
 
-        for (let i = -2; i <= 2; i++) {
-            for (let j = -2; j <= 2; j++) {
+        for (let i = -3; i <= 3; i++) {
+            for (let j = -3; j <= 3; j++) {
                 let key = this.posHash(tx + i, ty + j);
                 if (key in this.visPos) continue;
 

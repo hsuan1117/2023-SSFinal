@@ -45,8 +45,6 @@ export default class WaveManager extends cc.Component {
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
     private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
 
-    private rand: RandomGenerator = new RandomGenerator();
-
     private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton", "GraveGuard"];
 
     private waveData: cc.JsonAsset = null;
@@ -96,8 +94,6 @@ export default class WaveManager extends cc.Component {
                 });
         }
 
-        // init rand
-        this.rand.setSeed("loli");
     }
 
     onLoad(){
@@ -126,8 +122,9 @@ export default class WaveManager extends cc.Component {
     }
 
     private randomSpawnPos(){
-        let angle = this.rand.random() * 2 * Math.PI;
-        let radius = this.spawnRadius + this.rand.random() * 200;
+        let rand = GameManager.instance.rand;
+        let angle = rand.random() * 2 * Math.PI;
+        let radius = this.spawnRadius + rand.random() * 200;
         let vec = cc.v2(Math.cos(angle) * radius, Math.sin(angle) * radius);
         return this.spawnCenter.add(vec);
     }
@@ -152,7 +149,8 @@ export default class WaveManager extends cc.Component {
     }
 
     private dropRandomItem(position: cc.Vec3){
-        const random = this.rand.random();
+        let rand = GameManager.instance.rand;
+        const random = rand.random();
         let sum = 0;
         for (let i = 0; i < this.enemyDropItemsType.length; i++){
             sum += this.enemyDropItemsRate[i];

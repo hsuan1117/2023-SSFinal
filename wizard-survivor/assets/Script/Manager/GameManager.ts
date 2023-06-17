@@ -12,6 +12,7 @@ import MainMenuUI, {GameInfo} from "../UI/MainMenuUI";
 import ParticleManager from "./ParticleManager";
 import GameEndUI from "../UI/GameEndUI";
 import AudioManager from "./AudioManager";
+import RandomGenerator from "../Helper/RandomGenerator";
 
 
 const {ccclass, property} = cc._decorator;
@@ -107,6 +108,9 @@ export default class GameManager extends cc.Component {
     private _currentSceneType: string;
     private _isPaused: boolean = false;
 
+    /* === 亂數器 === */
+    public rand: RandomGenerator = new RandomGenerator();
+
     /* == 場景分層 == */
     private _backgroundLayer: cc.Node;
     private _itemLayer: cc.Node;
@@ -191,6 +195,7 @@ export default class GameManager extends cc.Component {
     start() {
         this.changeScene(GameManager.SCENE_MAIN_MENU);
         this._waveManager.init();
+        this.rand.setSeed("loli");
     }
 
 
