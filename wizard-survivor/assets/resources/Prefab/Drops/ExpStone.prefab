@@ -224,6 +224,7 @@
     },
     "_enabled": true,
     "dropType": "exp",
+    "dropValue": 15,
     "_id": ""
   },
   {

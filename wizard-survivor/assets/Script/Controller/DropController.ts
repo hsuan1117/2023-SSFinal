@@ -12,13 +12,14 @@ export default class DropController extends cc.Component {
     @property({tooltip: "必須為：'coin', 'exp', 'health pack', 'chest' 之一"})
     public dropType: string = "exp"; // "coin", "exp", "health pack", "chest"
 
+    @property({tooltip: "掉落數值"})
+    public dropValue: number = 1;
+
     public static readonly DROP_TYPE_COIN = 'coin';
     public static readonly DROP_TYPE_EXP = 'exp';
     public static readonly DROP_TYPE_HEALTH_PACK = 'health pack';
     public static readonly DROP_TYPE_CHEST = 'chest';
 
-
-    public dropValue: number = 1;
 
     public collector: cc.Node = null;
 
