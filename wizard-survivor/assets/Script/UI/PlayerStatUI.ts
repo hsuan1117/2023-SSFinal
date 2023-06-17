@@ -26,6 +26,7 @@ export default class PlayerStatUI extends cc.Component {
 
     // PUBLIC METHODS:
     public init(player: PlayerController) {
+        this.node.opacity = 255;
         this.player = player;
         this.player.event.on(PlayerController.PLAYER_ATTR_CHANGE, this.updateUI, this);
         this.updateUI();
