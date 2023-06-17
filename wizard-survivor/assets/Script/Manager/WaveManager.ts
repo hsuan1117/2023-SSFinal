@@ -156,7 +156,7 @@ export default class WaveManager extends cc.Component {
             sum += this.enemyDropItemsRate[i];
             if (random < sum){
                 let item = GameManager.instance.poolManager.createPrefab(this.enemyDropItems[this.enemyDropItemsType[i]]);
-                item.position = position;
+                item.position = position.add(cc.v3(rand.random() * 40 - 20, rand.random() * 40 - 20, 0));
                 item.active = true;
                 item.parent = GameManager.instance.itemLayer;
                 break;
