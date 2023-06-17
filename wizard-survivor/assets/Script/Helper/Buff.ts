@@ -32,7 +32,7 @@ export class IBuff {
     * 建議 PlayerController.applyBuff 套用 Buff。 
     * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。 
      */
-    public _apply(player: PlayerController): void {}
+    public _apply(player: PlayerController): void { console.warn("IBuff._apply() should be override by child class");}
 
     public intoCoolDown(player: PlayerController) {
         this._coolDownTimer = 1;
@@ -50,6 +50,7 @@ export class IBuff {
             buffIcon.node.parent = player.node;
             buffIcon.node.position = cc.v3(0, 0);
             const animState =  buffIcon.node.getComponent(cc.Animation).play('BuffIconFadedOut');
+            // @ts-ignore
             animState && animState.on('finished', () => {
                 GameManager.instance.poolManager.recycle(buffIcon.node);
             });
@@ -66,10 +67,9 @@ export class IBuff {
 
 export class EffectOnce extends IBuff {
     constructor(coolDown) {super(coolDown)};
-    public _apply(player: PlayerController): void {
-        if (player.appliedBuff.find((buff) => buff.id === this.id)) {
-            return;
-        }
+
+    public static playerHasApplied(player: PlayerController, buff: IBuff): boolean {
+        return !player.appliedBuff.find((bf) => buff.id === bf.id);
     }
 }
 
@@ -94,7 +94,7 @@ export class GetExited extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
         GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
             if (killByUid != player.uid) return;
 
@@ -126,7 +126,7 @@ class RunAway extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
 
         player.event.on(PlayerController.PLAYER_HURT, () => {
 
@@ -158,7 +158,7 @@ class Guinsoo extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
 
         GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, ({enemyPosition, killByUid}) => {
             if (this.curStack >= this._maxStack) return;
@@ -193,7 +193,7 @@ class Tiamat extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
@@ -234,7 +234,7 @@ class GA extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
         player.event.on(PlayerController.PLAYER_HURT, (damageInfo) => {
             if (this._coolDownTimer > 0) return;
             if (player.currentHP.value > damageInfo.damage) return;
@@ -267,7 +267,7 @@ class Mash extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
@@ -317,7 +317,7 @@ class Yasuo extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
@@ -372,7 +372,8 @@ class Domino extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        if (EffectOnce.playerHasApplied(player, this)) return;
+
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
@@ -417,7 +418,7 @@ class TrinityForces extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.mainWeapon.projectileAttr.damage.percentageFactor += this._damagePercentage;
         player.moveSpeed.percentageFactor += this._speedPercentage;
@@ -438,7 +439,7 @@ class IncreaseMoveSpeed extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.moveSpeed.percentageFactor += this._speedPercentage;
     }
@@ -457,7 +458,7 @@ class IncreaseAttackSpeed extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.mainWeapon.attackSpeed.percentageFactor += this._attackSpeedPercentage;
     }
@@ -476,7 +477,7 @@ class IncreaseDamage extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.mainWeapon.projectileAttr.damage.percentageFactor += this._damagePercentage;
     }
@@ -495,7 +496,7 @@ class IncreaseBounceTimes extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.mainWeapon.projectileAttr.bounceOnEnemyTimes.addFactor += this._bounceTimes;
     }
@@ -514,7 +515,7 @@ class IncreasePenetrateTimes extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.mainWeapon.projectileAttr.penetrateTimes.addFactor += this._penetrateTimes;
     }
@@ -533,7 +534,7 @@ class GainMoreExp extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.expGainPercentage.addFactor += this._expPercentage;
     }
@@ -552,7 +553,7 @@ class IncreaseMagnetRange extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.node.getComponent(SearchDrop).searchRange *= 1.5;
     }
@@ -571,7 +572,7 @@ class BuyLife extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.recover(1000);
         GameManager.instance.gameSystem.emitCoinChange(
@@ -594,7 +595,7 @@ class SupersonicCharge extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         this.showBuffTriggered(player);
         player.dashSpeed.percentageFactor += this._speedPercentage;
         player.dashCoolDown.addFactor += this._coolDownAdd;
@@ -616,7 +617,7 @@ class GlassCannon extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
         if (player.maxHp.value <= this._hpReduce) return;
 
         this.showBuffTriggered(player);
@@ -647,7 +648,7 @@ class HeartSteel extends IBuff {
     }
 
     public _apply(player: PlayerController) {
-        super._apply(player);
+        
 
         let addHp = () => {
             this.showBuffTriggered(player);
