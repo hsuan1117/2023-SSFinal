@@ -17,15 +17,17 @@ export class IBuff {
     public description: string;
     public id: string;
 
-    public get isAvailable(): boolean { return this._coolDownTimer === 0 || this._coolDown == 0; }
+    public get isAvailable(): boolean { return this._isEnable && (this._coolDownTimer === 0 || this._coolDown == 0); }
+    public set coolDownTimer(value: number) { this._coolDownTimer = value; }
+    public set isEnable(value: boolean) { this._isEnable = value; }
 
     protected static _buffIconPrefab: cc.Prefab = null;
     protected _coolDown: number = 0;
     protected _coolDownTimer: number = 0;
+    protected _isEnable: boolean = true;
 
     public constructor(coolDown: number) {
         this._coolDown = coolDown;
-
     }
 
     /*
@@ -68,8 +70,16 @@ export class IBuff {
 export class EffectOnce extends IBuff {
     constructor(coolDown) {super(coolDown)};
 
+    protected static _appliedByUids: {[buffId: string]: {[uid: string]: boolean}} = {};
+
     public static playerHasApplied(player: PlayerController, buff: IBuff): boolean {
-        return !player.appliedBuff.find((bf) => buff.id === bf.id);
+        if (!EffectOnce._appliedByUids[buff.id]) EffectOnce._appliedByUids[buff.id] = {};
+        if (EffectOnce._appliedByUids[buff.id][player.uid]){
+            buff.isEnable = false;
+            return true;
+        }
+        EffectOnce._appliedByUids[buff.id][player.uid] = true;
+        return false;
     }
 }
 
