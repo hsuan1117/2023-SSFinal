@@ -15,6 +15,15 @@ export default class BumpingMonster extends EnemyController {
     @property(AttrNum)
     private triggerRadius: AttrNum = new AttrNum();
 
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.group == 'Enemy' && this.bumpingTime != -1) {
+            contact.disabled = true;
+            cc.log("bumping monster bumping into another monster");
+            return;
+        }
+    }
+
     onLoad () {
         super.onLoad();
         this.triggerRadius.defaultValue = 200;
