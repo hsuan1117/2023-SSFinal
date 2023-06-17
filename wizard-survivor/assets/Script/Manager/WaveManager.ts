@@ -187,4 +187,5 @@ export default class WaveManager extends cc.Component {
             }
         }
     }
+
 }

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "c21e04d4-3709-405a-a1cb-cd7b76ec942a",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 13,
+  "height": 13,
+  "platformSettings": {},
+  "subMetas": {
+    "hero_c02_skin_15_bullet_6": {
+      "ver": "1.0.6",
+      "uuid": "2ea0dd47-0207-4744-8ed9-d464ac695cd8",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "c21e04d4-3709-405a-a1cb-cd7b76ec942a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 1,
+      "width": 11,
+      "height": 11,
+      "rawWidth": 13,
+      "rawHeight": 13,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

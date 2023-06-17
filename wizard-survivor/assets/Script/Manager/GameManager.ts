@@ -196,7 +196,7 @@ export default class GameManager extends cc.Component {
     start() {
         this.changeScene(GameManager.SCENE_MAIN_MENU);
         this._waveManager.init();
-        this.rand.setSeed("loli");
+        this.rand.setSeed("1234");
     }
 
 

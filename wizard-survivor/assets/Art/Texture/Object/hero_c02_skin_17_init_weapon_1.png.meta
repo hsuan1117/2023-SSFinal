@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "a144d175-1b8d-4d87-b230-bfb93af94f33",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 19,
+  "height": 18,
+  "platformSettings": {},
+  "subMetas": {
+    "hero_c02_skin_17_init_weapon_1": {
+      "ver": "1.0.6",
+      "uuid": "f2db36a4-a07b-4fd6-acc9-2e1a36353472",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "a144d175-1b8d-4d87-b230-bfb93af94f33",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 19,
+      "height": 18,
+      "rawWidth": 19,
+      "rawHeight": 18,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
