@@ -28,10 +28,14 @@ export default class DropController extends cc.Component {
 
     private speedRatio: number = 0;
 
+    private _motionStreak: cc.MotionStreak;
+
     onLoad() {
         // add collider
         let collider = this.node.addComponent(cc.CircleCollider);
         collider.radius = 20;
+        this._motionStreak = this.node.getComponent(cc.MotionStreak);
+        this._motionStreak.enabled = false;
     }
 
     protected update(dt: number) {
@@ -43,6 +47,7 @@ export default class DropController extends cc.Component {
     public collectBy(collector: cc.Node) {
         this.collector = collector;
         this.isCollected = true;
+        this._motionStreak.enabled = true;
     }
 
     protected magnetic() {
