@@ -26,8 +26,12 @@ export default class ParticleManager extends cc.Component {
             particle.getComponent(cc.ParticleSystem).resetSystem();
 
             this.scheduleOnce(() => {
+                particle.active = false;
+            }, durationtime + 1);
+
+            this.scheduleOnce(() => {
                 GameManager.instance.poolManager.recycle(particle);
-            }, durationtime);
+            }, durationtime + 1);
         }, delaytime);
 
     }
