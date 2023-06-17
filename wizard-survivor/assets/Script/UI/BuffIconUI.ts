@@ -15,6 +15,9 @@ export default class BuffIconUI extends cc.Component {
         this._alwaysShow = alwaysShow;
         this._buffSprite = await loadResource('Art/BuffCard/' + this._buff.id, cc.SpriteFrame) as unknown as cc.SpriteFrame;
         this.node.getComponent(cc.Sprite).spriteFrame = this._buffSprite;
+        this.node.opacity = 255;
+        this.node.color = cc.Color.WHITE;
+        this.node.scale = 1;
     }
 
     update (dt) {

@@ -34,10 +34,13 @@
       },
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -338,6 +341,38 @@
     "playerDashAnim": "AssassinWalk",
     "playerHurtAnim": "AssassinStand",
     "playerDeadAnim": "AssassinDead",
+    "_id": ""
+  },
+  {
+    "__type__": "cc.MotionStreak",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_fadeTime": 0.1,
+    "_minSeg": 0.5,
+    "_stroke": 15,
+    "_texture": {
+      "__uuid__": "f2a9897d-f653-4d83-af3f-3ad2240e337b"
+    },
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 124
+    },
+    "_fastMode": false,
+    "_N$preview": true,
     "_id": ""
   },
   {
