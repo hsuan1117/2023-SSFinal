@@ -268,7 +268,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 1
+    "_defaultValue": 5
   },
   {
     "__type__": "AttrNum",
@@ -294,7 +294,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": true,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": false,
     "_id": ""
