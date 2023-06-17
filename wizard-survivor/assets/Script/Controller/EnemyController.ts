@@ -11,8 +11,8 @@ const {ccclass, property} = cc._decorator;
 export default class EnemyController extends cc.Component {
 
     public searchable: boolean = true;
-    private readonly DENSITY: number = 10;
-    private readonly LINEAR_DAMP: number = 100;
+    protected readonly DENSITY: number = 10;
+    protected readonly LINEAR_DAMP: number = 100;
     public rb: cc.RigidBody = null;
     public animCtrl: EnemyAnimController = null;
 
@@ -33,9 +33,11 @@ export default class EnemyController extends cc.Component {
 
     public normalMaterial: cc.Material = null;
     public hurtMaterial: cc.Material = null;
-    private sprite: cc.Sprite = null;
+    protected sprite: cc.Sprite = null;
 
     protected skillCoolDownTime: number = 0;
+
+    protected isBossFight: boolean = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -68,7 +70,8 @@ export default class EnemyController extends cc.Component {
     }
 
     protected update(dt: number) {
-        this.followPlayer();
+        if (!this.isBossFight) this.followPlayer();
+        else this.runAwayFromPlayer();
         this.playAnim();
     }
 
@@ -96,20 +99,30 @@ export default class EnemyController extends cc.Component {
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
         this.schedule(this.flashEnd, 0.1);
-        GameManager.instance.audioManager.playEffect("miner_s3_hurt");
         if (this.hp.value <= 0) {
             this.dead(byUid);
         }
+        // GameManager.instance.audioManager.playEffect("miner_s3_hurt");
+    }
+
+    public retreat() {
+         this.isBossFight = true;
+         this.searchable = false;
     }
 
     protected runAwayFromPlayer() { // For Boss fight
         let target = this.findClosestPlayer();
         if (!target) {
             this.rb.linearVelocity = cc.Vec2.ZERO;
+            this.selfDestroy();
+            return;
+        }
+        if (target.sub(this.node.position).mag() > 800) {
+            this.selfDestroy();
             return;
         }
         let direction = target.sub(this.node.position);
-        this.rb.linearVelocity = ignoreZ(direction.normalize().mul(-2 * this.moveSpeed.value));
+        this.rb.linearVelocity = ignoreZ(direction.normalize().mul(-3 * this.moveSpeed.value));
     }
 
     protected followPlayer() { // For Boss fight

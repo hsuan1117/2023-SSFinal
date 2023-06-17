@@ -55,14 +55,14 @@ export default class EnemyAnimController extends AnimController {
         if (newState.isDead) {
             this.anim.play(this.enemyDeadAnim);
         }
+        else if (newState.isSkill) {
+            this.anim.play(this.enemySkillAnim);
+        }
         else if (newState.isHurt) {
             this.anim.play(this.enemyHurtAnim);
         }
         else if (newState.isMoving) {
             this.anim.play(this.enemyMoveAnim);
-        }
-        else if (newState.isSkill) {
-            this.anim.play(this.enemySkillAnim);
         }
         else {
             this.anim.play(this.enemyIdleAnim);

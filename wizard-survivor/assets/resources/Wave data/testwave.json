@@ -18,6 +18,9 @@
     }
   },
   "2": {
-
+    "GraveGuard": {
+      "spawnInterval": 10000,
+      "spawnNum": 1
+    }
   }
 }

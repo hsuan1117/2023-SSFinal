@@ -6,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 export default class ParticleManager extends cc.Component {
 
     @property(Array)
-    public particleList: string[] = ["White Explosion", "Red Explosion", "Smoke", "Level Up", "Enemy Explosion"];
+    public particleList: string[] = ["White Explosion", "Red Explosion", "Smoke", "Level Up", "Enemy Explosion", "Open Chest", "Roar"];
 
     private particlePrefabs: {[particleName: string]: cc.Prefab} = {};
 

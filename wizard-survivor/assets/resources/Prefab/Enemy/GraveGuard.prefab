@@ -27,14 +27,17 @@
         "__id__": 6
       },
       {
-        "__id__": 12
+        "__id__": 7
       },
       {
-        "__id__": 13
+        "__id__": 8
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -58,15 +61,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        -128.74,
+        216.75,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        2,
+        2,
         1
       ]
     },
@@ -224,51 +227,6 @@
     "sync": false
   },
   {
-    "__type__": "f628d90jGVGxJqCeFG+5Vps",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "moveSpeed": {
-      "__id__": 7
-    },
-    "skillCoolDown": {
-      "__id__": 8
-    },
-    "hp": {
-      "__id__": 9
-    },
-    "collideDamage": {
-      "__id__": 10
-    },
-    "collideDamageCoolDown": {
-      "__id__": 11
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -288,7 +246,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": true,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_id": ""
@@ -317,6 +275,69 @@
       "width": 47.6,
       "height": 74.9
     },
+    "_id": ""
+  },
+  {
+    "__type__": "87a55FzeJlBLKwJXus1XR57",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "moveSpeed": {
+      "__id__": 9
+    },
+    "skillCoolDown": {
+      "__id__": 10
+    },
+    "hp": {
+      "__id__": 11
+    },
+    "collideDamage": {
+      "__id__": 12
+    },
+    "collideDamageCoolDown": {
+      "__id__": 13
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 20
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 8
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 2000
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 5
+  },
+  {
+    "__type__": "48597dRxOJNkqge1dQfGu3a",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 4
+    },
+    "enemyIdleAnim": "GraveGuardStand",
+    "enemyMoveAnim": "GraveGuardWalk",
+    "enemyHurtAnim": "GraveGuardWalk",
+    "enemyDeadAnim": "GraveGuardStand",
+    "enemySkillAnim": "GraveGuardAttack",
     "_id": ""
   },
   {

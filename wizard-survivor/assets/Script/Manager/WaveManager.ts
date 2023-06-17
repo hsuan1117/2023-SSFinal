@@ -36,13 +36,18 @@ export default class WaveManager extends cc.Component {
     * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void */
     public static readonly ON_ENEMY_HIT: string = "onEnemyHit";
 
+    /* 事件：當boss生成
+    *
+    * callbackFn: () => void */
+    public static readonly ON_BOSS_FIGHT_START: string = "onBossFightStart";
+
     private enemyDropItems: {[itemType: string]: cc.Prefab};
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
     private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
 
     private rand: RandomGenerator = new RandomGenerator();
 
-    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton"];
+    private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton", "GraveGuard"];
 
     private waveData: cc.JsonAsset = null;
 
@@ -106,7 +111,7 @@ export default class WaveManager extends cc.Component {
 
         for (const key in this.currentWave){
             if (this.countDowns[key] === undefined) {
-                this.countDowns[key] = 5;
+                this.countDowns[key] = 3;
             }
 
             if (this.countDowns[key] <= 0){
@@ -133,7 +138,13 @@ export default class WaveManager extends cc.Component {
         // cc.log(enemy);
         enemy.active = true;
         enemy.parent = GameManager.instance.playerEnemyLayer;
-        enemy.getComponent("EnemyController").init();
+
+        if (enemy.getComponent("BossController")) {
+            enemy.getComponent("BossController").init();
+            enemy.position = cc.v3(this.spawnCenter.x, this.spawnCenter.y, 0).sub(cc.v3(winSize.width / 2 + 50, 0, 0));
+        }
+        else
+            enemy.getComponent("EnemyController").init();
     }
 
     private onEnemyDie({enemyPosition, killByUid}: {enemyPosition: cc.Vec3, killByUid: string}){

@@ -165,7 +165,7 @@ export default class GameManager extends cc.Component {
             } else if (keyCode == cc.macro.KEY.h) {
                 this.gameSystem.emitPlayerHPChange('p1', -1)
             } else if (keyCode == cc.macro.KEY.e) {
-                loadResource('Prefab/Enemy/BumpingPig', cc.Prefab).then((prefab) => {
+                loadResource('Prefab/Enemy/GraveGuard', cc.Prefab).then((prefab) => {
                     const enemy =  this.poolManager.createPrefab(prefab as cc.Prefab);
                     enemy.setPosition(0, 0);
                     enemy.parent = this.node;
