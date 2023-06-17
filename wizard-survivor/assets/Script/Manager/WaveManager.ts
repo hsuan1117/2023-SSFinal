@@ -25,6 +25,7 @@ json 格式：
 export default class WaveManager extends cc.Component {
 
     public event: cc.EventTarget;
+    public static dropCount: number = 0;
 
     /* 事件：當敵人死亡時觸發
     *
@@ -51,7 +52,7 @@ export default class WaveManager extends cc.Component {
 
     private waveDataName: string = "testwave";
 
-    private enemyPrefabs: cc.Prefab[] = [];
+    private enemyPrefabs: {[enemyType: string]: cc.Prefab } = {};
 
     private spawnRadius: number = 530; // 剛好在螢幕外
 
@@ -59,15 +60,17 @@ export default class WaveManager extends cc.Component {
 
     private spawnCenter: cc.Vec2 = null;
 
-    private countDowns: number[] = [];
+    private countDowns: {[enemyType: string]: number} = {};
 
     private growthRate: number = 1.1;
 
     private currentWaveNum: number = 0;
 
     public setWave(wave: number){
-        if (wave > this.waveData.json.length) return;
-        cc.log("set wave: " + wave);
+        if (this.waveData.json[wave] === undefined) {
+            this.currentWave = wave;
+            return;
+        }
         this.currentWave = this.waveData.json[wave];
         this.currentWaveNum = wave;
     }
@@ -93,7 +96,7 @@ export default class WaveManager extends cc.Component {
 
         // load drop item prefab
         this.enemyDropItems = {};
-        for (let i=0; i<this.enemyDropItemsType.length; i++){
+        for (let i = 0; i < this.enemyDropItemsType.length; i++){
             const type = this.enemyDropItemsType[i];
             loadResource('Prefab/Drops/' + type, cc.Prefab)
                 .then((prefab: cc.Prefab) => {
@@ -128,6 +131,17 @@ export default class WaveManager extends cc.Component {
                 this.countDowns[key] = this.currentWave[key].spawnInterval;
             } else {
                 this.countDowns[key] -= dt;
+            }
+        }
+
+        if (WaveManager.dropCount > 50) {
+            let id = GameManager.instance.playerManager.allPlayerIDs[0];
+            let player = GameManager.instance.playerManager.getPlayer(id);
+            for (const drop of GameManager.instance.itemLayer.children) {
+                let dropController = drop.getComponent("DropController");
+                if (dropController) {
+                    dropController.collectBy(player.node);
+                }
             }
         }
     }
@@ -168,6 +182,7 @@ export default class WaveManager extends cc.Component {
                 item.position = position.add(cc.v3(rand.random() * 40 - 20, rand.random() * 40 - 20, 0));
                 item.active = true;
                 item.parent = GameManager.instance.itemLayer;
+                WaveManager.dropCount++;
                 break;
             }
         }

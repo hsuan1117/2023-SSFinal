@@ -2,6 +2,7 @@ import Game = cc.Game;
 import GameManager from "../Manager/GameManager";
 import PlayerController from "./PlayerController";
 import {GameSystem} from "../Manager/GameSystem";
+import WaveManager from "../Manager/WaveManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -70,7 +71,7 @@ export default class DropController extends cc.Component {
                 this.collector.getComponent(PlayerController).recover(this.dropValue);
                 GameManager.instance.audioManager.playEffect('heal');
             }
-
+            WaveManager.dropCount--;
             this.node.destroy();
         }
     }
