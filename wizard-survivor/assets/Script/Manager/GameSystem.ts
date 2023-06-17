@@ -118,7 +118,27 @@ export class GameSystem {
     }
 
     public saveGameRecord(gameRecord: GameRecord) {
-        console.log('GameSystem.saveGameRecord; gameRecord', gameRecord);
+        const data = localStorage.getItem('gameRecord') ? JSON.parse(localStorage.getItem('gameRecord')) : {
+            level: 0,
+            coin: 0
+        }
+        data.level += gameRecord.level
+        data.coin += gameRecord.personal_coin
+        localStorage.setItem('gameRecord', JSON.stringify(data))
+    }
+
+    public async getGameRecord(): Promise<{
+        level: number,
+        coin: number
+    }> {
+        const {
+            level,
+            coin
+        } = localStorage.getItem('gameRecord') ? JSON.parse(localStorage.getItem('gameRecord')) : {level: 0, coin: 0}
+        return {
+            level,
+            coin
+        }
     }
 
     //public emitCreatePlayer(uid: string, charaId: string){
@@ -234,11 +254,22 @@ export class RemoteGameSystem extends GameSystem {
         this.dispatchEvent(GameSystem.ON_GAME_START, {});
     }
 
-    public saveGameRecord({level, personal_coin}: GameRecord) {
-        api("POST", `/rooms/${this.gameInfo.id}/end`, {
+    public async saveGameRecord({level, personal_coin}: GameRecord) {
+        await api("POST", `/rooms/${this.gameInfo.id}/end`, {
             level,
             personal_coin
-        }).then(r => r);
+        });
+    }
+
+    public async getGameRecord(): Promise<{
+        level: number,
+        coin: number
+    }> {
+        const {level, coin} = await api("GET", `/my`)
+        return {
+            level,
+            coin
+        }
     }
 }
 
