@@ -6110,6 +6110,9 @@ window.__require = function e(t, n, r) {
     __decorate([ property({
       tooltip: "\u5fc5\u9808\u70ba\uff1a'coin', 'exp', 'health pack', 'chest' \u4e4b\u4e00"
     }) ], DropController.prototype, "dropType", void 0);
+    __decorate([ property({
+      tooltip: "\u6389\u843d\u6578\u503c"
+    }) ], DropController.prototype, "dropValue", void 0);
     DropController = DropController_1 = __decorate([ ccclass ], DropController);
     exports.default = DropController;
     cc._RF.pop();
