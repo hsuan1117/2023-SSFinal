@@ -69,7 +69,7 @@ export default class MainMenuUI extends cc.Component {
             focusTarget.push(this.node.getChildByName(this.child[i]));
         }
 
-        this.playerFocus.init(focusTarget, cc.v2(0, 50), true);
+        this.playerFocus.init(focusTarget, cc.v2(0, 60), true);
         this.playerFocus.focusOnIndex(this.uid, 0);
 
         this.node.getChildByName("AuthDialog").getChildByName('AuthButton').on(cc.Node.EventType.TOUCH_END, this.auth.bind(this), this);
