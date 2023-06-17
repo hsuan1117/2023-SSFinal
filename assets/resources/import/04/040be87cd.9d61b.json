@@ -91,9 +91,10 @@
       [
         "_gravityScale",
         "_fixedRotation",
+        "enabledContactListener",
         "node"
       ],
-      1,
+      0,
       1
     ],
     [
@@ -227,7 +228,8 @@
       0,
       1,
       2,
-      3
+      3,
+      4
     ],
     [
       7,
@@ -442,6 +444,7 @@
             [
               6,
               0,
+              true,
               true,
               -2
             ],

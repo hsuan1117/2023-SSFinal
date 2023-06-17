@@ -5921,6 +5921,13 @@ window.__require = function e(t, n, r) {
         this.bumpingTime = -1;
         this.triggerRadius = new Attributes_1.AttrNum();
       }
+      onBeginContact(contact, selfCollider, otherCollider) {
+        if ("Enemy" == otherCollider.node.group && -1 != this.bumpingTime) {
+          contact.disabled = true;
+          cc.log("bumping monster bumping into another monster");
+          return;
+        }
+      }
       onLoad() {
         super.onLoad();
         this.triggerRadius.defaultValue = 200;
@@ -6623,6 +6630,7 @@ window.__require = function e(t, n, r) {
     const ParticleManager_1 = require("./ParticleManager");
     const GameEndUI_1 = require("../UI/GameEndUI");
     const AudioManager_1 = require("./AudioManager");
+    const RandomGenerator_1 = require("../Helper/RandomGenerator");
     const {ccclass: ccclass, property: property} = cc._decorator;
     let GameManager = GameManager_1 = class GameManager extends cc.Component {
       constructor() {
@@ -6635,6 +6643,7 @@ window.__require = function e(t, n, r) {
         this.level = new Attributes_1.AttrNum(1);
         this.exp = new Attributes_1.AttrNum(0);
         this._isPaused = false;
+        this.rand = new RandomGenerator_1.default();
       }
       static get instance() {
         GameManager_1._instance || (GameManager_1._instance = cc.find("Game").getComponent(GameManager_1));
@@ -6741,6 +6750,7 @@ window.__require = function e(t, n, r) {
       start() {
         this.changeScene(GameManager_1.SCENE_MAIN_MENU);
         this._waveManager.init();
+        this.rand.setSeed("loli");
       }
       pauseGame() {
         this._isPaused = true;
@@ -6963,6 +6973,7 @@ window.__require = function e(t, n, r) {
     cc._RF.pop();
   }, {
     "../Helper/Attributes": "Attributes",
+    "../Helper/RandomGenerator": "RandomGenerator",
     "../Helper/utils": "utils",
     "../UI/GameEndUI": "GameEndUI",
     "../UI/LobbyUI": "LobbyUI",
@@ -7769,7 +7780,8 @@ window.__require = function e(t, n, r) {
       init() {
         this.started = true;
         this.visPos = {};
-        this.stageMap = this.stageMaps[this.stageNames[Math.floor(Math.random() * this.stageNames.length)]];
+        let rand = GameManager_1.default.instance.rand;
+        this.stageMap = this.stageMaps[this.stageNames[Math.floor(rand.random() * this.stageNames.length - 1e-7)]];
       }
       clearMap() {
         this.started = false;
@@ -7798,7 +7810,7 @@ window.__require = function e(t, n, r) {
         let pos = cc.Camera.main.node.position;
         let tx = Math.floor(pos.x / this.mapWidth);
         let ty = Math.floor(pos.y / this.mapHeight);
-        for (let i = -2; i <= 2; i++) for (let j = -2; j <= 2; j++) {
+        for (let i = -3; i <= 3; i++) for (let j = -3; j <= 3; j++) {
           let key = this.posHash(tx + i, ty + j);
           if (key in this.visPos) continue;
           this.visPos[key] = true;
@@ -8279,8 +8291,10 @@ window.__require = function e(t, n, r) {
         }
       }
       setFontStyle(label, color) {
-        label.fontSize = 20;
-        label.lineHeight = 20;
+        label.node.scaleX = .25;
+        label.node.scaleY = .25;
+        label.fontSize = 80;
+        label.lineHeight = 60;
         label.node.color = color;
         label.font = this.font;
         label.enableBold = true;
@@ -9099,14 +9113,12 @@ window.__require = function e(t, n, r) {
     const utils_2 = require("../Helper/utils");
     const GameManager_1 = require("./GameManager");
     var winSize = cc.winSize;
-    const RandomGenerator_1 = require("../Helper/RandomGenerator");
     const {ccclass: ccclass, property: property} = cc._decorator;
     let WaveManager = WaveManager_1 = class WaveManager extends cc.Component {
       constructor() {
         super(...arguments);
         this.enemyDropItemsType = [ "Coin", "ExpStone", "HpPack" ];
         this.enemyDropItemsRate = [ .3, .5, .2 ];
-        this.rand = new RandomGenerator_1.default();
         this.enemyTypes = [ "BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton", "GraveGuard" ];
         this.waveData = null;
         this.waveDataName = "testwave";
@@ -9136,7 +9148,6 @@ window.__require = function e(t, n, r) {
             this.enemyDropItems[type] = prefab;
           });
         }
-        this.rand.setSeed("loli");
       }
       onLoad() {
         this.event = new cc.EventTarget();
@@ -9153,8 +9164,9 @@ window.__require = function e(t, n, r) {
         }
       }
       randomSpawnPos() {
-        let angle = 2 * this.rand.random() * Math.PI;
-        let radius = this.spawnRadius + 200 * this.rand.random();
+        let rand = GameManager_1.default.instance.rand;
+        let angle = 2 * rand.random() * Math.PI;
+        let radius = this.spawnRadius + 200 * rand.random();
         let vec = cc.v2(Math.cos(angle) * radius, Math.sin(angle) * radius);
         return this.spawnCenter.add(vec);
       }
@@ -9172,13 +9184,14 @@ window.__require = function e(t, n, r) {
         this.dropRandomItem(enemyPosition);
       }
       dropRandomItem(position) {
-        const random = this.rand.random();
+        let rand = GameManager_1.default.instance.rand;
+        const random = rand.random();
         let sum = 0;
         for (let i = 0; i < this.enemyDropItemsType.length; i++) {
           sum += this.enemyDropItemsRate[i];
           if (random < sum) {
             let item = GameManager_1.default.instance.poolManager.createPrefab(this.enemyDropItems[this.enemyDropItemsType[i]]);
-            item.position = position;
+            item.position = position.add(cc.v3(40 * rand.random() - 20, 40 * rand.random() - 20, 0));
             item.active = true;
             item.parent = GameManager_1.default.instance.itemLayer;
             break;
@@ -9193,7 +9206,6 @@ window.__require = function e(t, n, r) {
     exports.default = WaveManager;
     cc._RF.pop();
   }, {
-    "../Helper/RandomGenerator": "RandomGenerator",
     "../Helper/utils": "utils",
     "./GameManager": "GameManager"
   } ],

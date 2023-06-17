@@ -1,0 +1,26 @@
+{
+  "1": {
+    "BumpingPig": {
+      "spawnInterval": 10,
+      "spawnNum": 10
+    },
+    "Rabbit": {
+        "spawnInterval": 10,
+        "spawnNum": 5
+    },
+    "Goblin": {
+        "spawnInterval": 10,
+        "spawnNum": 5
+    },
+    "EnemySkeleton": {
+        "spawnInterval": 10,
+        "spawnNum": 10
+    }
+  },
+  "2": {
+    "GraveGuard": {
+      "spawnInterval": 10000,
+      "spawnNum": 1
+    }
+  }
+}

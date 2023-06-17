@@ -38,7 +38,7 @@ window._CCSettings = {
             true,
             false,
             false,
-            false
+            true
         ]
     ],
     hasResourcesBundle: true,
@@ -51,7 +51,7 @@ window._CCSettings = {
     jsList: [],
     bundleVers: {
         internal: "cb4f5",
-        resources: "4aed6",
-        main: "70da7"
+        resources: "d5c6a",
+        main: "ae684"
     }
 };
