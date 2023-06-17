@@ -673,7 +673,7 @@ class HeartSteel extends IBuff {
 let BuffsList: (typeof IBuff)[] = [
     GetExited, RunAway, Guinsoo, Tiamat, GA, Mash, Yasuo, Domino, // 神諭
     TrinityForces, IncreaseMoveSpeed, IncreaseAttackSpeed, IncreaseDamage, // 增幅
-    IncreaseBounceTimes, IncreasePenetrateTimes, GainMoreExp, IncreaseMagnetRange, // 增幅
+    IncreaseBounceTimes, IncreasePenetrateTimes, GainMoreExp, // 增幅
     BuyLife, SupersonicCharge, GlassCannon, HeartSteel, // 惡魔的低語
 ];
 
