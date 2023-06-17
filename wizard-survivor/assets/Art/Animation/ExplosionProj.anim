@@ -1,0 +1,89 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ExplosionProj",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.75,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "b2799403-aa6f-4339-af59-c8f57f6fa78f"
+            }
+          },
+          {
+            "frame": 0.08333333333333333,
+            "value": {
+              "__uuid__": "0bfda3cf-0f9b-4996-949f-d26843d55fef"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "2226de0f-e0a9-41af-8b54-1258c703beb3"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "268e2dfc-7387-4e0e-b22d-1a6e8136b4c7"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "cf127741-cd02-4d12-81f6-2b3aa75d9521"
+            }
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": {
+              "__uuid__": "8c8cd3e3-e62a-45d6-8b6a-40036fac18b3"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "412182c2-ba98-4f77-bf28-1b574a97703d"
+            }
+          },
+          {
+            "frame": 0.5833333333333334,
+            "value": {
+              "__uuid__": "d83c5da6-db85-4d24-8934-66013161a483"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "89bfa49a-2a07-4e3e-ad51-58f4c276f55c"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 255
+        },
+        {
+          "frame": 0.6333333333333333,
+          "value": 200
+        },
+        {
+          "frame": 0.75,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": []
+}

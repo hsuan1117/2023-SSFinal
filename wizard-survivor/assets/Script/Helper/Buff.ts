@@ -8,6 +8,8 @@ import Game = cc.Game;
 import BUILTIN_NAME = cc.Material.BUILTIN_NAME;
 import WaveManager from "../Manager/WaveManager";
 import {loadResource} from "./utils";
+import SearchDrop from "./SearchDrop";
+import Layout = cc.Layout;
 
 export class IBuff {
     public showName: string;
@@ -33,6 +35,10 @@ export class IBuff {
         this._coolDownTimer = 1;
         player.schedule(() => this._coolDownTimer = 0, this._coolDown);
     }
+
+    protected showBuffTriggered(player: PlayerController) {
+        console.log(this.showName);
+    }
 }
 
 export class EffectOnce extends IBuff {
@@ -42,14 +48,10 @@ export class EffectOnce extends IBuff {
             return;
         }
     }
-
-    protected showBuffTriggered(player: PlayerController) {
-        console.log(this.showName);
-    }
 }
 
 export class GetExited extends EffectOnce {
-    public showName = "〈傳說技能〉 狂躁\n"
+    public showName = "〈神諭〉 狂躁\n"
     public description = "當累計殺死十個敵人，大幅增加傷害和跑速，持續五秒。效果可以疊加。\n"
     public id = "GetExited";
 
@@ -58,7 +60,7 @@ export class GetExited extends EffectOnce {
     private readonly _damageFactor: number;
     private readonly _speedFactor: number;
 
-    killCount: number = 0;
+    private killCount: number = 0;
 
     constructor(killToEnable: number = 10, duration: number = 5, damageFactor: number = 150, speedFactor: number = 200) {
         super(0);
@@ -70,9 +72,8 @@ export class GetExited extends EffectOnce {
 
     public _apply(player: PlayerController) {
         super._apply(player);
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, () => {
-
-            console.log('GetExited.onEnemyDie: ', this.killCount)
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+            if (killByUid != player.uid) return;
 
             this.killCount++;
 
@@ -93,7 +94,7 @@ export class GetExited extends EffectOnce {
 }
 
 class RunAway extends EffectOnce {
-    public showName = "〈傳說技能〉 走為上策\n"
+    public showName = "〈神諭〉 走為上策\n"
     public description = "當你受傷，立即重置衝刺的冷卻時間。冷卻時間一秒。"
     public id = "RunAway";
 
@@ -117,7 +118,7 @@ class RunAway extends EffectOnce {
 }
 
 class Guinsoo extends EffectOnce {
-    public showName = "〈傳說技能〉 鬼索的狂暴之拳\n"
+    public showName = "〈神諭〉 鬼索的狂暴之拳\n"
     public description = "當傷害敵人，增加攻擊速度，持續 6 秒。效果疊加最多 6 次。\n"
     public id = "Guinsoo";
 
@@ -153,7 +154,7 @@ class Guinsoo extends EffectOnce {
 }
 
 class Tiamat extends EffectOnce {
-    public showName = "〈傳說技能〉 提亞瑪特\n"
+    public showName = "〈神諭〉 提亞瑪特\n"
     public description = "當傷害敵人，對周圍敵人造成傷害。冷卻時間 0.5 秒。\n"
     public id = "Tiamat";
 
@@ -198,7 +199,7 @@ class Tiamat extends EffectOnce {
 }
 
 class GA extends EffectOnce {
-    public showName = "〈傳說技能〉 守護天使\n"
+    public showName = "〈神諭〉 守護天使\n"
     public description = "當你受到致命傷害，立即回復所有生命值，並且無敵一秒。冷卻時間 100 秒。\n"
     public id = "GA";
 
@@ -226,7 +227,7 @@ class GA extends EffectOnce {
 }
 
 class Mash extends EffectOnce {
-    public showName = "〈傳說技能〉 瑪修\n"
+    public showName = "〈神諭〉 瑪修\n"
     public description = "當玩家受傷，召喚在周圍旋轉的護盾，持續 5 秒。冷卻時間 10 秒。\n"
     public id = "Mash";
 
@@ -276,7 +277,7 @@ class Mash extends EffectOnce {
 }
 
 class Yasuo extends EffectOnce {
-    public showName = "〈傳說技能〉 快樂風男\n"
+    public showName = "〈神諭〉 快樂風男\n"
     public description = "衝刺時用風刃傷害周遭。若在衝刺後立即殺死敵人，立即重置衝刺的冷卻時間。\n"
     public id = "Yasuo";
 
@@ -287,8 +288,8 @@ class Yasuo extends EffectOnce {
     private readonly _prefabPath = 'Prefab/Projectile/YasuoE'
     private _prefab: cc.Prefab;
 
-    constructor(coolDown: number = 10, damage: number = 200) {
-        super(coolDown);
+    constructor(damage: number = 200) {
+        super(0);
         this._duration = 0.5;
         this._damage = damage;
         this._resetTime = 0.2;
@@ -332,9 +333,328 @@ class Yasuo extends EffectOnce {
     }
 }
 
+class Domino extends EffectOnce {
+    public showName = "〈神諭〉 多米諾效應\n"
+    public description = "當殺死敵人，產生爆炸。可以連鎖反應。\n"
+    public id = "Domino";
+
+    private readonly _duration: number;
+    private readonly _damage: number = 50;
+
+    private readonly _prefabPath = 'Prefab/Projectile/Explosion'
+    private _prefab: cc.Prefab;
+
+    constructor(damage: number = 200) {
+        super(0);
+        this._duration = 0.5;
+        this._damage = damage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        loadResource(this._prefabPath, cc.Prefab).then(
+            (prefab) => this._prefab = prefab as unknown as cc.Prefab
+        );
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+
+            this.showBuffTriggered(player);
+
+            const proj = GameManager.instance.poolManager
+                .createPrefab(this._prefab, true)
+                .getComponent(ProjectileController);
+
+            proj.node.setPosition(enemyPosition);
+            proj.init(
+                new ProjectileAttr(
+                    0,this._damage,
+                    this._duration, 0,
+                    0, true, 1),
+                null,
+                null,
+                player.uid,
+            );
+            proj.node.parent = GameManager.instance.bulletLayer;
+            proj.shootToDirection(cc.Vec2.ZERO);
+        })
+    }
+}
+
+class TrinityForces extends IBuff {
+    public showName = "〈增幅〉 三相之力\n"
+    public description = "獲得攻擊力、移動速度、攻擊速度。\n"
+    public id = "TrinityForces";
+
+    private readonly _damagePercentage: number;
+    private readonly _speedPercentage: number;
+    private readonly _attackSpeedPercentage: number;
+
+    constructor(damagePercentage: number = 30, speedPercentage: number = 30, attackSpeedPercentage: number = 30) {
+        super(0);
+        this._damagePercentage = damagePercentage;
+        this._speedPercentage = speedPercentage;
+        this._attackSpeedPercentage = attackSpeedPercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.mainWeapon.projectileAttr.damage.percentageFactor += this._damagePercentage;
+        player.moveSpeed.percentageFactor += this._speedPercentage;
+        player.mainWeapon.attackSpeed.percentageFactor += this._attackSpeedPercentage;
+    }
+}
+
+class IncreaseMoveSpeed extends IBuff {
+    public showName = "〈增幅〉 敏捷\n"
+    public description = "獲得移動速度。\n"
+    public id = "IncreaseMoveSpeed";
+
+    private readonly _speedPercentage: number;
+
+    constructor(speedPercentage: number = 30) {
+        super(0);
+        this._speedPercentage = speedPercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.moveSpeed.percentageFactor += this._speedPercentage;
+    }
+}
+
+class IncreaseAttackSpeed extends IBuff {
+    public showName = "〈增幅〉 精準射擊\n"
+    public description = "獲得攻擊速度。\n"
+    public id = "IncreaseAttackSpeed";
+
+    private readonly _attackSpeedPercentage: number;
+
+    constructor(attackSpeedPercentage: number = 100) {
+        super(0);
+        this._attackSpeedPercentage = attackSpeedPercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.mainWeapon.attackSpeed.percentageFactor += this._attackSpeedPercentage;
+    }
+}
+
+class IncreaseDamage extends IBuff {
+    public showName = "〈增幅〉 巨人之力\n"
+    public description = "你的武器造成更多傷害\n"
+    public id = "IncreaseDamage";
+
+    private readonly _damagePercentage: number;
+
+    constructor(damagePercentage: number = 30) {
+        super(0);
+        this._damagePercentage = damagePercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.mainWeapon.projectileAttr.damage.percentageFactor += this._damagePercentage;
+    }
+}
+
+class IncreaseBounceTimes extends IBuff {
+    public showName = "〈增幅〉 碰碰！\n"
+    public description = "你的子彈的彈射次數增加。\n"
+    public id = "IncreaseBounceTimes";
+
+    private readonly _bounceTimes: number;
+
+    constructor(bounceTimes: number = 1) {
+        super(0);
+        this._bounceTimes = bounceTimes;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.mainWeapon.projectileAttr.bounceOnEnemyTimes.addFactor += this._bounceTimes;
+    }
+}
+
+class IncreasePenetrateTimes extends IBuff {
+    public showName = "〈增幅〉 咻咻！\n";
+    public description = "你的子彈的穿透次數增加。\n";
+    public id = "IncreasePenetrateTimes";
+
+    private readonly _penetrateTimes: number;
+
+    constructor(penetrateTimes: number = 1) {
+        super(0);
+        this._penetrateTimes = penetrateTimes;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.mainWeapon.projectileAttr.penetrateTimes.addFactor += this._penetrateTimes;
+    }
+}
+
+class GainMoreExp extends IBuff {
+    public showName = "〈增幅〉 經驗增加\n";
+    public description = "獲得更多經驗。\n";
+    public id = "GainMoreExp";
+
+    private readonly _expPercentage: number;
+
+    constructor(expPercentage: number = 50) {
+        super(0);
+        this._expPercentage = expPercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.expGainPercentage.addFactor += this._expPercentage;
+    }
+}
+
+class IncreaseMagnetRange extends IBuff {
+    public showName = "〈增幅〉 磁鐵\n";
+    public description = "掉落物的拾取距離增加\n";
+    public id = "IncreaseMagnetRange";
+
+    private readonly _rangePercentage: number;
+
+    constructor(rangePercentage: number = 50) {
+        super(0);
+        this._rangePercentage = rangePercentage;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.node.getComponent(SearchDrop).searchRange *= 1.5;
+    }
+}
+
+class BuyLife extends IBuff {
+    public showName = "〈惡魔的低語〉 視錢如命\n";
+    public description = "花費一些你在場內賺到的金幣，恢復所有的生命值。\n";
+    public id = "BuyLife";
+
+    private readonly _cost: number;
+
+    constructor(cost: number = 10) {
+        super(0);
+        this._cost = cost;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.recover(1000);
+        GameManager.instance.gameSystem.emitCoinChange(
+            Math.max(-this._cost, -GameManager.instance.coinCnt.value));
+    }
+}
+
+class SupersonicCharge extends IBuff {
+    public showName = "〈惡魔的低語〉 超音速衝鋒\n";
+    public description = "你衝刺的距離加倍。增加衝刺的冷卻時間。\n";
+    public id = "SupersonicCharge";
+
+    private readonly _speedPercentage: number;
+    private readonly _coolDownAdd: number;
+
+    constructor(speedPercentage: number = 100, coolDownAdd: number = 3) {
+        super(0);
+        this._speedPercentage = speedPercentage;
+        this._coolDownAdd = coolDownAdd;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        this.showBuffTriggered(player);
+        player.dashSpeed.percentageFactor += this._speedPercentage;
+        player.dashCoolDown.addFactor += this._coolDownAdd;
+    }
+}
+
+class GlassCannon extends IBuff {
+    public showName = "〈惡魔的低語〉 玻璃大炮\n";
+    public description = "發射兩倍數量的子彈。減少你的最大生命值兩點。（該技能對最大生命值低於三點的角色沒有效果）。\n";
+    public id = "GlassCannon";
+
+    private readonly _projectilePercentage: number;
+    private readonly _hpReduce: number;
+
+    constructor(projectilePercentage: number = 100, hpReduce: number = 2) {
+        super(0);
+        this._projectilePercentage = projectilePercentage;
+        this._hpReduce = hpReduce;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+        if (player.maxHp.value <= this._hpReduce) return;
+
+        this.showBuffTriggered(player);
+        player.maxHp.addFactor -= this._hpReduce;
+        player.mainWeapon.shotPerAttack.percentageFactor += this._projectilePercentage;
+    }
+}
+
+class HeartSteel extends IBuff {
+    public showName = "〈惡魔的低語〉 心之鋼\n";
+    public description = "立即獲得一點永久最大生命。隨著擊殺的敵人越多，你的最大生命值會成長。你的跑速降低。你的武器傷害降低。\n";
+    public id = "HeartSteel";
+
+    private readonly _hpAdd: number;
+    private readonly _killCntToAddHp: number;
+    private readonly _speedPercentage: number;
+    private readonly _damagePercentage: number;
+
+    private _killCnt: number;
+
+    constructor(hpAdd: number = 1, killCntToAddHp: number = 10, speedPercentage: number = -30, damagePercentage: number = -20) {
+        super(0);
+        this._hpAdd = hpAdd;
+        this._killCntToAddHp = killCntToAddHp;
+        this._speedPercentage = speedPercentage;
+        this._damagePercentage = damagePercentage;
+        this._killCnt = 0;
+    }
+
+    public _apply(player: PlayerController) {
+        super._apply(player);
+
+        let addHp = () => {
+            this.showBuffTriggered(player);
+            player.maxHp.addFactor += this._hpAdd;
+            player.recover(this._hpAdd);
+        }
+
+        player.moveSpeed.percentageFactor -= this._speedPercentage;
+        player.mainWeapon.projectileAttr.damage.percentageFactor -= this._damagePercentage;
+        addHp();
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+            if (killByUid != player.uid) return;
+            this._killCnt++;
+            if (this._killCnt > 0 && this._killCnt % this._killCntToAddHp == 0) {
+                addHp();
+            }
+        })
+    }
+}
 
 
-let BuffsList: (typeof IBuff)[] = [GetExited, RunAway, Guinsoo, Tiamat, GA, Mash, Yasuo];
+let BuffsList: (typeof IBuff)[] = [
+    GetExited, RunAway, Guinsoo, Tiamat, GA, Mash, Yasuo, Domino, // 神諭
+    TrinityForces, IncreaseMoveSpeed, IncreaseAttackSpeed, IncreaseDamage, // 增幅
+    IncreaseBounceTimes, IncreasePenetrateTimes, GainMoreExp, IncreaseMagnetRange, // 增幅
+    BuyLife, SupersonicCharge, GlassCannon, HeartSteel, // 惡魔的低語
+];
 
 export let Buffs = {};
 export let BuffsName: {[key: string]: string} = {};
