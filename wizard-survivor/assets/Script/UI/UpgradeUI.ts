@@ -7,7 +7,7 @@
 
 import GameManager from "../Manager/GameManager";
 import {GameSystem} from "../Manager/GameSystem";
-import {Buffs, BuffsName} from "../Helper/Buff";
+import {Buffs, BuffsDescription, BuffsName, IBuff} from "../Helper/Buff";
 import {loadResource, shuffle} from "../Helper/utils";
 import PlayerFocus from "./PlayerFocus";
 import Game = cc.Game;
@@ -76,6 +76,11 @@ export default class UpgradeUI extends cc.Component {
                     this.buffCards[i].getChildByName('Label')
                         .getComponent(cc.Label)
                         .string = BuffsName[this.buffs[i]];
+                    this.buffCards[i].getChildByName('Label')
+                        .color = this.getColor(BuffsName[this.buffs[i]]);
+                    this.buffCards[i].getChildByName('Description')
+                        .getComponent(cc.Label)
+                        .string = BuffsDescription[this.buffs[i]];
                 }))
         }
 
@@ -91,6 +96,13 @@ export default class UpgradeUI extends cc.Component {
     private onConfirm({uid, node}): void {
         this.playerFocus.lock(uid);
         GameManager.instance.gameSystem.emitApplyBuff(uid, this.buffs[node.name.slice(-1)]);
+    }
+
+    private getColor(buffName: string): cc.Color {
+        if (buffName.includes('神諭')) return new cc.Color(180, 0, 255);
+        else if (buffName.includes('增幅')) return new cc.Color(0, 140, 0);
+        else if (buffName.includes('惡魔的低語')) return new cc.Color(190, 0, 0);
+        else return cc.Color.BLACK;
     }
 
     // private onInput(input: Input) {

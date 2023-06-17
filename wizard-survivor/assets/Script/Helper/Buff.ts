@@ -10,6 +10,7 @@ import WaveManager from "../Manager/WaveManager";
 import {loadResource} from "./utils";
 import SearchDrop from "./SearchDrop";
 import Layout = cc.Layout;
+import BuffIconUI from "../UI/BuffIconUI";
 
 export class IBuff {
     public showName: string;
@@ -18,16 +19,18 @@ export class IBuff {
 
     public get isAvailable(): boolean { return this._coolDownTimer === 0 || this._coolDown == 0; }
 
+    protected static _buffIconPrefab: cc.Prefab = null;
     protected _coolDown: number = 0;
     protected _coolDownTimer: number = 0;
 
     public constructor(coolDown: number) {
         this._coolDown = coolDown;
+
     }
 
     /*
-    * 建議 PlayerController.applyBuff 套用 Buff。
-    * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
+    * 建議 PlayerController.applyBuff 套用 Buff。 
+    * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。 
      */
     public _apply(player: PlayerController): void {}
 
@@ -38,6 +41,27 @@ export class IBuff {
 
     protected showBuffTriggered(player: PlayerController) {
         console.log(this.showName);
+
+        let show = () => {
+            const buffIcon =
+                GameManager.instance.poolManager.createPrefab(IBuff._buffIconPrefab)
+                   .getComponent(BuffIconUI);
+            buffIcon.init(this, true);
+            buffIcon.node.parent = player.node;
+            buffIcon.node.position = cc.v3(0, 0);
+            const animState =  buffIcon.node.getComponent(cc.Animation).play('BuffIconFadedOut');
+            animState && animState.on('finished', () => {
+                console.log('Ibuff recycle!');
+                GameManager.instance.poolManager.recycle(buffIcon.node);
+            });
+        }
+
+        if (!IBuff._buffIconPrefab) {
+            loadResource('Prefab/UI/BuffIcon', cc.Prefab)
+                .then((prefab) => IBuff._buffIconPrefab = prefab as unknown as cc.Prefab)
+                .then(show);
+        }
+        else show();
     }
 }
 
@@ -52,7 +76,7 @@ export class EffectOnce extends IBuff {
 
 export class GetExited extends EffectOnce {
     public showName = "〈神諭〉 狂躁\n"
-    public description = "當累計殺死十個敵人，大幅增加傷害和跑速，持續五秒。效果可以疊加。\n"
+    public description = "當累計殺死十個敵人， 大幅增加傷害和跑速， 持續五秒。 效果可以疊加\n"
     public id = "GetExited";
 
     private readonly _killToEnable: number;
@@ -95,7 +119,7 @@ export class GetExited extends EffectOnce {
 
 class RunAway extends EffectOnce {
     public showName = "〈神諭〉 走為上策\n"
-    public description = "當你受傷，立即重置衝刺的冷卻時間。冷卻時間一秒。"
+    public description = "當你受傷， 立即重置衝刺的冷卻時間。 冷卻時間一秒。 "
     public id = "RunAway";
 
     constructor(coolDown: number = 1) {
@@ -119,7 +143,7 @@ class RunAway extends EffectOnce {
 
 class Guinsoo extends EffectOnce {
     public showName = "〈神諭〉 鬼索的狂暴之拳\n"
-    public description = "當傷害敵人，增加攻擊速度，持續 6 秒。效果疊加最多 6 次。\n"
+    public description = "當傷害敵人， 增加攻擊速度， 持續 6 秒。 效果疊加最多 6 次\n"
     public id = "Guinsoo";
 
     private readonly _duration: number;
@@ -155,7 +179,7 @@ class Guinsoo extends EffectOnce {
 
 class Tiamat extends EffectOnce {
     public showName = "〈神諭〉 提亞瑪特\n"
-    public description = "當傷害敵人，對周圍敵人造成傷害。冷卻時間 0.5 秒。\n"
+    public description = "當傷害敵人， 對周圍敵人造成傷害。 冷卻時間 0.5 秒\n"
     public id = "Tiamat";
 
     private readonly _prefabPath = 'Prefab/Projectile/Tiamat'
@@ -200,7 +224,7 @@ class Tiamat extends EffectOnce {
 
 class GA extends EffectOnce {
     public showName = "〈神諭〉 守護天使\n"
-    public description = "當你受到致命傷害，立即回復所有生命值，並且無敵一秒。冷卻時間 100 秒。\n"
+    public description = "當你受到致命傷害， 立即回復所有生命值， 並且無敵一秒。 冷卻時間 100 秒\n"
     public id = "GA";
 
     private _invincibleTime: number;
@@ -228,7 +252,7 @@ class GA extends EffectOnce {
 
 class Mash extends EffectOnce {
     public showName = "〈神諭〉 瑪修\n"
-    public description = "當玩家受傷，召喚在周圍旋轉的護盾，持續 5 秒。冷卻時間 10 秒。\n"
+    public description = "當玩家受傷， 召喚在周圍旋轉的護盾， 持續 5 秒。 冷卻時間 10 秒\n"
     public id = "Mash";
 
     private readonly _duration: number;
@@ -278,7 +302,7 @@ class Mash extends EffectOnce {
 
 class Yasuo extends EffectOnce {
     public showName = "〈神諭〉 快樂風男\n"
-    public description = "衝刺時用風刃傷害周遭。若在衝刺後立即殺死敵人，立即重置衝刺的冷卻時間。\n"
+    public description = "衝刺時用風刃傷害周遭。 若在衝刺後立即殺死敵人， 立即重置衝刺的冷卻時間\n"
     public id = "Yasuo";
 
     private readonly _duration: number;
@@ -335,7 +359,7 @@ class Yasuo extends EffectOnce {
 
 class Domino extends EffectOnce {
     public showName = "〈神諭〉 多米諾效應\n"
-    public description = "當殺死敵人，產生爆炸。可以連鎖反應。\n"
+    public description = "當殺死敵人， 產生爆炸。 可以連鎖反應\n"
     public id = "Domino";
 
     private readonly _duration: number;
@@ -381,7 +405,7 @@ class Domino extends EffectOnce {
 
 class TrinityForces extends IBuff {
     public showName = "〈增幅〉 三相之力\n"
-    public description = "獲得攻擊力、移動速度、攻擊速度。\n"
+    public description = "獲得攻擊力、移動速度、攻擊速度\n"
     public id = "TrinityForces";
 
     private readonly _damagePercentage: number;
@@ -406,7 +430,7 @@ class TrinityForces extends IBuff {
 
 class IncreaseMoveSpeed extends IBuff {
     public showName = "〈增幅〉 敏捷\n"
-    public description = "獲得移動速度。\n"
+    public description = "獲得移動速度\n"
     public id = "IncreaseMoveSpeed";
 
     private readonly _speedPercentage: number;
@@ -425,7 +449,7 @@ class IncreaseMoveSpeed extends IBuff {
 
 class IncreaseAttackSpeed extends IBuff {
     public showName = "〈增幅〉 精準射擊\n"
-    public description = "獲得攻擊速度。\n"
+    public description = "獲得攻擊速度\n"
     public id = "IncreaseAttackSpeed";
 
     private readonly _attackSpeedPercentage: number;
@@ -463,7 +487,7 @@ class IncreaseDamage extends IBuff {
 
 class IncreaseBounceTimes extends IBuff {
     public showName = "〈增幅〉 碰碰！\n"
-    public description = "你的子彈的彈射次數增加。\n"
+    public description = "你的子彈的彈射次數增加\n"
     public id = "IncreaseBounceTimes";
 
     private readonly _bounceTimes: number;
@@ -482,7 +506,7 @@ class IncreaseBounceTimes extends IBuff {
 
 class IncreasePenetrateTimes extends IBuff {
     public showName = "〈增幅〉 咻咻！\n";
-    public description = "你的子彈的穿透次數增加。\n";
+    public description = "你的子彈的穿透次數增加\n";
     public id = "IncreasePenetrateTimes";
 
     private readonly _penetrateTimes: number;
@@ -501,7 +525,7 @@ class IncreasePenetrateTimes extends IBuff {
 
 class GainMoreExp extends IBuff {
     public showName = "〈增幅〉 經驗增加\n";
-    public description = "獲得更多經驗。\n";
+    public description = "獲得更多經驗\n";
     public id = "GainMoreExp";
 
     private readonly _expPercentage: number;
@@ -539,7 +563,7 @@ class IncreaseMagnetRange extends IBuff {
 
 class BuyLife extends IBuff {
     public showName = "〈惡魔的低語〉 視錢如命\n";
-    public description = "花費一些你在場內賺到的金幣，恢復所有的生命值。\n";
+    public description = "花費一些你在場內賺到的金幣， 恢復所有的生命值\n";
     public id = "BuyLife";
 
     private readonly _cost: number;
@@ -560,7 +584,7 @@ class BuyLife extends IBuff {
 
 class SupersonicCharge extends IBuff {
     public showName = "〈惡魔的低語〉 超音速衝鋒\n";
-    public description = "你衝刺的距離加倍。增加衝刺的冷卻時間。\n";
+    public description = "你衝刺的距離加倍。 增加衝刺的冷卻時間\n";
     public id = "SupersonicCharge";
 
     private readonly _speedPercentage: number;
@@ -582,7 +606,7 @@ class SupersonicCharge extends IBuff {
 
 class GlassCannon extends IBuff {
     public showName = "〈惡魔的低語〉 玻璃大炮\n";
-    public description = "發射兩倍數量的子彈。減少你的最大生命值兩點。（該技能對最大生命值低於三點的角色沒有效果）。\n";
+    public description = "發射兩倍數量的子彈。 減少你的最大生命值兩點。 （該技能對最大生命值低於三點的角色沒有效果）\n";
     public id = "GlassCannon";
 
     private readonly _projectilePercentage: number;
@@ -606,7 +630,7 @@ class GlassCannon extends IBuff {
 
 class HeartSteel extends IBuff {
     public showName = "〈惡魔的低語〉 心之鋼\n";
-    public description = "立即獲得一點永久最大生命。隨著擊殺的敵人越多，你的最大生命值會成長。你的跑速降低。你的武器傷害降低。\n";
+    public description = "立即獲得一點永久最大生命。 隨著擊殺的敵人越多， 你的最大生命值會成長。 你的跑速降低。 你的武器傷害降低\n";
     public id = "HeartSteel";
 
     private readonly _hpAdd: number;
@@ -658,9 +682,11 @@ let BuffsList: (typeof IBuff)[] = [
 
 export let Buffs = {};
 export let BuffsName: {[key: string]: string} = {};
+export let BuffsDescription: {[key: string]: string} = {};
 
 for (let i = 0; i < BuffsList.length; i++) {
     const inst = new BuffsList[i](0);
     Buffs[inst.id] = BuffsList[i];
     BuffsName[inst.id] = inst.showName;
+    BuffsDescription[inst.id] = inst.description;
 }
