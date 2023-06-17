@@ -79,7 +79,7 @@ export default class MapManager extends cc.Component {
 
         // random generate fountain
         for (let i = 0; i < 3; i++) {
-            let rand = Math.random();
+            let rand = GameManager.instance.rand.random();
             if (rand < 0.01) {
                 let fountain = cc.instantiate(this.decorationPrefabs[i]);
                 fountain.parent = node;

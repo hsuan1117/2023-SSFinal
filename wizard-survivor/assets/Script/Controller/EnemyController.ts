@@ -79,7 +79,7 @@ export default class EnemyController extends cc.Component {
     // PUBLIC METHODS:
     public init(factor) {
          this.hp.reset();
-         this.hp.percentageFactor = factor;
+         this.hp.percentageFactor = factor * 100;
          this.skillCoolDownTime = 0;
          this.animCtrl.initState();
          this.isBossFight = false;

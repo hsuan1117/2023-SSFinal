@@ -62,7 +62,7 @@ export default class WaveManager extends cc.Component {
 
     private countDowns: {[enemyType: string]: number} = {};
 
-    private growthRate: number = 1.1;
+    private growthRate: number = 1.12;
 
     private currentWaveNum: number = 0;
 
