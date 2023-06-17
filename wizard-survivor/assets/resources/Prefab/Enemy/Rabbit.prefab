@@ -253,7 +253,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 50
+    "_defaultValue": 120
   },
   {
     "__type__": "AttrNum",
@@ -261,15 +261,15 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 200
+    "_defaultValue": 800
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 0.5
   },
   {
     "__type__": "cc.RigidBody",
@@ -312,13 +312,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 1.5,
-      "y": -14.9
+      "x": 3,
+      "y": -15.2
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 33.7,
-      "height": 55.2
+      "height": 48.5
     },
     "_id": ""
   },

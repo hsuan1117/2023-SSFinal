@@ -1,26 +1,74 @@
 {
   "1": {
-    "BumpingPig": {
-      "spawnInterval": 10,
-      "spawnNum": 10
-    },
-    "Rabbit": {
-        "spawnInterval": 10,
-        "spawnNum": 5
-    },
     "Goblin": {
-        "spawnInterval": 10,
-        "spawnNum": 5
-    },
-    "EnemySkeleton": {
-        "spawnInterval": 10,
-        "spawnNum": 10
+      "spawnInterval": 5,
+      "spawnNum": 6
     }
   },
   "2": {
+    "Goblin": {
+      "spawnInterval": 5,
+      "spawnNum": 7
+    },
+    "BumpingPig": {
+      "spawnInterval": 5,
+      "spawnNum": 2
+    }
+  },
+  "3": {
+    "Goblin": {
+      "spawnInterval": 5,
+      "spawnNum": 5
+    },
+    "BumpingPig": {
+      "spawnInterval": 5,
+      "spawnNum": 2
+    },
+    "EnemySkeleton": {
+      "spawnInterval": 5,
+      "spawnNum": 2
+    }
+  },
+  "4": {
+    "Goblin": {
+      "spawnInterval": 5,
+      "spawnNum": 7
+    },
+    "BumpingPig": {
+      "spawnInterval": 5,
+      "spawnNum": 3
+    },
+    "EnemySkeleton": {
+      "spawnInterval": 5,
+      "spawnNum": 3
+    },
+    "Rabbit": {
+      "spawnInterval": 5,
+      "spawnNum": 1
+    }
+  },
+  "5": {
     "GraveGuard": {
       "spawnInterval": 10000,
       "spawnNum": 1
+    }
+  },
+  "6": {
+    "BumpingPig": {
+      "spawnInterval": 5,
+      "spawnNum": 6
+    },
+    "Rabbit": {
+      "spawnInterval": 5,
+      "spawnNum": 2
+    },
+    "Goblin": {
+      "spawnInterval": 5,
+      "spawnNum": 8
+    },
+    "EnemySkeleton": {
+      "spawnInterval": 5,
+      "spawnNum": 4
     }
   }
 }

@@ -181,6 +181,7 @@ export default class GameManager extends cc.Component {
         this.exp.onChangeCallback.push(()=> {
             while (this.exp.value >= this.upgradeExp.value) {
                 this._audioManager.playEffect('level_up');
+                this._waveManager.setWave(this.level.value + 1);
                 this.exp.addFactor -= this.upgradeExp.value;
                 this.level.addFactor += 1;
                 this.upgradeExp.percentageFactor += this.UPGRADE_EXP_GROWTH;

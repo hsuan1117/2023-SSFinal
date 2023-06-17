@@ -18,44 +18,20 @@ export default class BossController extends EnemyController {
     private startFight: boolean = false;
 
     onLoad () {
-        this.rb = this.node.getComponent(cc.RigidBody);
-        this.rb.enabledContactListener = true;
-        this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
-        this.node.getComponent(cc.RigidBody).linearDamping = this.LINEAR_DAMP;
-        this.addComponent(DamagePlayerOnCollide).init(this.collideDamage.value, this.collideDamageCoolDown.value);
-        this.animCtrl = this.node.getComponent(EnemyAnimController);
-        this.animCtrl.initState();
-        this.sprite = this.node.getChildByName("Sprite").getComponent(cc.Sprite);
-        this.skillCoolDownTime = this.skillCoolDown.value;
+        super.onLoad();
     }
 
     start () {
         this.searchable = false;
-        GameManager.instance.waveManager.setWave(0);
     }
 
     update (dt) {
-        if (!this.startFight && this.node.position.sub(this.findClosestPlayer()).mag() < 300) {
+        if (!this.startFight && this.node.position.sub(this.findClosestPlayer()).mag() < 350) {
             this.startBossFight();
         }
         if (this.startFight) this.attack();
         this.followPlayer();
         this.playAnim();
-    }
-
-    public hurt(damage: number, byUid: string) {
-        GameManager.instance.waveManager.event.emit(
-            WaveManager.ON_ENEMY_HIT,
-            {
-                enemyPosition: this.node.getPosition(),
-                killByUid: byUid
-            }
-        )
-        this.hp.addFactor -= damage;
-        if (this.hp.value <= 0) {
-            this.dead(byUid);
-        }
-        // GameManager.instance.audioManager.playEffect("miner_s3_hurt");
     }
 
     protected startBossFight() {
@@ -100,6 +76,7 @@ export default class BossController extends EnemyController {
         this.scheduleOnce(() => {
             this.selfDestroy();
             GameManager.instance.particleManager.createParticle("Open Chest", this.node.position, 0.2, 3);
+            GameManager.instance.waveManager.setWave(GameManager.instance.waveManager.currentWaveNumber + 1);
         }, 1);
 
         GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {

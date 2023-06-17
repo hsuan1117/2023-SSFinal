@@ -53,7 +53,7 @@ export default class WaveManager extends cc.Component {
 
     private enemyPrefabs: cc.Prefab[] = [];
 
-    private spawnRadius: number = 600; // 剛好在螢幕外
+    private spawnRadius: number = 530; // 剛好在螢幕外
 
     private currentWave: any = null;
 
@@ -61,19 +61,26 @@ export default class WaveManager extends cc.Component {
 
     private countDowns: number[] = [];
 
-    // LIFE-CYCLE CALLBACKS:
+    private growthRate: number = 1.1;
 
-    // onLoad () {}
+    private currentWaveNum: number = 0;
 
-    setWave(wave: number){
+    public setWave(wave: number){
+        if (wave > this.waveData.json.length) return;
+        cc.log("set wave: " + wave);
         this.currentWave = this.waveData.json[wave];
+        this.currentWaveNum = wave;
     }
 
-    clearWave(){
+    get currentWaveNumber(){
+        return this.currentWaveNum;
+    }
+
+    public clearWave(){
         this.currentWave = 0;
     }
 
-    public init () {
+    public init() {
         // load enemy prefab
         for (const enemyType of this.enemyTypes) {
             cc.resources.load("Prefab/Enemy/" + enemyType, cc.Prefab, (err, prefab: cc.Prefab) => {
@@ -93,14 +100,18 @@ export default class WaveManager extends cc.Component {
                     this.enemyDropItems[type] = prefab;
                 });
         }
-
     }
+
+    // LIFE-CYCLE CALLBACKS:
 
     onLoad(){
         this.event = new cc.EventTarget();
         this.event.on(WaveManager.ON_ENEMY_DIE, this.onEnemyDie, this);
     }
 
+    start() {
+
+    }
 
     update (dt) {
         this.spawnCenter = ignoreZ(cc.Camera.main.node.position).sub(cc.v2(winSize.width / 2, cc.winSize.height / 2));
@@ -136,12 +147,10 @@ export default class WaveManager extends cc.Component {
         enemy.active = true;
         enemy.parent = GameManager.instance.playerEnemyLayer;
 
-        if (enemy.getComponent("BossController")) {
-            enemy.getComponent("BossController").init();
+        if (enemy.getComponent("BossController"))
             enemy.position = cc.v3(this.spawnCenter.x, this.spawnCenter.y, 0).sub(cc.v3(winSize.width / 2 + 50, 0, 0));
-        }
-        else
-            enemy.getComponent("EnemyController").init();
+
+        enemy.getComponent("EnemyController").init(Math.pow(this.growthRate, this.currentWaveNum - 1));
     }
 
     private onEnemyDie({enemyPosition, killByUid}: {enemyPosition: cc.Vec3, killByUid: string}){

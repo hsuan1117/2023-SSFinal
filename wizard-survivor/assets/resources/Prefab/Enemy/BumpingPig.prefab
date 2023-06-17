@@ -261,13 +261,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.05,
-      "y": -0.88
+      "x": -0.52,
+      "y": -2.06
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 22.1,
-      "height": 19.38
+      "width": 19.52,
+      "height": 16.07
     },
     "_id": ""
   },
@@ -305,7 +305,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 8
+    "_defaultValue": 10
   },
   {
     "__type__": "AttrNum",

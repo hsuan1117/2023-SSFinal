@@ -304,7 +304,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 20
+    "_defaultValue": 50
   },
   {
     "__type__": "AttrNum",
@@ -312,15 +312,15 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 2000
+    "_defaultValue": 20000
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 1
   },
   {
     "__type__": "48597dRxOJNkqge1dQfGu3a",

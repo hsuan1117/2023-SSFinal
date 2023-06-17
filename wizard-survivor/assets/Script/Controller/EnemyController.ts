@@ -31,8 +31,8 @@ export default class EnemyController extends cc.Component {
     @property(AttrNum)
     public collideDamageCoolDown: AttrNum = new AttrNum();
 
-    public normalMaterial: cc.Material = null;
-    public hurtMaterial: cc.Material = null;
+    protected normalMaterial: cc.Material = null;
+    protected hurtMaterial: cc.Material = null;
     protected sprite: cc.Sprite = null;
 
     protected skillCoolDownTime: number = 0;
@@ -77,10 +77,13 @@ export default class EnemyController extends cc.Component {
 
 
     // PUBLIC METHODS:
-    public init() {
+    public init(factor) {
          this.hp.reset();
+         this.hp.addFactor = factor;
          this.skillCoolDownTime = 0;
          this.animCtrl.initState();
+         this.isBossFight = false;
+         this.searchable = true;
     }
 
     private flashEnd() {
@@ -131,6 +134,10 @@ export default class EnemyController extends cc.Component {
             this.rb.linearVelocity = cc.Vec2.ZERO;
             return;
         }
+        if (target.sub(this.node.position).mag() > 1000) {
+            this.selfDestroy();
+            return;
+        }
         let direction = target.sub(this.node.position);
         let distance = direction.mag();
         if (distance > 10) {
@@ -149,7 +156,7 @@ export default class EnemyController extends cc.Component {
          });
 
          GameManager.instance.poolManager.recycle(this.node);
-         GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0.001, 1);
+         GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 0.8);
     }
 
     protected selfDestroy() {

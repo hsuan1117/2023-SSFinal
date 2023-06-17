@@ -254,19 +254,19 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 10
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 400
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 1
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 0
+    "_defaultValue": 0.5
   },
   {
     "__type__": "cc.RigidBody",

@@ -106,9 +106,9 @@
     "lifeVar": 0.05,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 253,
+      "g": 189,
+      "b": 52,
       "a": 255
     },
     "_startColorVar": {
@@ -120,9 +120,9 @@
     },
     "_endColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 134,
+      "g": 102,
+      "b": 33,
       "a": 255
     },
     "_endColorVar": {
