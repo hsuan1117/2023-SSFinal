@@ -51,7 +51,6 @@ export class IBuff {
             buffIcon.node.position = cc.v3(0, 0);
             const animState =  buffIcon.node.getComponent(cc.Animation).play('BuffIconFadedOut');
             animState && animState.on('finished', () => {
-                console.log('Ibuff recycle!');
                 GameManager.instance.poolManager.recycle(buffIcon.node);
             });
         }
@@ -294,8 +293,6 @@ class Mash extends EffectOnce {
             );
             proj.node.parent = GameManager.instance.bulletLayer;
             proj.shootToTarget(player.node);
-            // proj.shootToDirection(cc.Vec2.ZERO);
-            console.log('Mash: proj', proj.node, proj);
         })
     }
 }

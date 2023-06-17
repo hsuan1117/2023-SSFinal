@@ -309,6 +309,12 @@ export default class GameManager extends cc.Component {
 
     private async generateGameScene() {
         this.buildLayers();
+
+        this.exp.reset();
+        this.exp.defaultValue = 0;
+        this.coinCnt.reset();
+        this.coinCnt.defaultValue = 0;
+
         await this.showLoading(1000);
 
         let fixedUI, enemy, drop, upgradeUI, gameEndUI: cc.Node;

@@ -14,21 +14,28 @@ export default class LobbyUI extends cc.Component {
     private playerFocus: PlayerFocus = null;
     private chooseResult: { [uid: string]: string } = {};
     private uids: string[] = [];
+    private _coinLabel: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
         this.event = new cc.EventTarget();
         this.playerFocus = this.node.getComponent(PlayerFocus);
+        this._coinLabel =
+            this.node.getChildByName('Coin')
+            .getChildByName('Label')
+            .getComponent(cc.Label);
     }
 
 
     // PUBLIC METHODS:
-    public init(uids: string[]) {
+    public async init(uids: string[]) {
         this.uids = [...uids];
         for (let chara of this.node.children) {
             if (chara.getComponent(PlayerController))
                 this.previewCharas.push(chara);
         }
+        let record = await GameManager.instance.gameSystem.getGameRecord();
+        this._coinLabel.string = record.coin.toString();
     }
 
     public chooseCharaFor(): Promise<void> {

@@ -226,6 +226,7 @@
     },
     "_enabled": true,
     "dropType": "coin",
+    "dropValue": 1,
     "_id": ""
   },
   {
