@@ -81,10 +81,13 @@ export default class InputManager extends cc.Component {
      */
     public static readonly ON_LOCAL_INPUT: string = "ON_LOCAL_INPUT";
 
+    public set ignoreAllInput(value: boolean) { this._ignoreAllInput = value; }
+
     private conversionOfUid: Map<string, { [keyCode: number]: string }> = new Map();
     private _currentLStick: Map<string, cc.Vec2> = new Map();
     private _isPressing: Map<string, Map<string, boolean>> = new Map();
     private gameSystem: GameSystem;
+    private _ignoreAllInput: boolean = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -147,6 +150,7 @@ export default class InputManager extends cc.Component {
 
     // HELPERS:
     private emitInputToGameSystem(input: Input) {
+        if (this._ignoreAllInput) return;
         if (this.gameSystem) this.gameSystem.emitInput(input);
         else {
             // If gameSystem is not set, by pass gameSystem and emit input directly
@@ -155,6 +159,7 @@ export default class InputManager extends cc.Component {
     }
 
     private broadcastInputToLocal({input}) {
+        if (this._ignoreAllInput) return;
         if (this.conversionOfUid.has(input.uid)) {
             this.event.emit(InputManager.ON_LOCAL_INPUT, input);
         }

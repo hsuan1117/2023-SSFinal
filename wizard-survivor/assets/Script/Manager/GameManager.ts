@@ -457,6 +457,7 @@ export default class GameManager extends cc.Component {
 
     private showLoading(timeOutMilliseconds: number) {
         return new Promise<void>((resolve, reject) => {
+            this.inputManager.ignoreAllInput = true;
             const loadingUI = cc.instantiate(this.loadingUIPrefab);
             loadingUI.parent = this.node;
             setTimeout(() => {
@@ -466,6 +467,7 @@ export default class GameManager extends cc.Component {
     }
 
     private hideLoading() {
+        this.inputManager.ignoreAllInput = false;
         this.node.removeChild(this.node.getChildByName('LoadingUI'));
     }
 }
