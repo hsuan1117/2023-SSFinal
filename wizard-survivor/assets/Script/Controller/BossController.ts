@@ -1,10 +1,12 @@
 import GameManager from "../Manager/GameManager";
 import EnemyAnimController from "./Anim/EnemyAnimController";
-import {AttrNum} from "../Helper/Attributes";
+import {AttrNum, ProjectileAttr} from "../Helper/Attributes";
 import {ignoreZ, loadResource} from "../Helper/utils";
 import WaveManager from "../Manager/WaveManager";
 import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
 import EnemyController from "./EnemyController";
+import ProjectileController from "./ProjectileController";
+import EnemyProjectileController from "./EnemyProjectileController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,8 +19,13 @@ export default class BossController extends EnemyController {
     public isBoss: boolean = true;
     private startFight: boolean = false;
 
+    private surroundBulletPrefab: cc.Prefab = null;
+
     onLoad () {
         super.onLoad();
+        loadResource("Prefab/Projectile/SurroundBullet", cc.Prefab).then((prefab: cc.Prefab) => {
+            this.surroundBulletPrefab = prefab;
+        });
     }
 
     start () {
@@ -29,8 +36,8 @@ export default class BossController extends EnemyController {
         if (!this.startFight && this.node.position.sub(this.findClosestPlayer()).mag() < 350) {
             this.startBossFight();
         }
-        if (this.startFight) this.attack();
-        this.followPlayer();
+        if (!this.startFight) return;
+        if (!this.attack()) this.followPlayer();
         this.playAnim();
     }
 
@@ -59,15 +66,36 @@ export default class BossController extends EnemyController {
         if (this.skillCoolDownTime > 0) {
             this.skillCoolDownTime -= cc.director.getDeltaTime();
             this.skillTriggeredTime = 0;
-            return;
+            return 0;
         }
+        this.rb.linearVelocity = cc.Vec2.ZERO;
         if (this.skillTriggeredTime > this.skillLastTime) {
             this.animCtrl.state = {...this.animCtrl.state, isSkill: false};
             this.skillCoolDownTime = this.skillCoolDown.value;
+            this.surroundBullet();
         } else {
             this.animCtrl.state = {...this.animCtrl.state, isSkill: true};
             this.skillTriggeredTime += cc.director.getDeltaTime();
         }
+        return 1;
+    }
+
+    protected surroundBullet() {
+        let bullet = GameManager.instance.poolManager.createPrefab(this.surroundBulletPrefab);
+        bullet.parent = GameManager.instance.bulletLayer;
+        bullet.position = this.node.position; // need to be adjusted
+        let controller = bullet.getComponent(EnemyProjectileController);
+
+        controller.init(
+            new ProjectileAttr(
+                0, 1,
+                3, 0,
+                0, true, 1),
+            null,
+            null,
+            null,
+        );
+        controller.shootToTarget(this.node);
     }
 
     protected dead(killByUid: string) {

@@ -61,10 +61,12 @@ export default class EnemyController extends cc.Component {
         if (!this.animCtrl)
             return;
 
-         if (this.rb.linearVelocity.x >= 0)
+         if (this.rb.linearVelocity.x > 0)
              this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: 1};
-         else
+         else if (this.rb.linearVelocity.x < 0)
              this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: -1};
+         else
+             this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: 0};
 
          this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
     }

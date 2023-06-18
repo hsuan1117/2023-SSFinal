@@ -19,7 +19,6 @@ export default class BumpingMonster extends EnemyController {
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.group == 'Enemy' && this.bumpingTime != -1) {
             contact.disabled = true;
-            cc.log("bumping monster bumping into another monster");
             return;
         }
     }

@@ -81,7 +81,6 @@ export default class MapManager extends cc.Component {
 
 
         if (Object.keys(this.visPos).length == 12) {
-            cc.log("generate fountain ", pos);
             let fountain = cc.instantiate(this.decorationPrefabs[1]);
             fountain.parent = node;
             let expStone = cc.instantiate(this.bigExpStonePrefab);
@@ -120,7 +119,6 @@ export default class MapManager extends cc.Component {
                 if (key in this.visPos) continue;
 
                 this.visPos[key] = true;
-                cc.log("key", key);
                 let pos = cc.v2((tx + i) * this.mapWidth, (ty + j) * this.mapHeight);
                 this.generateBlock(pos);
             }
