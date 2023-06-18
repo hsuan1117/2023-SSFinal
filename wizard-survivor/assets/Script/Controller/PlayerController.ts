@@ -9,6 +9,7 @@ import Game = cc.Game;
 import {GameSystem} from "../Manager/GameSystem";
 import {Buffs, IBuff} from "../Helper/Buff";
 import PlayerAnimController from "./Anim/PlayerAnimController";
+import * as buffer from "buffer";
 
 const {ccclass, property} = cc._decorator;
 
@@ -150,6 +151,12 @@ export default class PlayerController extends cc.Component{
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         const drop = other.node.getComponent(DropController);
         drop && drop.collectBy(this.node);
+    }
+
+    onDisable() {
+        for (let buff of this.appliedBuff){
+            buff.remove(this);
+        }
     }
 
 

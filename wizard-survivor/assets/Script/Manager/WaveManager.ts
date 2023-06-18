@@ -34,7 +34,7 @@ export default class WaveManager extends cc.Component {
 
     /* 事件：當敵人受擊時觸發
     *
-    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string}) => void */
+    * callbackFn: ({enemyPosition: cc.Vec3, killByUid: string, damage: number}) => void */
     public static readonly ON_ENEMY_HIT: string = "onEnemyHit";
 
     /* 事件：當boss生成

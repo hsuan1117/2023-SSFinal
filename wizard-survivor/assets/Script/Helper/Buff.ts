@@ -30,11 +30,13 @@ export class IBuff {
         this._coolDown = coolDown;
     }
 
-    /*
-    * 建議 PlayerController.applyBuff 套用 Buff。 
-    * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。 
-     */
-    public _apply(player: PlayerController): void { console.warn("IBuff._apply() should be override by child class");}
+    /* 建議 PlayerController.applyBuff 套用 Buff。
+    *
+    * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
+    *
+    * 若套用成功，該方法會返回一個函數，呼叫該函數可以移除該 Buff。否則返回 null。 */
+    public _apply(player: PlayerController) { console.warn("IBuff._apply() should be override by child class");}
+    public remove(player: PlayerController){}
 
     public intoCoolDown(player: PlayerController) {
         this._coolDownTimer = 1;
@@ -104,8 +106,9 @@ export class GetExited extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        if (EffectOnce.playerHasApplied(player, this)) return;
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+        if (EffectOnce.playerHasApplied(player, this)) return null;
+
+        const onEnemyDie = ({enemyPosition, killByUid}) => {
             if (killByUid != player.uid) return;
 
             this.killCount++;
@@ -122,7 +125,11 @@ export class GetExited extends EffectOnce {
                     player.moveSpeed.addFactor -= this._speedFactor;
                 }, this._duration)
             }
-        })
+        };
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, onEnemyDie);
+
+        return () => GameManager.instance.waveManager.event.off(WaveManager.ON_ENEMY_DIE, onEnemyDie);
     }
 }
 
@@ -136,9 +143,9 @@ class RunAway extends EffectOnce {
     }
 
     public _apply(player: PlayerController) {
-        if (EffectOnce.playerHasApplied(player, this)) return;
+        if (EffectOnce.playerHasApplied(player, this)) return null;
 
-        player.event.on(PlayerController.PLAYER_HURT, () => {
+        const onPlayerHurt = () => {
 
             if (this._coolDownTimer > 0) return;
 
@@ -146,7 +153,11 @@ class RunAway extends EffectOnce {
             this.showBuffTriggered(player);
 
             player.dashCountDown = 0;
-        })
+        };
+
+        player.event.on(PlayerController.PLAYER_HURT, onPlayerHurt);
+
+        return () => player.event.off(PlayerController.PLAYER_HURT, onPlayerHurt);
     }
 }
 
@@ -170,7 +181,7 @@ class Guinsoo extends EffectOnce {
     public _apply(player: PlayerController) {
         if (EffectOnce.playerHasApplied(player, this)) return;
 
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, ({enemyPosition, killByUid}) => {
+        const onEnemyHit = ({enemyPosition, killByUid}) => {
             if (this.curStack >= this._maxStack) return;
             if (killByUid != player.uid) return;
 
@@ -182,7 +193,11 @@ class Guinsoo extends EffectOnce {
                 this.curStack--;
                 player.mainWeapon.attackSpeed.percentageFactor -= this._attackSpeedFactor;
             }, this._duration)
-        })
+        }
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, onEnemyHit, this);
+
+        return () => GameManager.instance.waveManager.event.off(WaveManager.ON_ENEMY_HIT, onEnemyHit, this);
     }
 }
 
