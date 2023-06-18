@@ -97,7 +97,8 @@ export default class EnemyController extends cc.Component {
             WaveManager.ON_ENEMY_HIT,
             {
                 enemyPosition: this.node.getPosition(),
-                killByUid: byUid
+                killByUid: byUid,
+                damage: damage
             }
         )
         this.hp.addFactor -= damage;
