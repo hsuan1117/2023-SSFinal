@@ -1,12 +1,13 @@
 import GameManager from "../Manager/GameManager";
 import EnemyAnimController from "./Anim/EnemyAnimController";
 import {AttrNum, ProjectileAttr} from "../Helper/Attributes";
-import {ignoreZ, loadResource} from "../Helper/utils";
+import {ignoreZ, loadResource, padZ} from "../Helper/utils";
 import WaveManager from "../Manager/WaveManager";
 import DamagePlayerOnCollide from "./DamagePlayerOnCollide";
 import EnemyController from "./EnemyController";
 import ProjectileController from "./ProjectileController";
 import EnemyProjectileController from "./EnemyProjectileController";
+import random = cc.random;
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,11 +21,17 @@ export default class BossController extends EnemyController {
     private startFight: boolean = false;
 
     private surroundBulletPrefab: cc.Prefab = null;
+    private missilePrefab: cc.Prefab = null;
+    private skillCnt: number = 0;
 
     onLoad () {
         super.onLoad();
         loadResource("Prefab/Projectile/SurroundBullet", cc.Prefab).then((prefab: cc.Prefab) => {
             this.surroundBulletPrefab = prefab;
+        });
+        loadResource("Prefab/Projectile/Missile", cc.Prefab).then((prefab: cc.Prefab) => {
+            this.missilePrefab = prefab;
+            cc.log("Missile loaded", this.missilePrefab);
         });
     }
 
@@ -72,7 +79,10 @@ export default class BossController extends EnemyController {
         if (this.skillTriggeredTime > this.skillLastTime) {
             this.animCtrl.state = {...this.animCtrl.state, isSkill: false};
             this.skillCoolDownTime = this.skillCoolDown.value;
-            this.surroundBullet();
+            if (this.skillCnt++ % 2 == 0)
+                this.surroundBullet();
+            else
+                this.missisle(GameManager.instance.rand.random());
         } else {
             this.animCtrl.state = {...this.animCtrl.state, isSkill: true};
             this.skillTriggeredTime += cc.director.getDeltaTime();
@@ -96,6 +106,36 @@ export default class BossController extends EnemyController {
             null,
         );
         controller.shootToTarget(this.node);
+    }
+
+    private rotateVec(vec: cc.Vec2, angle: number) {
+        // rotate a vector by angle(rad)
+        // use trigonometric function
+        let x = vec.x * Math.cos(angle) - vec.y * Math.sin(angle);
+        let y = vec.x * Math.sin(angle) + vec.y * Math.cos(angle);
+        return cc.v2(x, y);
+    }
+
+    protected missisle(bias: number) {
+        // create 8 missiles in a circle
+        for (let i = 0; i < 8; i++) {
+            let bullet = GameManager.instance.poolManager.createPrefab(this.missilePrefab);
+            bullet.parent = GameManager.instance.bulletLayer;
+            bullet.position = this.node.position.add(padZ(this.rotateVec(cc.v2(0, 80), i * Math.PI / 4 + bias * 3.14)));
+            let controller = bullet.getComponent(EnemyProjectileController);
+
+            controller.init(
+                new ProjectileAttr(
+                    300, 1,
+                    10, 10,
+                    0, false),
+                null,
+                0,
+                null,
+            );
+            //controller.aimToTarget(this.findClosestPlayer().node);
+            controller.shootToDirection(this.rotateVec(cc.v2(0, 80), i * Math.PI / 4 + bias * 3.14).normalize());
+        }
     }
 
     protected dead(killByUid: string) {

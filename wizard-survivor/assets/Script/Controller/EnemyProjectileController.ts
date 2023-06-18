@@ -31,6 +31,9 @@ export default class EnemyProjectileController extends cc.Component {
     private existCountDown: number = 0;
     private lockTarget: cc.Node = null;
     private _animation: cc.Animation = null;
+    private aimTarget: cc.Node = null;
+    private aimTime: number = 0;
+    private aimTimeCnt: number = 0;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -45,7 +48,10 @@ export default class EnemyProjectileController extends cc.Component {
         const player = other.getComponent(PlayerController);
         if (player) {
             player.hurt(1);
-
+            GameManager.instance.particleManager.createParticle("White Explosion", this.node.position, 0.1, 0.5);
+            this.deleteProjectile();
+        }
+        if (other.node.group == "Camera") {
             if (!this.projectileAttr.notFly){
                 if (this.bounceCnt < this.projectileAttr.bounceOnEnemyTimes.value) {
                     this.bounceCnt++;
@@ -56,14 +62,6 @@ export default class EnemyProjectileController extends cc.Component {
                             .normalize();
 
                     this.rb.linearVelocity = newDir.mul(this.projectileAttr.flySpeed.value);
-                }
-                else if (this.penetrateCnt < this.projectileAttr.penetrateTimes.value) {
-                    this.penetrateCnt++;
-                }
-                else {
-                    // Testing
-                    GameManager.instance.particleManager.createParticle("White Explosion", this.node.position, 0.1, 0.5);
-                    this.deleteProjectile();
                 }
             }
         }
@@ -88,6 +86,11 @@ export default class EnemyProjectileController extends cc.Component {
         this.bounceDir = eightDirections[bounceDirIdx];
         this.penetrateCnt = 0;
         this._shootByUid = shootByUid;
+    }
+
+    public aimToTarget(target: cc.Node, time: number = 0.2){
+        this.aimTarget = target;
+        this.aimTime = time;
     }
 
     public shootToDirection(direction: cc.Vec2) {
