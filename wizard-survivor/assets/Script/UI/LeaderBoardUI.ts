@@ -33,7 +33,7 @@ export default class LeaderBoardUI extends cc.Component {
                 `[${userData.email.split("@")[0].padEnd(8, " ")}] 最高等級 ${userData.level} | ${new Date(userData.updated_at).toLocaleDateString()}`
             )).join('\n');
         } else {
-            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = JSON.parse(localStorage.getItem('gameHistory')).sort(x => x.level).map((record: any) => (
+            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = JSON.parse(localStorage.getItem('gameHistory') ?? '{}').sort(x => x.level).map((record: any) => (
                 `[離線模式    ] 最高等級 ${record.level} | ${new Date(record.created_at).toLocaleDateString()}`
             )).join('\n');
         }
