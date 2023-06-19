@@ -1,5 +1,8 @@
 import GameManager from "../Manager/GameManager";
 import Game = cc.Game;
+import listFiles = jsb.fileUtils.listFiles;
+import PlayerManager from "../Manager/PlayerManager";
+import PlayerController from "./PlayerController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,6 +19,14 @@ export default class CameraController extends cc.Component {
 
     public set freezeCamera(freeze: boolean){
         this.freeze = freeze;
+    }
+
+    onEnable() {
+        GameManager.instance.event.on(GameManager.ON_GAME_LOGIC_READY, this.onGameLogicReady, this);
+    }
+
+    onDisable() {
+        GameManager.instance.event.on(GameManager.ON_GAME_LOGIC_READY, this.onGameLogicReady, this);
     }
 
     update (dt) {
@@ -36,7 +47,16 @@ export default class CameraController extends cc.Component {
         }
     }
 
-    public shake(){
+
+    // HELPERS
+    private onGameLogicReady(){
+        for (let uid of GameManager.instance.localUids){
+            const player = GameManager.instance.playerManager.getPlayer(uid);
+            player.event.on(PlayerController.PLAYER_HURT, this.shake, this)
+        }
+    }
+
+    private shake(){
         const shakeDistance = 4;
         const shakeAction = cc.sequence(
             cc.moveBy(0.02, cc.v2(shakeDistance, shakeDistance)),

@@ -318,7 +318,7 @@ export default class GameManager extends cc.Component {
 
         await this.showLoading(1000);
 
-        let fixedUI, enemy, drop, upgradeUI, gameEndUI, pauseUI: cc.Node;
+        let fixedUI, enemy, drop, upgradeUI, gameEndUI, pauseUI, bloodScreen: cc.Node;
         let gameStartUIPrefab: cc.Prefab;
 
         let promises = []
@@ -353,6 +353,13 @@ export default class GameManager extends cc.Component {
         promises.push(
             loadResource('Prefab/UI/GameStartUI', cc.Prefab).then((prefab) => {
                 gameStartUIPrefab = prefab as unknown as cc.Prefab;
+            })
+        )
+        promises.push(
+            loadResource('Prefab/UI/BloodScreen', cc.Prefab).then((prefab) => {
+                bloodScreen = cc.instantiate(prefab) as unknown as cc.Node;
+                bloodScreen.parent = this.backgroundLayer;
+                bloodScreen.setPosition(0, 0);
             })
         )
 
