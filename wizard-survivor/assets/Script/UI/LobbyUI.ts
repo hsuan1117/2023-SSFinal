@@ -1,6 +1,8 @@
 import PlayerFocus from "./PlayerFocus";
 import PlayerController from "../Controller/PlayerController";
 import GameManager from "../Manager/GameManager";
+import {GameStartType} from "./MainMenuUI";
+import {RemoteGameSystem} from "../Manager/GameSystem";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,6 +17,7 @@ export default class LobbyUI extends cc.Component {
     private chooseResult: { [uid: string]: string } = {};
     private uids: string[] = [];
     private _coinLabel: cc.Label = null;
+    private _remoteInfo: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -24,6 +27,7 @@ export default class LobbyUI extends cc.Component {
             this.node.getChildByName('Coin')
             .getChildByName('Label')
             .getComponent(cc.Label);
+        this._remoteInfo = this.node.getChildByName('RemoteInfo');
     }
 
 
@@ -37,6 +41,17 @@ export default class LobbyUI extends cc.Component {
         }
         let record = await GameManager.instance.gameSystem.getGameRecord();
         this._coinLabel.string = record.coin.toString();
+
+        if (GameManager.instance.gameSystem instanceof RemoteGameSystem) {
+            this._remoteInfo.opacity = 255;
+            const roomId = 'xgpU';
+            const username = 'ovo';
+            this._remoteInfo.getChildByName('RoomId').getComponent(cc.Label).string = roomId.toString();
+            this._remoteInfo.getChildByName('Username').getComponent(cc.Label).string = username;
+        }
+        else{
+            this._remoteInfo.opacity = 0;
+        }
     }
 
     public chooseCharaFor(): Promise<void> {
