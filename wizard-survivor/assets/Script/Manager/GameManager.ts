@@ -89,7 +89,7 @@ export default class GameManager extends cc.Component {
     public loadingUIPrefab: cc.Prefab = null;
 
     /*每升一等，升等需要的經驗會增加多少百分比*/
-    private readonly UPGRADE_EXP_GROWTH: number = 60;
+    private readonly UPGRADE_EXP_GROWTH: number = 80;
 
     /* === 局內、玩家共享遊戲狀態 === */
     public killEnemyCnt: AttrNum = new AttrNum(0);
@@ -226,6 +226,8 @@ export default class GameManager extends cc.Component {
     }
 
     public async changeScene(sceneType: string) {
+        let camera = cc.Camera.main.getComponent(CameraController);
+        camera.freezeCamera = false;
         if (this._currentSceneType === GameManager.SCENE_GAME) {
             this._mapManager.clearMap();
             this._waveManager.clearWave();
@@ -240,6 +242,8 @@ export default class GameManager extends cc.Component {
         } else if (sceneType === GameManager.SCENE_LOBBY){
             this._audioManager.playBGM('bgm_room');
             await this.generateLobbyScene();
+            let camera = cc.Camera.main.getComponent(CameraController);
+            camera.freezeCamera = true;
         } else if (sceneType === GameManager.SCENE_GAME) {
             this._waveManager.setWave(1);
             this._mapManager.init();
