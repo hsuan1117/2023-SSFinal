@@ -94,7 +94,7 @@ export default class GameManager extends cc.Component {
     /* === 局內、玩家共享遊戲狀態 === */
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
-    public upgradeExp: AttrNum = new AttrNum(15);
+    public upgradeExp: AttrNum = new AttrNum(18);
     public level: AttrNum = new AttrNum(1);
     public exp: AttrNum = new AttrNum(0);
 

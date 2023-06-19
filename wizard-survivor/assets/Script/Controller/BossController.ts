@@ -148,7 +148,7 @@ export default class BossController extends EnemyController {
         this.scheduleOnce(() => {
             this.selfDestroy();
             GameManager.instance.particleManager.createParticle("Open Chest", this.node.position, 0.2, 3);
-            GameManager.instance.waveManager.setWave(GameManager.instance.waveManager.currentWaveNumber + 1);
+            GameManager.instance.waveManager.setWave(Math.min(11, GameManager.instance.waveManager.currentWaveNumber + 1));
         }, 1);
 
         GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
