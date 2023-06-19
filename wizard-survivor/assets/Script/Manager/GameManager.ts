@@ -213,15 +213,13 @@ export default class GameManager extends cc.Component {
 
 
     /* === PUBLIC METHODS === */
-    public pauseGame() {
-        console.log('pause game');
+    public pauseGame(mute: boolean = false) {
         this._isPaused = true;
-        this._audioManager.mute();
+        if (mute) this._audioManager.mute();
         cc.director.pause();
     }
 
     public resumeGame() {
-        console.log('resume game');
         cc.director.resume();
         this._audioManager.unmute();
         this._isPaused = false;
@@ -465,7 +463,7 @@ export default class GameManager extends cc.Component {
         });
 
         this.event.emit(GameManager.ON_UPGRADE, {buffAmount: 3});
-        this.pauseGame();
+        this.pauseGame(false);
     }
 
     private showLoading(timeOutMilliseconds: number) {

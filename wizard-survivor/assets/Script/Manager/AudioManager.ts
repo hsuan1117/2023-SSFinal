@@ -9,8 +9,14 @@ export default class AudioManager extends cc.Component {
 
     public get bgmVolume() { return cc.audioEngine.getMusicVolume(); }
     public get effectVolume() { return cc.audioEngine.getEffectsVolume(); }
-    public set bgmVolume(volume: number) { cc.audioEngine.setMusicVolume(volume); }
-    public set effectVolume(volume: number) { cc.audioEngine.setEffectsVolume(volume); }
+    public set bgmVolume(volume: number) {
+        cc.audioEngine.setMusicVolume(volume);
+        this._bgmVolumeBeforeMute = volume;
+    }
+    public set effectVolume(volume: number) {
+        cc.audioEngine.setEffectsVolume(volume);
+        this._effectVolumeBeforeMute = volume;
+    }
 
     private _bgmVolumeBeforeMute: number = 1;
     private _effectVolumeBeforeMute: number = 1;

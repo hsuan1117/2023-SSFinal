@@ -106,7 +106,8 @@ export default class EnemyController extends cc.Component {
                 damage: damage
             }
         )
-        // this.knockBack();
+        GameManager.instance.audioManager.playEffect('enemy_hit');
+
         this.hp.addFactor -= damage;
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);

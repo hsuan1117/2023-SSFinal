@@ -17,6 +17,8 @@ export default class SettingUI extends cc.Component {
     private playerFocus: PlayerFocus = null;
     private _toFocus: string[] = ['Exit', 'ToggleMusic', 'ToggleSoundEffect'];
     private _interactableHint: cc.Node = null;
+    private _toggleMusicLabel: cc.Label = null;
+    private _toggleSoundEffectLabel: cc.Label = null;
 
     private _bgmVolume: number = 0;
     private _soundEffectVolume: number = 0;
@@ -31,6 +33,9 @@ export default class SettingUI extends cc.Component {
             cc.v2(80, 5).add(ignoreZ(this.settingPopUp.position)),
             false
         )
+        this._toggleMusicLabel = this.settingPopUp.getChildByName('ToggleMusic').getComponent(cc.Label);
+        this._toggleSoundEffectLabel = this.settingPopUp.getChildByName('ToggleSoundEffect').getComponent(cc.Label);
+        this.updateLabel();
     }
 
     onEnable() {
@@ -58,11 +63,13 @@ export default class SettingUI extends cc.Component {
             GameManager.instance.audioManager.bgmVolume = (
                 GameManager.instance.audioManager.bgmVolume == 0 ? 1 : 0
             );
+            this.updateLabel();
         }
         this.command['ToggleSoundEffect'] = () => {
             GameManager.instance.audioManager.effectVolume = (
                 GameManager.instance.audioManager.effectVolume == 0 ? 1 : 0
             );
+            this.updateLabel();
         }
         this.popDown();
     }
@@ -108,12 +115,23 @@ export default class SettingUI extends cc.Component {
     }
 
     private popUp() {
-        this.isOn = true;
-        this.settingPopUp.opacity = 255;
-        for (let uid of GameManager.instance.localUids) {
-            this.playerFocus.focusOnIndex(uid, 1);
-        }
-        GameManager.instance.pauseGame();
+        this.scheduleOnce(() => {
+            this.isOn = true;
+            this.settingPopUp.opacity = 255;
+            for (let uid of GameManager.instance.localUids) {
+                this.playerFocus.focusOnIndex(uid, 1);
+            }
+            GameManager.instance.pauseGame();
+        }, 0.05)
+    }
+
+    private updateLabel() {
+        this._toggleMusicLabel.string = (
+            GameManager.instance.audioManager.bgmVolume == 0 ? '開啟音樂' : '關閉音樂'
+        );
+        this._toggleSoundEffectLabel.string = (
+            GameManager.instance.audioManager.effectVolume == 0 ? '開啟音效' : '關閉音效'
+        );
     }
 
 
