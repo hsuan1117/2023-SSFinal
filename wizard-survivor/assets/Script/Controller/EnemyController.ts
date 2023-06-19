@@ -40,6 +40,7 @@ export default class EnemyController extends cc.Component {
     protected isBossFight: boolean = false;
 
     protected _collider: cc.PhysicsCollider = null;
+    protected isDead: boolean = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -90,6 +91,7 @@ export default class EnemyController extends cc.Component {
          this.isBossFight = false;
          this.searchable = true;
          this._collider.enabled = true;
+         this.isDead = false;
     }
 
     private flashEnd() {
@@ -139,6 +141,7 @@ export default class EnemyController extends cc.Component {
     }
 
     protected followPlayer() { // For Boss fight
+         if (this.isDead) return;
         let target = this.findClosestPlayer();
         if (!target) {
             this.rb.linearVelocity = cc.Vec2.ZERO;
@@ -159,6 +162,8 @@ export default class EnemyController extends cc.Component {
     }
 
     protected dead(killByUid: string) {
+         this.isDead = true;
+         this.rb.linearVelocity = ignoreZ(this.node.position.sub(GameManager.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
          this.animCtrl.state = {...this.animCtrl.state, isDead: true};
          GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
             enemyPosition: this.node.getPosition(),
@@ -169,7 +174,7 @@ export default class EnemyController extends cc.Component {
          this.scheduleOnce(() => {
              GameManager.instance.poolManager.recycle(this.node);
              GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
-         }, 0.3);
+         }, 0.5);
     }
 
     protected selfDestroy() {

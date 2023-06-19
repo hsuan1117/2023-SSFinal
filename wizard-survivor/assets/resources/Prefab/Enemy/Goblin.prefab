@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "9589ed1d-3e8b-4eed-8ccd-29ee8d1c6d1d"
+      },
+      {
+        "__uuid__": "d03e5dc3-303d-4c0c-9e39-97368a037d07"
       }
     ],
     "playOnLoad": false,
@@ -330,7 +333,7 @@
     "enemyIdleAnim": "GolinStand",
     "enemyMoveAnim": "GolinWalk",
     "enemyHurtAnim": "GolinStand",
-    "enemyDeadAnim": "GolinStand",
+    "enemyDeadAnim": "GoblinDie",
     "enemySkillAnim": "GolinStand",
     "_id": ""
   },
