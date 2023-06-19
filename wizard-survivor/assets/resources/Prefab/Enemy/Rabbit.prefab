@@ -336,7 +336,7 @@
     "enemyIdleAnim": "RabbitStand",
     "enemyMoveAnim": "RabbitWalk",
     "enemyHurtAnim": "",
-    "enemyDeadAnim": "RabbitDead",
+    "enemyDeadAnim": "RabbitDie",
     "enemySkillAnim": "RabbitAttack",
     "_id": ""
   },

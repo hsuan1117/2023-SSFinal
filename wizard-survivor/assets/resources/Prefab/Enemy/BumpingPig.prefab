@@ -204,6 +204,9 @@
       },
       {
         "__uuid__": "0b1180c4-cd59-4208-a469-698ec3ecd9e9"
+      },
+      {
+        "__uuid__": "3cb1c235-208e-4c45-a5ee-d6e15bc04c08"
       }
     ],
     "playOnLoad": false,
@@ -337,7 +340,7 @@
     "enemyIdleAnim": "BumpingPigStand",
     "enemyMoveAnim": "BumpingPigWalk",
     "enemyHurtAnim": "BumpingPigStand",
-    "enemyDeadAnim": "BumpingPigStand",
+    "enemyDeadAnim": "BumpingPigDie",
     "enemySkillAnim": "BumpingPigStand",
     "_id": ""
   },

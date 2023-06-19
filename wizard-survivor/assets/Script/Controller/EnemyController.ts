@@ -61,8 +61,7 @@ export default class EnemyController extends cc.Component {
     }
 
     playAnim() {
-         // change to controller
-        if (!this.animCtrl)
+        if (this.isDead)
             return;
 
          if (this.rb.linearVelocity.x > 0)
@@ -72,7 +71,6 @@ export default class EnemyController extends cc.Component {
          else
              this.animCtrl.state = {...this.animCtrl.state, faceLeftOrRight: 0};
 
-         this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
     }
 
     protected update(dt: number) {
@@ -147,6 +145,7 @@ export default class EnemyController extends cc.Component {
             this.rb.linearVelocity = cc.Vec2.ZERO;
             return;
         }
+        this.animCtrl.state = {...this.animCtrl.state, isMoving: true};
         if (target.sub(this.node.position).mag() > 1000) {
             this.selfDestroy();
             return;
@@ -162,6 +161,7 @@ export default class EnemyController extends cc.Component {
     }
 
     protected dead(killByUid: string) {
+         if (this.isDead) return;
          this.isDead = true;
          this.rb.linearVelocity = ignoreZ(this.node.position.sub(GameManager.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
          this.animCtrl.state = {...this.animCtrl.state, isDead: true};
@@ -174,7 +174,7 @@ export default class EnemyController extends cc.Component {
          this.scheduleOnce(() => {
              GameManager.instance.poolManager.recycle(this.node);
              GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
-         }, 0.5);
+         }, 1);
     }
 
     protected selfDestroy() {
