@@ -52,6 +52,11 @@ export default class BossController extends EnemyController {
         this.playAnim();
     }
 
+    public init(factor: number) {
+        super.init(factor);
+        this.node.scaleY = 2;
+    }
+
     protected startBossFight() {
         this.startFight = true;
         this.searchable = true;
