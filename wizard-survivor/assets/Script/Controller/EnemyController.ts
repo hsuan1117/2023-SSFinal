@@ -105,7 +105,7 @@ export default class EnemyController extends cc.Component {
                 damage: damage
             }
         )
-        this.knockBack();
+        // this.knockBack();
         this.hp.addFactor -= damage;
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
