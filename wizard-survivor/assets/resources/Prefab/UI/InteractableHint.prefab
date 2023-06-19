@@ -103,7 +103,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 88.42,
+      "width": 353.68,
       "height": 126
     },
     "_anchorPoint": {
@@ -122,8 +122,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -157,7 +157,7 @@
     "_dstBlendFactor": 771,
     "_string": "要不要來點藥草",
     "_N$string": "要不要來點藥草",
-    "_fontSize": 20,
+    "_fontSize": 80,
     "_lineHeight": 100.4,
     "_enableWrapText": true,
     "_N$file": {

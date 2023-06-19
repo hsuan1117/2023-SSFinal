@@ -51,18 +51,17 @@ export default class LeaderBoardUI extends cc.Component {
     onEndContact(contact, selfCollider, otherCollider) {
         const player = otherCollider.node.getComponent(PlayerController);
         if (player) {
-            this._isCollide[player.uid] = true;
+            this._isCollide[player.uid] = false;
             this._interactableHint.opacity = 0;
         }
     }
 
     // HELPERS
     private onInput(input: Input) {
-        if (!this._isCollide[input.uid]) return;
-        if (input.type != InputType.BUTTON_DOWN) return;
-
-        if ((!this._isOn)) this.popUp();
-        else this.popDown();
+        if (!this._isOn && this._isCollide[input.uid] && input.type == InputType.BUTTON_DOWN && input.btnCode == 'A')
+            this.popUp();
+        else if (this._isOn && input.type == InputType.BUTTON_DOWN && input.btnCode == 'A')
+            this.popDown();
     }
 
     private popUp(){

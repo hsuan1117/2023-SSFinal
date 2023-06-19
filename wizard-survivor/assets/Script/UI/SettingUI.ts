@@ -16,11 +16,14 @@ export default class SettingUI extends cc.Component {
     private settingPopUp: cc.Node = null;
     private playerFocus: PlayerFocus = null;
     private _toFocus: string[] = ['Exit', 'ToggleMusic', 'ToggleSoundEffect'];
+    private _interactableHint: cc.Node = null;
 
     private _bgmVolume: number = 0;
     private _soundEffectVolume: number = 0;
 
     onLoad() {
+        this._interactableHint = this.node.getChildByName('InteractableHint');
+        this._interactableHint.opacity = 0;
         this.settingPopUp = this.node.getChildByName('SettingPopUp');
         this.playerFocus = this.node.getComponent(PlayerFocus);
         this.playerFocus.init(
@@ -76,6 +79,7 @@ export default class SettingUI extends cc.Component {
         const player = otherCollider.getComponent(PlayerController);
         if (player) {
             this.isCollide[player.uid] = true;
+            this._interactableHint.opacity = 255;
         }
     }
 
@@ -83,6 +87,7 @@ export default class SettingUI extends cc.Component {
         const player = otherCollider.getComponent(PlayerController);
         if (player) {
             this.isCollide[player.uid] = false;
+            this._interactableHint.opacity = 0;
         }
     }
 
