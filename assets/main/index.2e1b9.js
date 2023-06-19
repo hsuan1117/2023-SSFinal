@@ -5195,6 +5195,22 @@ window.__require = function e(t, n, r) {
         super(...arguments);
         this.bgmLists = {};
         this.effectLists = {};
+        this._bgmVolumeBeforeMute = 1;
+        this._effectVolumeBeforeMute = 1;
+      }
+      get bgmVolume() {
+        return cc.audioEngine.getMusicVolume();
+      }
+      get effectVolume() {
+        return cc.audioEngine.getEffectsVolume();
+      }
+      set bgmVolume(volume) {
+        cc.audioEngine.setMusicVolume(volume);
+        this._bgmVolumeBeforeMute = volume;
+      }
+      set effectVolume(volume) {
+        cc.audioEngine.setEffectsVolume(volume);
+        this._effectVolumeBeforeMute = volume;
       }
       start() {
         cc.resources.loadDir("AudioClip/BGM", cc.AudioClip, (err, clips) => {
@@ -5204,11 +5220,15 @@ window.__require = function e(t, n, r) {
           for (const clip of clips) this.effectLists[clip.name] = clip;
         });
       }
-      setBGMVolume(volume) {
-        cc.audioEngine.setMusicVolume(volume);
+      mute() {
+        this._bgmVolumeBeforeMute = this.bgmVolume;
+        this._effectVolumeBeforeMute = this.effectVolume;
+        this.bgmVolume = 0;
+        this.effectVolume = 0;
       }
-      setEffectVolume(volume) {
-        cc.audioEngine.setEffectsVolume(volume);
+      unmute() {
+        this.bgmVolume = this._bgmVolumeBeforeMute;
+        this.effectVolume = this._effectVolumeBeforeMute;
       }
       stopBGM() {
         cc.audioEngine.stopMusic();
@@ -5396,7 +5416,7 @@ window.__require = function e(t, n, r) {
         this.scheduleOnce(() => {
           this.selfDestroy();
           GameManager_1.default.instance.particleManager.createParticle("Open Chest", this.node.position, .2, 3);
-          GameManager_1.default.instance.waveManager.setWave(GameManager_1.default.instance.waveManager.currentWaveNumber + 1);
+          GameManager_1.default.instance.waveManager.setWave(Math.min(11, GameManager_1.default.instance.waveManager.currentWaveNumber + 1));
         }, 1);
         GameManager_1.default.instance.waveManager.event.emit(WaveManager_1.default.ON_ENEMY_DIE, {
           enemyPosition: this.node.getPosition(),
@@ -6029,6 +6049,7 @@ window.__require = function e(t, n, r) {
         });
       }
       update(dt) {
+        if (this.isDead) return;
         if (this.skillCoolDownTime >= this.skillCoolDown.value && this.bumpingTime < 0 && this.findClosestPlayer().sub(this.node.position).mag() < this.triggerRadius.value) {
           this.skillTrigger();
           return;
@@ -6266,6 +6287,7 @@ window.__require = function e(t, n, r) {
         this.enemyHurtAnim = "enemy_hurt";
         this.enemyDeadAnim = "enemy_dead";
         this.enemySkillAnim = "enemy_skill";
+        this.enemyDieSprite = null;
         this._state = {
           isMoving: false,
           isDead: false,
@@ -6290,7 +6312,7 @@ window.__require = function e(t, n, r) {
         if (!this.anim) return;
         if (this.sameState(oldState, newState)) return;
         this.anim.stop();
-        newState.isDead ? this.anim.play(this.enemyDeadAnim) : newState.isSkill ? this.anim.play(this.enemySkillAnim) : newState.isHurt ? this.anim.play(this.enemyHurtAnim) : newState.isMoving ? this.anim.play(this.enemyMoveAnim) : this.anim.play(this.enemyIdleAnim);
+        newState.isDead && !oldState.isDead ? this.enemyDieSprite ? this.anim.node.getComponent(cc.Sprite).spriteFrame = this.enemyDieSprite : this.anim.play(this.enemyDeadAnim) : newState.isSkill ? this.anim.play(this.enemySkillAnim) : newState.isHurt ? this.anim.play(this.enemyHurtAnim) : newState.isMoving ? this.anim.play(this.enemyMoveAnim) : this.anim.play(this.enemyIdleAnim);
         newState.faceLeftOrRight && (this.anim.node.scaleX = newState.faceLeftOrRight);
       }
     };
@@ -6299,6 +6321,7 @@ window.__require = function e(t, n, r) {
     __decorate([ property() ], EnemyAnimController.prototype, "enemyHurtAnim", void 0);
     __decorate([ property() ], EnemyAnimController.prototype, "enemyDeadAnim", void 0);
     __decorate([ property() ], EnemyAnimController.prototype, "enemySkillAnim", void 0);
+    __decorate([ property(cc.SpriteFrame) ], EnemyAnimController.prototype, "enemyDieSprite", void 0);
     EnemyAnimController = __decorate([ ccclass ], EnemyAnimController);
     exports.default = EnemyAnimController;
     cc._RF.pop();
@@ -6343,6 +6366,7 @@ window.__require = function e(t, n, r) {
         this.skillCoolDownTime = 0;
         this.isBossFight = false;
         this._collider = null;
+        this.isDead = false;
       }
       onLoad() {
         this.rb = this.node.getComponent(cc.RigidBody);
@@ -6360,16 +6384,13 @@ window.__require = function e(t, n, r) {
         });
       }
       playAnim() {
-        if (!this.animCtrl) return;
+        if (this.isDead) return;
         this.rb.linearVelocity.x > 0 ? this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           faceLeftOrRight: 1
         }) : this.rb.linearVelocity.x < 0 ? this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           faceLeftOrRight: -1
         }) : this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           faceLeftOrRight: 0
-        });
-        this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
-          isMoving: true
         });
       }
       update(dt) {
@@ -6384,6 +6405,8 @@ window.__require = function e(t, n, r) {
         this.isBossFight = false;
         this.searchable = true;
         this._collider.enabled = true;
+        this.isDead = false;
+        this.node.scaleY = 1;
       }
       flashEnd() {
         this.sprite.setMaterial(0, this.normalMaterial);
@@ -6394,6 +6417,7 @@ window.__require = function e(t, n, r) {
           killByUid: byUid,
           damage: damage
         });
+        GameManager_1.default.instance.audioManager.playEffect("enemy_hit");
         this.hp.addFactor -= damage;
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
@@ -6419,11 +6443,15 @@ window.__require = function e(t, n, r) {
         this.rb.linearVelocity = utils_1.ignoreZ(direction.normalize().mul(-3 * this.moveSpeed.value));
       }
       followPlayer() {
+        if (this.isDead) return;
         let target = this.findClosestPlayer();
         if (!target) {
           this.rb.linearVelocity = cc.Vec2.ZERO;
           return;
         }
+        this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
+          isMoving: true
+        });
         if (target.sub(this.node.position).mag() > 1e3) {
           this.selfDestroy();
           return;
@@ -6433,6 +6461,9 @@ window.__require = function e(t, n, r) {
         this.rb.linearVelocity = distance > 10 ? utils_1.ignoreZ(direction.normalize().mul(this.moveSpeed.value)) : cc.Vec2.ZERO;
       }
       dead(killByUid) {
+        this.isDead = true;
+        this.node.scaleY = .8;
+        this.rb.linearVelocity = utils_1.ignoreZ(this.node.position.sub(GameManager_1.default.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
         this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           isDead: true
         });
@@ -6444,7 +6475,7 @@ window.__require = function e(t, n, r) {
         this.scheduleOnce(() => {
           GameManager_1.default.instance.poolManager.recycle(this.node);
           GameManager_1.default.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
-        }, .3);
+        }, 1);
       }
       selfDestroy() {
         GameManager_1.default.instance.poolManager.recycle(this.node);
@@ -6701,6 +6732,8 @@ window.__require = function e(t, n, r) {
     let FixedUI = class FixedUI extends cc.Component {
       onLoad() {
         this.coinLabel = this.node.getChildByName("Coin").getChildByName("Label").getComponent(cc.Label);
+        this._timerLabel = this.node.getChildByName("Timer").getChildByName("Label").getComponent(cc.Label);
+        this._timer = 0;
       }
       onEnable() {
         GameManager_1.default.instance.event.on(GameManager_1.default.ON_GAME_LOGIC_READY, this.onGameReady, this);
@@ -6709,11 +6742,13 @@ window.__require = function e(t, n, r) {
       onDisable() {
         GameManager_1.default.instance.event.off(GameManager_1.default.ON_GAME_LOGIC_READY, this.onGameReady, this);
         GameManager_1.default.instance.event.off(GameManager_1.default.ON_GAME_STAT_CHANGE, this.onGameStatChange, this);
+        this.unschedule(this.updateTimer);
       }
       onGameReady() {
         let childIdx = 1;
         for (let id of GameManager_1.default.instance.playerManager.allPlayerIDs) this.enablePlayerStatUIForPlayer(id, childIdx++);
         this.onGameStatChange();
+        this.schedule(this.updateTimer, 1);
       }
       enablePlayerStatUIForPlayer(uid, childIdx) {
         let player = GameManager_1.default.instance.playerManager.getPlayer(uid);
@@ -6724,6 +6759,10 @@ window.__require = function e(t, n, r) {
       }
       onGameStatChange() {
         this.coinLabel.string = `X ${GameManager_1.default.instance.coinCnt.value.toString()}`;
+      }
+      updateTimer() {
+        this._timer++;
+        this._timerLabel.string = this._timer.toString();
       }
     };
     FixedUI = __decorate([ ccclass ], FixedUI);
@@ -6878,7 +6917,7 @@ window.__require = function e(t, n, r) {
         this.UPGRADE_EXP_GROWTH = 40;
         this.killEnemyCnt = new Attributes_1.AttrNum(0);
         this.coinCnt = new Attributes_1.AttrNum(0);
-        this.upgradeExp = new Attributes_1.AttrNum(15);
+        this.upgradeExp = new Attributes_1.AttrNum(18);
         this.level = new Attributes_1.AttrNum(1);
         this.exp = new Attributes_1.AttrNum(0);
         this._isPaused = false;
@@ -6995,8 +7034,10 @@ window.__require = function e(t, n, r) {
           }
         });
         this.level.onChangeCallback.push(() => {
-          this.event.emit(GameManager_1.ON_LEVEL_UP);
-          this.upgrade();
+          if (this.level.value > 1) {
+            this.event.emit(GameManager_1.ON_LEVEL_UP);
+            this.upgrade();
+          }
         });
       }
       start() {
@@ -7004,12 +7045,14 @@ window.__require = function e(t, n, r) {
         this._waveManager.init();
         this.rand.setSeed("1234");
       }
-      pauseGame() {
+      pauseGame(mute = false) {
         this._isPaused = true;
+        mute && this._audioManager.mute();
         cc.director.pause();
       }
       resumeGame() {
         cc.director.resume();
+        this._audioManager.unmute();
         this._isPaused = false;
       }
       changeScene(sceneType) {
@@ -7084,6 +7127,8 @@ window.__require = function e(t, n, r) {
       generateGameScene() {
         return __awaiter(this, void 0, void 0, function*() {
           this.buildLayers();
+          this.level.reset();
+          this.level.defaultValue = 1;
           this.exp.reset();
           this.exp.defaultValue = 0;
           this.coinCnt.reset();
@@ -7189,7 +7234,7 @@ window.__require = function e(t, n, r) {
         this.event.emit(GameManager_1.ON_UPGRADE, {
           buffAmount: 3
         });
-        this.pauseGame();
+        this.pauseGame(false);
       }
       showLoading(timeOutMilliseconds) {
         return new Promise((resolve, reject) => {
@@ -7834,6 +7879,7 @@ window.__require = function e(t, n, r) {
     const PlayerFocus_1 = require("./PlayerFocus");
     const PlayerController_1 = require("../Controller/PlayerController");
     const GameManager_1 = require("../Manager/GameManager");
+    const GameSystem_1 = require("../Manager/GameSystem");
     const {ccclass: ccclass, property: property} = cc._decorator;
     let LobbyUI = class LobbyUI extends cc.Component {
       constructor() {
@@ -7843,18 +7889,28 @@ window.__require = function e(t, n, r) {
         this.chooseResult = {};
         this.uids = [];
         this._coinLabel = null;
+        this._remoteInfo = null;
       }
       onLoad() {
         this.event = new cc.EventTarget();
         this.playerFocus = this.node.getComponent(PlayerFocus_1.default);
         this._coinLabel = this.node.getChildByName("Coin").getChildByName("Label").getComponent(cc.Label);
+        this._remoteInfo = this.node.getChildByName("RemoteInfo");
       }
       init(uids) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function*() {
           this.uids = [ ...uids ];
           for (let chara of this.node.children) chara.getComponent(PlayerController_1.default) && this.previewCharas.push(chara);
           let record = yield GameManager_1.default.instance.gameSystem.getGameRecord();
           this._coinLabel.string = record.coin.toString();
+          if (GameManager_1.default.instance.gameSystem instanceof GameSystem_1.RemoteGameSystem) {
+            this._remoteInfo.opacity = 255;
+            const roomId = GameManager_1.default.instance.gameSystem.gameInfo.code;
+            const username = null === (_b = JSON.parse(null !== (_a = localStorage.getItem("user")) && void 0 !== _a ? _a : "{}")) || void 0 === _b ? void 0 : _b.email.split("@")[0];
+            this._remoteInfo.getChildByName("RoomId").getComponent(cc.Label).string = roomId.toString();
+            this._remoteInfo.getChildByName("Username").getComponent(cc.Label).string = username;
+          } else this._remoteInfo.opacity = 0;
         });
       }
       chooseCharaFor() {
@@ -7899,6 +7955,7 @@ window.__require = function e(t, n, r) {
   }, {
     "../Controller/PlayerController": "PlayerController",
     "../Manager/GameManager": "GameManager",
+    "../Manager/GameSystem": "GameSystem",
     "./PlayerFocus": "PlayerFocus"
   } ],
   MainMenuUI: [ function(require, module, exports) {
@@ -8020,8 +8077,9 @@ window.__require = function e(t, n, r) {
             "Unauthenticated." !== res.message && alert(`\u932f\u8aa4\uff1a${res.message}`);
             return;
           }
-          const {token: token} = res;
+          const {token: token, user: user} = res;
           localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
           if (this.roomType) {
             this.node.getChildByName("AuthDialog").active = false;
             this.node.getChildByName("RoomDialog").active = true;
@@ -8046,7 +8104,6 @@ window.__require = function e(t, n, r) {
           }
           const userId = room.user_id;
           room = room.room;
-          "undefined" === typeof code && alert(room.code);
           const gameInfo = Object.assign(Object.assign({
             gameType: GameType.ONLINE,
             localUids: [ userId ]
@@ -8582,6 +8639,7 @@ window.__require = function e(t, n, r) {
       dash() {
         if (this._isDead) return;
         if (this.isDashing || this._dashCountDown > 0) return;
+        GameManager_1.default.instance.isLocalUid(this.uid) && GameManager_1.default.instance.audioManager.playEffect("player_dash");
         this.phyCollider.enabled = false;
         this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
           isDashing: true
@@ -9428,6 +9486,8 @@ window.__require = function e(t, n, r) {
         this.playerFocus = null;
         this._toFocus = [ "Exit", "ToggleMusic", "ToggleSoundEffect" ];
         this._interactableHint = null;
+        this._toggleMusicLabel = null;
+        this._toggleSoundEffectLabel = null;
         this._bgmVolume = 0;
         this._soundEffectVolume = 0;
       }
@@ -9437,6 +9497,9 @@ window.__require = function e(t, n, r) {
         this.settingPopUp = this.node.getChildByName("SettingPopUp");
         this.playerFocus = this.node.getComponent(PlayerFocus_1.default);
         this.playerFocus.init(this._toFocus.map(name => this.settingPopUp.getChildByName(name)), cc.v2(80, 5).add(utils_1.ignoreZ(this.settingPopUp.position)), false);
+        this._toggleMusicLabel = this.settingPopUp.getChildByName("ToggleMusic").getComponent(cc.Label);
+        this._toggleSoundEffectLabel = this.settingPopUp.getChildByName("ToggleSoundEffect").getComponent(cc.Label);
+        this.updateLabel();
       }
       onEnable() {
         GameManager_1.default.instance.inputManager.event.on(InputManager_1.default.ON_LOCAL_INPUT, this.onInput, this);
@@ -9453,12 +9516,12 @@ window.__require = function e(t, n, r) {
           this.popDown();
         };
         this.command["ToggleMusic"] = () => {
-          0 == this._bgmVolume ? this._bgmVolume = 1 : this._bgmVolume = 0;
-          cc.audioEngine.setMusicVolume(this._bgmVolume);
+          GameManager_1.default.instance.audioManager.bgmVolume = 0 == GameManager_1.default.instance.audioManager.bgmVolume ? 1 : 0;
+          this.updateLabel();
         };
         this.command["ToggleSoundEffect"] = () => {
-          0 == this._soundEffectVolume ? this._soundEffectVolume = 1 : this._soundEffectVolume = 0;
-          cc.audioEngine.setEffectsVolume(this._soundEffectVolume);
+          GameManager_1.default.instance.audioManager.effectVolume = 0 == GameManager_1.default.instance.audioManager.effectVolume ? 1 : 0;
+          this.updateLabel();
         };
         this.popDown();
       }
@@ -9490,10 +9553,16 @@ window.__require = function e(t, n, r) {
         this.settingPopUp.opacity = 0;
       }
       popUp() {
-        this.isOn = true;
-        this.settingPopUp.opacity = 255;
-        for (let uid of GameManager_1.default.instance.localUids) this.playerFocus.focusOnIndex(uid, 1);
-        GameManager_1.default.instance.pauseGame();
+        this.scheduleOnce(() => {
+          this.isOn = true;
+          this.settingPopUp.opacity = 255;
+          for (let uid of GameManager_1.default.instance.localUids) this.playerFocus.focusOnIndex(uid, 1);
+          GameManager_1.default.instance.pauseGame();
+        }, .05);
+      }
+      updateLabel() {
+        this._toggleMusicLabel.string = 0 == GameManager_1.default.instance.audioManager.bgmVolume ? "\u958b\u555f\u97f3\u6a02" : "\u95dc\u9589\u97f3\u6a02";
+        this._toggleSoundEffectLabel.string = 0 == GameManager_1.default.instance.audioManager.effectVolume ? "\u958b\u555f\u97f3\u6548" : "\u95dc\u9589\u97f3\u6548";
       }
     };
     SettingUI = __decorate([ ccclass ], SettingUI);
@@ -9544,6 +9613,7 @@ window.__require = function e(t, n, r) {
         });
       }
       update(dt) {
+        if (this.isDead) return;
         if (this.skillCoolDownTime >= this.skillCoolDown.value && -1 == this.skillTriggerTime && this.findClosestPlayer().sub(this.node.position).mag() < this.triggerRadius.value) {
           this.skillTrigger();
           return;

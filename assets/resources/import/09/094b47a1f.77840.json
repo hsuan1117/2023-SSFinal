@@ -1124,7 +1124,7 @@
               "RabbitStand",
               "RabbitWalk",
               "",
-              "RabbitDead",
+              "RabbitDie",
               "RabbitAttack",
               -6,
               -5

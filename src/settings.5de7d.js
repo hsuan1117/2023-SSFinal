@@ -5,7 +5,8 @@ window._CCSettings = {
         "Player",
         "Camera",
         "FixedUI",
-        "Enemy"
+        "Enemy",
+        "BulletEnemy"
     ],
     collisionMatrix: [
         [
@@ -13,6 +14,7 @@ window._CCSettings = {
             true,
             false,
             null,
+            true,
             true
         ],
         [
@@ -20,12 +22,16 @@ window._CCSettings = {
             false,
             true,
             null,
+            true,
             true
         ],
         [
             false,
             true,
-            false
+            false,
+            null,
+            null,
+            true
         ],
         [
             false,
@@ -39,6 +45,14 @@ window._CCSettings = {
             false,
             false,
             true
+        ],
+        [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
         ]
     ],
     hasResourcesBundle: true,
@@ -51,7 +65,7 @@ window._CCSettings = {
     jsList: [],
     bundleVers: {
         internal: "cb4f5",
-        resources: "466c8",
-        main: "b796f"
+        resources: "14497",
+        main: "2e1b9"
     }
 };
