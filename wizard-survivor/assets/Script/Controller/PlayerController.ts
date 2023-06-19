@@ -226,6 +226,9 @@ export default class PlayerController extends cc.Component{
     public dash(){
         if (this._isDead) return;
         if (this.isDashing || this._dashCountDown>0) return;
+        if (GameManager.instance.isLocalUid(this.uid)){
+            GameManager.instance.audioManager.playEffect("player_dash");
+        }
         this.phyCollider.enabled = false;
         this.animCtrl.state = {...this.animCtrl.state, isDashing: true};
         this.event.emit(PlayerController.PLAYER_DASH);
