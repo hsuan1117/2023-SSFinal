@@ -12,8 +12,15 @@ export default class CameraController extends cc.Component {
 
     private initPos: cc.Vec3 = cc.v3(480, 320, 0);
 
+    private freeze: boolean = false;
+
+    public set freezeCamera(freeze: boolean){
+        this.freeze = freeze;
+    }
+
     update (dt) {
         let targetPos = cc.v3(0, 0);
+        if (this.freeze) return;
 
         let cnt = 0;
         for (let uid of GameManager.instance.playerManager.allPlayerIDs){

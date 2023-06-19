@@ -3,6 +3,7 @@ import {padZ} from "../Helper/utils";
 import GameManager from "./GameManager";
 import winSize = cc.winSize;
 import RandomGenerator from "../Helper/RandomGenerator";
+import CameraController from "../Controller/CameraController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -44,7 +45,7 @@ export default class WaveManager extends cc.Component {
 
     private enemyDropItems: {[itemType: string]: cc.Prefab};
     private enemyDropItemsType: string[] = ["Coin", "ExpStone", "HpPack"];
-    private enemyDropItemsRate: number[] = [0.3, 0.5, 0.2];
+    private enemyDropItemsRate: number[] = [0.1, 0.85, 0.05];
 
     private enemyTypes: string[] = ["BumpingPig", "SmallSkeleton", "Rabbit", "Goblin", "EnemySkeleton", "GraveGuard"];
 
@@ -161,8 +162,10 @@ export default class WaveManager extends cc.Component {
         enemy.active = true;
         enemy.parent = GameManager.instance.playerEnemyLayer;
 
-        if (enemy.getComponent("BossController"))
+        if (enemy.getComponent("BossController")) {
             enemy.position = cc.v3(this.spawnCenter.x, this.spawnCenter.y, 0).sub(cc.v3(winSize.width / 2 + 50, 0, 0));
+            this.freezeCamera();
+        }
 
         enemy.getComponent("EnemyController").init(Math.pow(this.growthRate, this.currentWaveNum - 1));
     }
@@ -188,4 +191,9 @@ export default class WaveManager extends cc.Component {
         }
     }
 
+    private freezeCamera() {
+        // get cammera
+        let camera = cc.Camera.main.getComponent(CameraController);
+        camera.freezeCamera = true;
+    }
 }

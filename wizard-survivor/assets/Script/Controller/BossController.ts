@@ -8,6 +8,7 @@ import EnemyController from "./EnemyController";
 import ProjectileController from "./ProjectileController";
 import EnemyProjectileController from "./EnemyProjectileController";
 import random = cc.random;
+import CameraController from "./CameraController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -155,5 +156,11 @@ export default class BossController extends EnemyController {
             killByUid: killByUid
         });
 
+    }
+
+    protected selfDestroy() {
+        let camera = cc.Camera.main.getComponent(CameraController);
+        camera.freezeCamera = false;
+        super.selfDestroy();
     }
 }

@@ -12,38 +12,38 @@
     },
     "BumpingPig": {
       "spawnInterval": 5,
-      "spawnNum": 2
+      "spawnNum": 3
     }
   },
   "3": {
     "Goblin": {
       "spawnInterval": 5,
-      "spawnNum": 5
+      "spawnNum": 6
     },
     "BumpingPig": {
       "spawnInterval": 5,
       "spawnNum": 2
     },
     "EnemySkeleton": {
-      "spawnInterval": 5,
+      "spawnInterval": 10,
       "spawnNum": 2
     }
   },
   "4": {
     "Goblin": {
       "spawnInterval": 5,
-      "spawnNum": 7
+      "spawnNum": 10
     },
     "BumpingPig": {
       "spawnInterval": 5,
-      "spawnNum": 3
+      "spawnNum": 5
     },
     "EnemySkeleton": {
-      "spawnInterval": 5,
+      "spawnInterval": 10,
       "spawnNum": 3
     },
     "Rabbit": {
-      "spawnInterval": 5,
+      "spawnInterval": 10,
       "spawnNum": 1
     }
   },
@@ -56,18 +56,18 @@
   "6": {
     "BumpingPig": {
       "spawnInterval": 5,
-      "spawnNum": 6
+      "spawnNum": 5
     },
     "Rabbit": {
-      "spawnInterval": 5,
-      "spawnNum": 2
+      "spawnInterval": 10,
+      "spawnNum": 4
     },
     "Goblin": {
       "spawnInterval": 5,
-      "spawnNum": 8
+      "spawnNum": 10
     },
     "EnemySkeleton": {
-      "spawnInterval": 5,
+      "spawnInterval": 10,
       "spawnNum": 4
     }
   }
