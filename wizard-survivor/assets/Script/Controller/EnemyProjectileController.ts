@@ -46,6 +46,10 @@ export default class EnemyProjectileController extends cc.Component {
 
     onBeginContact(contact: cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider) {
         const player = other.getComponent(PlayerController);
+        if (other.node.name == "SurroundShield") {
+            this.deleteProjectile();
+            return;
+        }
         if (player) {
             player.hurt(1);
             GameManager.instance.particleManager.createParticle("White Explosion", this.node.position, 0.1, 0.5);

@@ -31,7 +31,6 @@ export default class BossController extends EnemyController {
         });
         loadResource("Prefab/Projectile/Missile", cc.Prefab).then((prefab: cc.Prefab) => {
             this.missilePrefab = prefab;
-            cc.log("Missile loaded", this.missilePrefab);
         });
     }
 
@@ -43,7 +42,11 @@ export default class BossController extends EnemyController {
         if (!this.startFight && this.node.position.sub(this.findClosestPlayer()).mag() < 350) {
             this.startBossFight();
         }
-        if (!this.startFight) return;
+        if (!this.startFight) {
+            this.followPlayer();
+            this.playAnim();
+            return;
+        }
         if (!this.attack()) this.followPlayer();
         this.playAnim();
     }
@@ -100,7 +103,7 @@ export default class BossController extends EnemyController {
             new ProjectileAttr(
                 0, 1,
                 3, 0,
-                0, true, 1),
+                5, true, 1),
             null,
             null,
             null,

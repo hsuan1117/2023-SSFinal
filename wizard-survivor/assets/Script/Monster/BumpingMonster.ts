@@ -25,8 +25,6 @@ export default class BumpingMonster extends EnemyController {
 
     onLoad () {
         super.onLoad();
-        this.triggerRadius.defaultValue = 200;
-        this.skillCoolDown.defaultValue = 5;
     }
 
     protected skillTrigger() {

@@ -4,7 +4,8 @@
     "Player",
     "Camera",
     "FixedUI",
-    "Enemy"
+    "Enemy",
+    "BulletEnemy"
   ],
   "collision-matrix": [
     [
@@ -12,6 +13,7 @@
       true,
       false,
       null,
+      true,
       true
     ],
     [
@@ -19,12 +21,16 @@
       true,
       true,
       null,
+      true,
       true
     ],
     [
       false,
       true,
-      false
+      false,
+      null,
+      null,
+      true
     ],
     [
       false,
@@ -38,6 +44,14 @@
       false,
       false,
       true
+    ],
+    [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
     ]
   ],
   "excluded-modules": [

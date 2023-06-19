@@ -27,17 +27,17 @@
         "__id__": 6
       },
       {
-        "__id__": 12
+        "__id__": 7
       },
       {
-        "__id__": 13
+        "__id__": 8
       },
       {
-        "__id__": 14
+        "__id__": 9
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -61,8 +61,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        -66,
+        -152,
         0,
         0,
         0,
@@ -224,51 +224,6 @@
     "sync": false
   },
   {
-    "__type__": "f628d90jGVGxJqCeFG+5Vps",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "moveSpeed": {
-      "__id__": 7
-    },
-    "skillCoolDown": {
-      "__id__": 8
-    },
-    "hp": {
-      "__id__": 9
-    },
-    "collideDamage": {
-      "__id__": 10
-    },
-    "collideDamageCoolDown": {
-      "__id__": 11
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 50
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 10
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 400
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 1
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 0.5
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -336,6 +291,58 @@
     "enemyDeadAnim": "EnemySkeletonDie",
     "enemySkillAnim": "EnemySkeletonStand",
     "_id": ""
+  },
+  {
+    "__type__": "4b0e3dSzjJIhof/4hLkfHcM",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "moveSpeed": {
+      "__id__": 10
+    },
+    "skillCoolDown": {
+      "__id__": 11
+    },
+    "hp": {
+      "__id__": 12
+    },
+    "collideDamage": {
+      "__id__": 13
+    },
+    "collideDamageCoolDown": {
+      "__id__": 14
+    },
+    "triggerRadius": {
+      "__id__": 15
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 50
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 8
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 400
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 1
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 0.5
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 250
   },
   {
     "__type__": "cc.PrefabInfo",
