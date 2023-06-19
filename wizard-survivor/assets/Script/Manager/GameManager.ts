@@ -51,7 +51,6 @@ export default class GameManager extends cc.Component {
     public static readonly SCENE_MAIN_MENU = 'MainMenu';
     public static readonly SCENE_LOBBY = 'Lobby';
     public static readonly SCENE_RESULT = 'Result';
-    public static readonly SCENE_LEADERBOARD = 'Leaderboard';
 
     public static get instance(): GameManager {
         if (!GameManager._instance) {
@@ -231,9 +230,6 @@ export default class GameManager extends cc.Component {
         } else if (sceneType === GameManager.SCENE_RESULT) {
             this.playerManager.clearAllChara();
             await this.generateResultScene();
-        } else if (sceneType === GameManager.SCENE_LEADERBOARD) {
-            this.playerManager.clearAllChara();
-            await this.generateLeaderBoardScene();
         }
         this._currentSceneType = sceneType;
     }
@@ -274,7 +270,6 @@ export default class GameManager extends cc.Component {
         mainMenuUI.init('anonymous');
 
         mainMenuUI.event.once(MainMenuUI.ON_AUTH_COMPLETED, this.onAuthComplete, this);
-        mainMenuUI.event.once(MainMenuUI.ON_LEADERBOARD_CLICKED, this.onLeaderBoardClicked, this);
         this.hideLoading();
     }
 
@@ -299,10 +294,6 @@ export default class GameManager extends cc.Component {
 
         this.inputManager.removeLocalPlayerInput('anonymous');
         this.changeScene(GameManager.SCENE_LOBBY);
-    }
-
-    private onLeaderBoardClicked() {
-        this.changeScene(GameManager.SCENE_LEADERBOARD);
     }
 
     private async generateGameScene() {
@@ -407,16 +398,6 @@ export default class GameManager extends cc.Component {
     private async generateResultScene() {
         this.buildLayers();
         loadResource('Prefab/UI/ResultUI', cc.Prefab)
-            .then((prefab) => {
-                let resultUI = cc.instantiate(prefab) as unknown as cc.Node;
-                resultUI.parent = this.backgroundLayer;
-                resultUI.setPosition(0, 0);
-            });
-    }
-
-    private async generateLeaderBoardScene() {
-        this.buildLayers();
-        loadResource('Prefab/UI/LeaderBoardUI', cc.Prefab)
             .then((prefab) => {
                 let resultUI = cc.instantiate(prefab) as unknown as cc.Node;
                 resultUI.parent = this.backgroundLayer;

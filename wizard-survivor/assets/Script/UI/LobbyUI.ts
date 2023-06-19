@@ -31,8 +31,9 @@ export default class LobbyUI extends cc.Component {
     public async init(uids: string[]) {
         this.uids = [...uids];
         for (let chara of this.node.children) {
-            if (chara.getComponent(PlayerController))
+            if (chara.getComponent(PlayerController)) {
                 this.previewCharas.push(chara);
+            }
         }
         let record = await GameManager.instance.gameSystem.getGameRecord();
         this._coinLabel.string = record.coin.toString();

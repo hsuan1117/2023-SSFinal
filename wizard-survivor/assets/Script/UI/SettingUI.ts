@@ -22,7 +22,6 @@ export default class SettingUI extends cc.Component {
 
     onLoad() {
         this.settingPopUp = this.node.getChildByName('SettingPopUp');
-        console.log('SettingUI onLoad', this.settingPopUp);
         this.playerFocus = this.node.getComponent(PlayerFocus);
         this.playerFocus.init(
             this._toFocus.map(name => this.settingPopUp.getChildByName(name)),
@@ -77,7 +76,6 @@ export default class SettingUI extends cc.Component {
         const player = otherCollider.getComponent(PlayerController);
         if (player) {
             this.isCollide[player.uid] = true;
-            console.log(`SettingUI collide with ${player.uid}`)
         }
     }
 
@@ -85,7 +83,6 @@ export default class SettingUI extends cc.Component {
         const player = otherCollider.getComponent(PlayerController);
         if (player) {
             this.isCollide[player.uid] = false;
-            console.log(`SettingUI end collide with ${player.uid}`)
         }
     }
 
@@ -116,7 +113,6 @@ export default class SettingUI extends cc.Component {
     private popUp() {
         this.isOn = true;
         this.settingPopUp.opacity = 255;
-        console.log('SettingUI popUp, node', this.settingPopUp);
         for (let uid of GameManager.instance.playerManager.localUids) {
             this.playerFocus.focusOnIndex(uid, 1);
         }
