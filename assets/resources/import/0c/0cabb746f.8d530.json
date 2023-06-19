@@ -1,0 +1,103 @@
+[
+  1,
+  [
+    "7cFwDMXLtPc6LNcsUWxf+R"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.AnimationClip",
+      [
+        "_name",
+        "_duration",
+        "wrapMode",
+        "curveData"
+      ],
+      -1
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2,
+      3,
+      5
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "ui_112",
+          "rect": [
+            6,
+            3,
+            12,
+            19
+          ],
+          "offset": [
+            0,
+            -0.5
+          ],
+          "originalSize": [
+            24,
+            24
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "InteractableHint",
+          0.38333333333333336,
+          22,
+          {
+            "props": {
+              "y": [
+                {
+                  "frame": 0,
+                  "value": 0
+                },
+                {
+                  "frame": 0.38333333333333336,
+                  "value": -6
+                }
+              ]
+            }
+          }
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ]
+  ]
+]
