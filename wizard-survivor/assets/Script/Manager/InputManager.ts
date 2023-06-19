@@ -47,7 +47,8 @@ export const WASD_TO_CONTROLLER: ControllerConversion = {
     [cc.macro.KEY.s]: 'L_DOWN',
     [cc.macro.KEY.a]: 'L_LEFT',
     [cc.macro.KEY.d]: 'L_RIGHT',
-    [cc.macro.KEY.space]: 'A'
+    [cc.macro.KEY.space]: 'A',
+    [cc.macro.KEY.backspace]: 'B'
 }
 
 export const ARROW_TO_CONTROLLER: ControllerConversion = {
@@ -55,7 +56,17 @@ export const ARROW_TO_CONTROLLER: ControllerConversion = {
     [cc.macro.KEY.down]: 'L_DOWN',
     [cc.macro.KEY.left]: 'L_LEFT',
     [cc.macro.KEY.right]: 'L_RIGHT',
-    [cc.macro.KEY.shift]: 'A'
+    [cc.macro.KEY.shift]: 'A',
+    [cc.macro.KEY.backspace]: 'B'
+}
+
+export const NUMPAD_TO_CONTROLLER: ControllerConversion = {
+    [cc.macro.KEY.num8]: 'L_UP',
+    [cc.macro.KEY.num8]: 'L_DOWN',
+    [cc.macro.KEY.num4]: 'L_LEFT',
+    [cc.macro.KEY.num6]: 'L_RIGHT',
+    [cc.macro.KEY.enter]: 'A',
+    [cc.macro.KEY.backspace]: 'B'
 }
 
 

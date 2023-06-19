@@ -157,13 +157,11 @@ export default class GameManager extends cc.Component {
                 this.exp.addFactor += 5;
             }
             else if (keyCode === cc.macro.KEY.p) {
-                if (cc.director.isPaused()) {
-                    console.log('Game Resumed')
-                    cc.director.resume();
-                } else {
-                    console.log('Game Paused')
-                    cc.director.pause()
-                }
+                // if (cc.director.isPaused()) {
+                //     cc.director.resume();
+                // } else {
+                //     cc.director.pause()
+                // }
             } else if (keyCode == cc.macro.KEY.x) {
                 this.endGame();
             } else if (keyCode == cc.macro.KEY.h) {
@@ -247,7 +245,6 @@ export default class GameManager extends cc.Component {
         this.event.emit(GameManager.ON_GAME_END)
         await this.backgroundLayer.getChildByName('GameEndUI').getComponent(GameEndUI).slowlyShowUp();
         this.changeScene(GameManager.SCENE_RESULT);
-
     }
 
 
@@ -318,7 +315,7 @@ export default class GameManager extends cc.Component {
 
         await this.showLoading(1000);
 
-        let fixedUI, enemy, drop, upgradeUI, gameEndUI: cc.Node;
+        let fixedUI, enemy, drop, upgradeUI, gameEndUI, pauseUI: cc.Node;
         let gameStartUIPrefab: cc.Prefab;
 
         let promises = []
@@ -343,6 +340,13 @@ export default class GameManager extends cc.Component {
                 gameEndUI.setPosition(0, 0);
             })
         )
+        promises.push(
+            loadResource('Prefab/UI/GamePauseUI', cc.Prefab).then((prefab) => {
+                pauseUI = cc.instantiate(prefab) as unknown as cc.Node;
+                pauseUI.parent = this.backgroundLayer;
+                pauseUI.setPosition(0, 0);
+            }
+        ));
         promises.push(
             loadResource('Prefab/UI/GameStartUI', cc.Prefab).then((prefab) => {
                 gameStartUIPrefab = prefab as unknown as cc.Prefab;
