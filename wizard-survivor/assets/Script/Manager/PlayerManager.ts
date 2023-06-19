@@ -51,7 +51,7 @@ export default class PlayerManager extends cc.Component {
     如果是其他玩家，則每隔一段時間，接受房主傳來的位置，並更新。
      */
     public setUpSyncPlayerPosition(gameInfo: GameInfo){
-        const intervalSec = 0.1;
+        const intervalSec = 0.3;
         if (gameInfo.gameStartType === GameStartType.OFFLINE_1P ||
                 gameInfo.gameStartType === GameStartType.OFFLINE_2P ||
                     gameInfo.gameStartType === GameStartType.OFFLINE_3P){

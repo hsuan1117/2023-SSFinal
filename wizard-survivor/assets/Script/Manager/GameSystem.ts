@@ -206,8 +206,18 @@ export class RemoteGameSystem extends GameSystem {
                 if (evt_name === "ON_GAME_START") {
                     this.dispatchCreatePlayers();
                 }
+                if (evt_name === RemoteGameSystem.ON_BUFF_APPLY) {
+                    this._buffReadyToApply.push(data);
+                    if (this._buffReadyToApply.length >= GameManager.instance.playerManager.allPlayerIDs.length) {
+                        for (let bf of this._buffReadyToApply) {
+                            this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
+                        }
+                        this._buffReadyToApply = [];
+                    }
+                }
                 console.log('dispatch event', evt_name, data)
-                this.event.emit(evt_name, data);
+                if (evt_name !== RemoteGameSystem.ON_BUFF_APPLY)
+                    this.event.emit(evt_name, data);
             }
         });
     }
@@ -219,14 +229,14 @@ export class RemoteGameSystem extends GameSystem {
 
     // === PUBLIC METHODS ===
     public emitApplyBuff(uid: string, buffId: string): void {
-        this._buffReadyToApply.push({uid: uid, buffId: buffId});
-
+        this.echoInstance.join('room.' + this._gameInfo?.id).whisper(GameSystem.ON_BUFF_APPLY, {uid, buffId});
+        this._buffReadyToApply.push({uid, buffId});
         if (this._buffReadyToApply.length >= GameManager.instance.playerManager.allPlayerIDs.length) {
             for (let bf of this._buffReadyToApply) {
-                this.dispatchEvent(GameSystem.ON_BUFF_APPLY, bf);
+                this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
             }
+            this._buffReadyToApply = [];
         }
-        this._buffReadyToApply = [];
     }
 
     public emitPlayerHPChange(uid: string, deltaHP: number): void {
