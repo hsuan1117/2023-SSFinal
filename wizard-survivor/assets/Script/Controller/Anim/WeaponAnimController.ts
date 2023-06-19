@@ -26,7 +26,7 @@ export default class WeaponAnimController extends AnimController {
     };
 
     initState() {
-        this._state = {
+        this.state = {
             isAttacking: false,
             dontBreakAttackAnimCnt: 0
         }
@@ -34,11 +34,11 @@ export default class WeaponAnimController extends AnimController {
 
     protected onStateChange(oldState, newState): void {
         if (oldState === newState) return;
-        if (newState.isAttacking ){
+        if (newState.isAttacking){
             this.currentAnimState = this.anim.play(this.attackAnim);
         }
         else if (newState.isAttacking === false){
-            if (this.currentAnimState.name == this.attackAnim){
+            if (this.currentAnimState?.name == this.attackAnim){
                 this.anim.on('lastframe', () => this.currentAnimState = this.anim.play(this.idleAnim), this);
             }
             else{

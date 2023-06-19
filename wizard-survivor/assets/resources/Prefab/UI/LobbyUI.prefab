@@ -4513,7 +4513,7 @@
       "__id__": 122
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -4910,7 +4910,7 @@
       "__id__": 139
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -5307,7 +5307,7 @@
       "__id__": 156
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -5704,7 +5704,7 @@
       "__id__": 173
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -6101,7 +6101,7 @@
       "__id__": 190
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,

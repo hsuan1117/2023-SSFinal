@@ -59,10 +59,11 @@ export default class WeaponController extends cc.Component {
         this.node.getComponent(FaceTo).init(this.node)
         this.animCtrl = this.node.getComponent(WeaponAnimController);
         this.searchTarget = this.node.addComponent(SearchEnemy);
-        // this.range.onChangeCallback.push((val) => {
-        //     console.log('Range changed:', val);
-        //     this.searchTarget.searchRange = val;
-        // });
+
+        if (this.animCtrl){
+            this.animCtrl.initState();
+            console.log('Weapon, animCtrl.state, node.name', this.animCtrl.state, this.node.name);
+        }
     }
 
     update(dt){
@@ -77,7 +78,6 @@ export default class WeaponController extends cc.Component {
         }
 
         if (this.canAttack && this.shotCnt<this.shotPerAttack.value && this.nextShotCountDown <= 0){
-            if(this.animCtrl) this.animCtrl.state = {...this.animCtrl.state, isAttacking: true};
             this.shoot();
             this.nextShotCountDown = 1/this.shootSpeed.value;
             this.shotCnt++;
@@ -109,6 +109,7 @@ export default class WeaponController extends cc.Component {
     private shoot() {
         const target = this.searchTarget.getTarget();
         if (!target) return;
+        if(this.animCtrl) this.animCtrl.state = {...this.animCtrl.state, isAttacking: true};
 
         this.getComponent(FaceTo).setFaceTo(target);
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);

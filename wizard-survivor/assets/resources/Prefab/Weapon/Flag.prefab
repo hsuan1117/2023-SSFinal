@@ -248,6 +248,7 @@
       "__uuid__": "5d9c4c63-88b0-4ba1-98f5-cb6356445ee6"
     },
     "aimWeaponOwner": false,
+    "aimEnemy": false,
     "_id": ""
   },
   {
