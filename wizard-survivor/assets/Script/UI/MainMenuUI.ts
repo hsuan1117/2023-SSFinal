@@ -21,6 +21,7 @@ export enum GameType {
 export enum GameStartType {
     OFFLINE_1P,
     OFFLINE_2P,
+    OFFLINE_3P ,
     ONLINE_NEW_ROOM,
     ONLINE_JOIN_ROOM
 }

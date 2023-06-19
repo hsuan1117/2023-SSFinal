@@ -204,10 +204,6 @@ export class RemoteGameSystem extends GameSystem {
                 this.event.emit(evt_name, data);
             }
         });
-
-        setInterval(() => {
-            this.dispatchCurrentPositions()
-        }, 1000);
     }
 
     private dispatchEvent(evt, data) {
@@ -288,12 +284,18 @@ export class RemoteGameSystem extends GameSystem {
 
     public dispatchCurrentPositions() {
         if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
-            for (let p of GameManager.instance.playerManager.allPlayerIDs) {
-                this.dispatchEvent(RemoteGameSystem.ON_POSITION_SYNC, {
-                    uid: p,
-                    pos: GameManager.instance.playerManager.getPlayerNodeByID(p).position
-                });
+            // for (let p of GameManager.instance.playerManager.allPlayerIDs) {
+            //     this.dispatchEvent(RemoteGameSystem.ON_POSITION_SYNC, {
+            //         uid: p,
+            //         pos: GameManager.instance.playerManager.getPlayerNodeByID(p).position
+            //     });
+            // }
+            const data = {positions: {}};
+            for (let uid of GameManager.instance.playerManager.allPlayerIDs){
+                const node = GameManager.instance.playerManager.getPlayerNodeByID(uid).position;
+                data.positions[uid] = {x: node.x, y: node.y};
             }
+            this.dispatchEvent(RemoteGameSystem.ON_POSITION_SYNC, data);
         }
     }
 }

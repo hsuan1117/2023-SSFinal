@@ -8,7 +8,7 @@ import {createGameSystem, GameRecord, GameSystem} from "./GameSystem";
 import PlayerHPUI from "../UI/PlayerHPUI";
 import MapManager from "./MapManager";
 import LobbyUI from "../UI/LobbyUI";
-import MainMenuUI, {GameInfo} from "../UI/MainMenuUI";
+import MainMenuUI, {GameInfo, GameStartType} from "../UI/MainMenuUI";
 import ParticleManager from "./ParticleManager";
 import GameEndUI from "../UI/GameEndUI";
 import AudioManager from "./AudioManager";
@@ -215,6 +215,7 @@ export default class GameManager extends cc.Component {
         if (this._currentSceneType === GameManager.SCENE_GAME) {
             this._mapManager.clearMap();
             this._waveManager.clearWave();
+            this.playerManager.clearAllChara();
         }
         this._audioManager.stopBGM();
         this.destroyScene();
@@ -230,8 +231,8 @@ export default class GameManager extends cc.Component {
             this._mapManager.init();
             await this.generateGameScene();
             this._audioManager.playBGM('game2');
+            this.playerManager.setUpSyncPlayerPosition(this.gameSystem.gameInfo);
         } else if (sceneType === GameManager.SCENE_RESULT) {
-            this.playerManager.clearAllChara();
             await this.generateResultScene();
         }
         this._currentSceneType = sceneType;
@@ -367,7 +368,6 @@ export default class GameManager extends cc.Component {
         }
 
         await Promise.all(promises);
-
         this.event.emit(GameManager.ON_GAME_LOGIC_READY);
         this.hideLoading();
         cc.instantiate(gameStartUIPrefab).parent = this.bulletLayer;

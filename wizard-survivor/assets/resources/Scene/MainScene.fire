@@ -313,10 +313,10 @@
       "__id__": 5
     },
     "_enabled": true,
-    "_type": 3,
+    "_type": 1,
     "_allowSleep": true,
     "_gravityScale": 1,
-    "_linearDamping": 0,
+    "_linearDamping": 2,
     "_angularDamping": 0,
     "_linearVelocity": {
       "__type__": "cc.Vec2",

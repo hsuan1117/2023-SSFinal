@@ -57,6 +57,7 @@ export default class PlayerController extends cc.Component{
     public set dashCountDown(value: number){ this._dashCountDown = value }
     public get isInvincible(): number { return this._isInvincible }
     public set isInvincible(value: number){ this._isInvincible = value }
+    public set authorityPos(value: cc.Vec2){ this._authorityPos = value; }
 
     public uid: string = "";
     public mainWeapon: WeaponController = null;
@@ -78,6 +79,7 @@ export default class PlayerController extends cc.Component{
     private _isInvincible: number = 0;
 
     private movingDir: cc.Vec2 = cc.v2(0, 0);
+    private _authorityPos: cc.Vec2 = null;
 
     public normalMaterial: cc.Material = null;
     public hurtMaterial: cc.Material = null;
@@ -144,7 +146,9 @@ export default class PlayerController extends cc.Component{
 
         this._dashCountDown -= dt;
         if (!this.isDashing){
-            this.rb.linearVelocity = this.movingDir.mul(this.moveSpeed.value);
+            this.rb.linearVelocity =
+                this.movingDir.mul(this.moveSpeed.value).add(
+                    (this._authorityPos? this._authorityPos.sub( ignoreZ(this.node.position)) : cc.Vec2.ZERO));
         }
     }
 

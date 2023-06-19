@@ -1,11 +1,11 @@
 import GameManager from "./GameManager";
 import PlayerController from "../Controller/PlayerController";
-import InputManager, {ControllerConversion, Input, InputType} from "./InputManager";
+import InputManager, {Input, InputType} from "./InputManager";
 import {loadResource} from "../Helper/utils";
-import {GameSystem} from "./GameSystem";
+import {GameSystem, RemoteGameSystem} from "./GameSystem";
 import {Buffs} from "../Helper/Buff";
+import {GameInfo, GameStartType} from "../UI/MainMenuUI";
 import Game = cc.Game;
-import game = cc.game;
 
 const {ccclass, property} = cc._decorator;
 
@@ -45,6 +45,27 @@ export default class PlayerManager extends cc.Component {
     public getPlayer(id: string): PlayerController { return this.playerControllers[id]; }
     public getPlayerChara(id: string): string { return this.playerChara[id]; }
 
+    /*
+    如果非線上模式，則不理會。
+    如果是房主，每隔一段時間，將所有玩家的位置同步給其他玩家。
+    如果是其他玩家，則每隔一段時間，接受房主傳來的位置，並更新。
+     */
+    public setUpSyncPlayerPosition(gameInfo: GameInfo){
+        const intervalSec = 0.1;
+        if (gameInfo.gameStartType === GameStartType.OFFLINE_1P ||
+                gameInfo.gameStartType === GameStartType.OFFLINE_2P ||
+                    gameInfo.gameStartType === GameStartType.OFFLINE_3P){
+            return;
+        }
+
+        if (gameInfo.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
+            this.schedule(this.broadcastAuthorityPos.bind(this), intervalSec);
+        }
+        else if (gameInfo.gameStartType === GameStartType.ONLINE_JOIN_ROOM) {
+            GameManager.instance.gameSystem.event.on(RemoteGameSystem.ON_POSITION_SYNC, this.onPositionSync, this);
+        }
+    }
+
     public async instantiatePlayer(uid: string){
         return await loadResource(`Prefab/Chara/${this.playerChara[uid]}`, cc.Prefab)
             .then((prefab) =>{
@@ -69,10 +90,26 @@ export default class PlayerManager extends cc.Component {
         this.playerChara = {};
         this.playerControllers = {};
         this.playerDeltaHp = {};
+        this.unschedule(this.broadcastAuthorityPos.bind(this));
+        if (GameManager.instance.gameSystem instanceof RemoteGameSystem)
+            GameManager.instance.gameSystem.event.off(RemoteGameSystem.ON_POSITION_SYNC, this.onPositionSync, this);
     }
 
 
     // HELPERS
+    private onPositionSync(e: { positions: {[uid: string] : {x: number, y: number}}}){
+        for (const uid in e.positions){
+            const pos = e.positions[uid];
+            this.playerControllers[uid].authorityPos = cc.v2(pos.x, pos.y);
+        }
+    }
+
+    private broadcastAuthorityPos(){
+        if (GameManager.instance.gameSystem instanceof RemoteGameSystem){
+            (GameManager.instance.gameSystem as RemoteGameSystem).dispatchCurrentPositions();
+        }
+    }
+
     private createPlayer({uid, charaId}){
         console.log(`Create player ${uid} with chara ${charaId}`);
         if (this.playerIds.includes(uid)) return;
