@@ -128,9 +128,15 @@ export class GameSystem {
             level: 0,
             coin: 0
         }
-        data.level += gameRecord.level
+        const history = localStorage.getItem('gameHistory') ? JSON.parse(localStorage.getItem('gameHistory')) : []
+        data.level = Math.max(data.level, gameRecord.level)
         data.coin += gameRecord.personal_coin
+        history.push({
+            level: gameRecord.level,
+            created_at: new Date().toISOString()
+        })
         localStorage.setItem('gameRecord', JSON.stringify(data))
+        localStorage.setItem('gameHistory', JSON.stringify(history))
     }
 
     public async getGameRecord(): Promise<{
@@ -291,7 +297,7 @@ export class RemoteGameSystem extends GameSystem {
             //     });
             // }
             const data = {positions: {}};
-            for (let uid of GameManager.instance.playerManager.allPlayerIDs){
+            for (let uid of GameManager.instance.playerManager.allPlayerIDs) {
                 const node = GameManager.instance.playerManager.getPlayerNodeByID(uid).position;
                 data.positions[uid] = {x: node.x, y: node.y};
             }

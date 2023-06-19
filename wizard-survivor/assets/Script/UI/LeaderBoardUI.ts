@@ -2,13 +2,14 @@ import {api} from "../Helper/utils";
 import GameManager from "../Manager/GameManager";
 import InputManager, {Input, InputType} from "../Manager/InputManager";
 import PlayerController from "../Controller/PlayerController";
+import {GameStartType} from "./MainMenuUI";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class LeaderBoardUI extends cc.Component {
 
-    private _interactableHint: cc.Node = null;;
+    private _interactableHint: cc.Node = null;
     private _leaderBoard: cc.Node = null;
     private _isCollide: { [uid: string]: boolean } = {};
     private _isOn: boolean = false;
@@ -22,10 +23,20 @@ export default class LeaderBoardUI extends cc.Component {
         return await api("GET", `/scoreboard?limit=${queryLimit}`)
     }
 
-    onLoad() {
+    async onLoad() {
         this._leaderBoard = this.node.getChildByName('Leaderboard');
         this._interactableHint = this.node.getChildByName('InteractableHint');
         this._interactableHint.opacity = 0;
+        this._leaderBoard.getChildByName('Coin').getChildByName("CoinIcon").opacity = 0;
+        if (GameManager.instance.gameSystem.gameInfo.gameType === 0) {
+            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = (await this.getScoreBoard()).map((userData: any) => (
+                `[${userData.email.split("@")[0].padEnd(8, " ")}] 最高等級 ${userData.level} | ${new Date(userData.updated_at).toLocaleDateString()}`
+            )).join('\n');
+        } else {
+            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = JSON.parse(localStorage.getItem('gameHistory')).sort(x => x.level).map((record: any) => (
+                `[離線模式    ] 最高等級 ${record.level} | ${new Date(record.created_at).toLocaleDateString()}`
+            )).join('\n');
+        }
     }
 
     onEnable() {
@@ -64,13 +75,13 @@ export default class LeaderBoardUI extends cc.Component {
             this.popDown();
     }
 
-    private popUp(){
+    private popUp() {
         this._isOn = true;
         this._leaderBoard.opacity = 255;
         // GameManager.instance.pauseGame();
     }
 
-    private popDown(){
+    private popDown() {
         this._isOn = false;
         this._leaderBoard.opacity = 0;
         // GameManager.instance.resumeGame();
