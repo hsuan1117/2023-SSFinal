@@ -149,7 +149,7 @@
     },
     "posVar": {
       "__type__": "cc.Vec2",
-      "x": 10,
+      "x": 5,
       "y": 0
     },
     "_positionType": 1,

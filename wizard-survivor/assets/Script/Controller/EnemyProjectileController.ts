@@ -46,7 +46,7 @@ export default class EnemyProjectileController extends cc.Component {
 
     onBeginContact(contact: cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider) {
         const player = other.getComponent(PlayerController);
-        if (other.node.name == "SurroundShield") {
+        if (other.node.name == "SurroundShield" || other.node.name == "ExcaliburProj") {
             this.deleteProjectile();
             return;
         }
