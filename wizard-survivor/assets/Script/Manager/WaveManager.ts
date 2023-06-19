@@ -68,8 +68,8 @@ export default class WaveManager extends cc.Component {
     private currentWaveNum: number = 0;
 
     public setWave(wave: number){
-        if (this.waveData.json[wave] === undefined) {
-            this.currentWave = wave;
+        if (this.waveData.json[wave] == undefined) {
+            this.currentWaveNum = wave;
             return;
         }
         this.currentWave = this.waveData.json[wave];
