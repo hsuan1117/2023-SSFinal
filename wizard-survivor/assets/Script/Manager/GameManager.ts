@@ -198,8 +198,10 @@ export default class GameManager extends cc.Component {
             }
         });
         this.level.onChangeCallback.push(() => {
-            this.event.emit(GameManager.ON_LEVEL_UP);
-            this.upgrade();
+            if (this.level.value > 1){
+                this.event.emit(GameManager.ON_LEVEL_UP);
+                this.upgrade();
+            }
         });
     }
 
@@ -212,12 +214,16 @@ export default class GameManager extends cc.Component {
 
     /* === PUBLIC METHODS === */
     public pauseGame() {
+        console.log('pause game');
         this._isPaused = true;
+        this._audioManager.mute();
         cc.director.pause();
     }
 
     public resumeGame() {
+        console.log('resume game');
         cc.director.resume();
+        this._audioManager.unmute();
         this._isPaused = false;
     }
 
@@ -313,6 +319,8 @@ export default class GameManager extends cc.Component {
     private async generateGameScene() {
         this.buildLayers();
 
+        this.level.reset();
+        this.level.defaultValue = 1;
         this.exp.reset();
         this.exp.defaultValue = 0;
         this.coinCnt.reset();

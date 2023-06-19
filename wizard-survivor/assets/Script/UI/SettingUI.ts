@@ -55,22 +55,14 @@ export default class SettingUI extends cc.Component {
             this.popDown();
         }
         this.command['ToggleMusic'] = () => {
-            if (this._bgmVolume == 0) {
-                this._bgmVolume = 1;
-            }
-            else {
-                this._bgmVolume = 0;
-            }
-            cc.audioEngine.setMusicVolume(this._bgmVolume);
+            GameManager.instance.audioManager.bgmVolume = (
+                GameManager.instance.audioManager.bgmVolume == 0 ? 1 : 0
+            );
         }
         this.command['ToggleSoundEffect'] = () => {
-            if (this._soundEffectVolume == 0) {
-                this._soundEffectVolume = 1;
-            }
-            else {
-                this._soundEffectVolume = 0;
-            }
-            cc.audioEngine.setEffectsVolume(this._soundEffectVolume);
+            GameManager.instance.audioManager.effectVolume = (
+                GameManager.instance.audioManager.effectVolume == 0 ? 1 : 0
+            );
         }
         this.popDown();
     }

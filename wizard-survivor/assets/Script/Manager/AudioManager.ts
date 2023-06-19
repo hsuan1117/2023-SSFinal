@@ -7,6 +7,14 @@ export default class AudioManager extends cc.Component {
 
     private effectLists: {[effectName: string]: cc.AudioClip} = {};
 
+    public get bgmVolume() { return cc.audioEngine.getMusicVolume(); }
+    public get effectVolume() { return cc.audioEngine.getEffectsVolume(); }
+    public set bgmVolume(volume: number) { cc.audioEngine.setMusicVolume(volume); }
+    public set effectVolume(volume: number) { cc.audioEngine.setEffectsVolume(volume); }
+
+    private _bgmVolumeBeforeMute: number = 1;
+    private _effectVolumeBeforeMute: number = 1;
+
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -25,13 +33,18 @@ export default class AudioManager extends cc.Component {
         });
     }
 
-    // Set a volume between 0 and 1
-    public setBGMVolume(volume: number){
-        cc.audioEngine.setMusicVolume(volume);
+    // mute 會把音量調成 0，但會記住原本的音量，unmute 會把音量調回原本的音量
+    public mute(){
+        this._bgmVolumeBeforeMute = this.bgmVolume;
+        this._effectVolumeBeforeMute = this.effectVolume;
+        this.bgmVolume = 0;
+        this.effectVolume = 0;
     }
 
-    public setEffectVolume(volume: number){
-        cc.audioEngine.setEffectsVolume(volume);
+    // mute 會把音量調成 0，但會記住原本的音量，unmute 會把音量調回原本的音量
+    public unmute(){
+        this.bgmVolume = this._bgmVolumeBeforeMute;
+        this.effectVolume = this._effectVolumeBeforeMute;
     }
 
     public stopBGM(){
@@ -45,6 +58,4 @@ export default class AudioManager extends cc.Component {
         this.stopBGM();
         cc.audioEngine.playMusic(this.bgmLists[bgmName], loop);
     }
-
-    // update (dt) {}
 }
