@@ -14,6 +14,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class FixedUI extends cc.Component {
 
+    private _timer: number;
+    private _timerLabel: cc.Label;
     private coinLabel: cc.Label;
     private uids: string[];
 
@@ -23,6 +25,11 @@ export default class FixedUI extends cc.Component {
         this.coinLabel = this.node.getChildByName('Coin')
             .getChildByName('Label')
             .getComponent(cc.Label);
+        this._timerLabel =
+            this.node.getChildByName('Timer')
+            .getChildByName('Label')
+            .getComponent(cc.Label);
+        this._timer = 0;
     }
 
     onEnable(){
@@ -33,10 +40,8 @@ export default class FixedUI extends cc.Component {
     onDisable(){
         GameManager.instance.event.off(GameManager.ON_GAME_LOGIC_READY,  this.onGameReady, this);
         GameManager.instance.event.off(GameManager.ON_GAME_STAT_CHANGE,  this.onGameStatChange, this);
+        this.unschedule(this.updateTimer);
     }
-
-
-    // PUBLIC METHODS:
 
 
     // HELPERS:
@@ -46,6 +51,7 @@ export default class FixedUI extends cc.Component {
             this.enablePlayerStatUIForPlayer(id, childIdx++);
         }
         this.onGameStatChange();
+        this.schedule(this.updateTimer, 1);
     }
 
     private enablePlayerStatUIForPlayer(uid: string, childIdx: number){
@@ -58,5 +64,10 @@ export default class FixedUI extends cc.Component {
 
     private onGameStatChange(){
         this.coinLabel.string = `X ${GameManager.instance.coinCnt.value.toString()}`;
+    }
+
+    private updateTimer(){
+        this._timer++;
+        this._timerLabel.string = this._timer.toString();
     }
 }
