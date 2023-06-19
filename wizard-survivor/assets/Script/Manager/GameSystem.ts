@@ -71,10 +71,14 @@ export class GameSystem {
      */
     public static readonly ON_GAME_END: string = "ON_GAME_END";
 
+    public get gameInfo(): GameInfo { return this._gameInfo; }
+
+    protected _gameInfo: GameInfo;
     private buffReadyToApply: { uid: string, buffId: string }[] = [];
 
-    constructor() {
+    constructor(gameInfo: GameInfo) {
         this.event = new cc.EventTarget();
+        this._gameInfo = gameInfo;
     }
 
 
@@ -148,8 +152,12 @@ export class GameSystem {
 }
 
 export class RemoteGameSystem extends GameSystem {
+    /*事件：來自房主 Client 的位置同步
+
+    passed even data: { positions: {[uid: string] : {x: number, y: number}} }*/
+    public static readonly ON_POSITION_SYNC: string = "ON_POSITION_SYNC";
+
     public echoInstance: Echo;
-    private gameInfo: GameInfo;
     private mem_createPlayer: { uid: string, charaId: string }[] = [];
     private _buffReadyToApply: { uid: string, buffId: string }[] = [];
 
@@ -175,12 +183,12 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     constructor(gameInfo: GameInfo) {
-        super();
+        super(gameInfo);
         this.createEchoInstanceFromToken(localStorage.getItem('token'))
-        this.gameInfo = gameInfo;
+        this._gameInfo = gameInfo;
 
         // @ts-ignore
-        this.echoInstance.join('room.' + this.gameInfo?.id).listenToAll((evt, data) => {
+        this.echoInstance.join('room.' + this._gameInfo?.id).listenToAll((evt, data) => {
             console.log('receive event', evt, data)
             if (evt.startsWith('.client-')) {
                 const evt_name = evt.split('client-')[1];
@@ -198,7 +206,7 @@ export class RemoteGameSystem extends GameSystem {
 
     private dispatchEvent(evt, data) {
         this.event.emit(evt, data);
-        this.echoInstance.join('room.' + this.gameInfo?.id).whisper(evt, data);
+        this.echoInstance.join('room.' + this._gameInfo?.id).whisper(evt, data);
     }
 
     // === PUBLIC METHODS ===
@@ -238,7 +246,7 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     private dispatchCreatePlayers() {
-        if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
+        if (this._gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
             for (let p of this.mem_createPlayer) {
                 this.dispatchEvent(GameSystem.ON_CREATE_PLAYER, {
                     uid: p.uid,
@@ -249,13 +257,13 @@ export class RemoteGameSystem extends GameSystem {
     }
 
     public emitGameStart() {
-        api("POST", `/rooms/${this.gameInfo.id}/start`, {}).then(r => r);
+        api("POST", `/rooms/${this._gameInfo.id}/start`, {}).then(r => r);
         this.dispatchCreatePlayers();
         this.dispatchEvent(GameSystem.ON_GAME_START, {});
     }
 
     public async saveGameRecord({level, personal_coin}: GameRecord) {
-        await api("POST", `/rooms/${this.gameInfo.id}/end`, {
+        await api("POST", `/rooms/${this._gameInfo.id}/end`, {
             level,
             personal_coin
         });
@@ -280,7 +288,7 @@ export class RemoteGameSystem extends GameSystem {
  * */
 export function createGameSystem(gameInfo: GameInfo): GameSystem {
     if (gameInfo.gameType === GameType.OFFLINE)
-        return new GameSystem();
+        return new GameSystem(gameInfo);
     else if (gameInfo.gameType === GameType.ONLINE) {
         // @ts-ignore
         window.Pusher = require('pusher-js');
