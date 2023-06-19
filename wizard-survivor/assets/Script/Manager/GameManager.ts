@@ -13,6 +13,7 @@ import ParticleManager from "./ParticleManager";
 import GameEndUI from "../UI/GameEndUI";
 import AudioManager from "./AudioManager";
 import RandomGenerator from "../Helper/RandomGenerator";
+import CameraController from "../Controller/CameraController";
 
 
 const {ccclass, property} = cc._decorator;
@@ -73,6 +74,7 @@ export default class GameManager extends cc.Component {
     public get backgroundLayer(): cc.Node {return this._backgroundLayer;}
     public get currentSceneType(): string {return this._currentSceneType;}
     public get isPaused(): boolean {return this._isPaused;}
+    public get mainCamera(): CameraController {return this._mainCamera;}
     public get gameRecord(): GameRecord {
         return {
             level: this.level.value,
@@ -119,7 +121,11 @@ export default class GameManager extends cc.Component {
     private _playerEnemyLayer: cc.Node;
     private _bulletLayer: cc.Node;
 
+    private _mainCamera: CameraController;
+
     private _localUids: string[];
+
+
 
 
     /* == LIFE-CYCLE CALLBACKS == */
@@ -129,6 +135,8 @@ export default class GameManager extends cc.Component {
         cc.director.getCollisionManager().enabled = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true;
         cc.game.addPersistRootNode(this.node);
+
+        this._mainCamera = cc.find('Main Camera').getComponent(CameraController);
 
         this._inputManager = this.node.addComponent(InputManager);
         this._poolManager = this.node.addComponent(PoolManager);

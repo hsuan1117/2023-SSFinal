@@ -35,4 +35,15 @@ export default class CameraController extends cc.Component {
             this.node.setPosition(this.initPos);
         }
     }
+
+    public shake(){
+        const shakeDistance = 4;
+        const shakeAction = cc.sequence(
+            cc.moveBy(0.02, cc.v2(shakeDistance, shakeDistance)),
+            cc.moveBy(0.05, cc.v2(-shakeDistance, -shakeDistance)),
+            cc.moveBy(0.05, cc.v2(-shakeDistance, -shakeDistance)),
+            cc.moveBy(0.05, cc.v2(shakeDistance, shakeDistance)),
+        );
+        this.node.runAction(shakeAction);
+    }
 }
