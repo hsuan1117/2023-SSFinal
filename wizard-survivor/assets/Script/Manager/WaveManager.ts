@@ -135,7 +135,7 @@ export default class WaveManager extends cc.Component {
             }
         }
 
-        if (WaveManager.dropCount > 50) {
+        if (WaveManager.dropCount > 40) {
             let id = GameManager.instance.playerManager.allPlayerIDs[0];
             let player = GameManager.instance.playerManager.getPlayer(id);
             for (const drop of GameManager.instance.itemLayer.children) {

@@ -89,12 +89,12 @@ export default class GameManager extends cc.Component {
     public loadingUIPrefab: cc.Prefab = null;
 
     /*每升一等，升等需要的經驗會增加多少百分比*/
-    private readonly UPGRADE_EXP_GROWTH: number = 30;
+    private readonly UPGRADE_EXP_GROWTH: number = 40;
 
     /* === 局內、玩家共享遊戲狀態 === */
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
-    public upgradeExp: AttrNum = new AttrNum(12);
+    public upgradeExp: AttrNum = new AttrNum(15);
     public level: AttrNum = new AttrNum(1);
     public exp: AttrNum = new AttrNum(0);
 
