@@ -35,6 +35,7 @@ export default class BumpingMonster extends EnemyController {
     }
 
     update (dt) {
+        if (this.isDead) return;
         if (this.skillCoolDownTime >= this.skillCoolDown.value  && this.bumpingTime < 0 && this.findClosestPlayer().sub(this.node.position).mag() < this.triggerRadius.value) {
             this.skillTrigger();
             return;

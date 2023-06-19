@@ -335,6 +335,9 @@
     "enemyHurtAnim": "GolinStand",
     "enemyDeadAnim": "GoblinDie",
     "enemySkillAnim": "GolinStand",
+    "enemyDieSprite": {
+      "__uuid__": "d83b1c61-6e36-44c5-bb8e-e3ff57b21a92"
+    },
     "_id": ""
   },
   {

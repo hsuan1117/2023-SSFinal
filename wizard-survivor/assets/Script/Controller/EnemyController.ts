@@ -90,6 +90,7 @@ export default class EnemyController extends cc.Component {
          this.searchable = true;
          this._collider.enabled = true;
          this.isDead = false;
+         this.node.scaleY = 1;
     }
 
     private flashEnd() {
@@ -161,8 +162,8 @@ export default class EnemyController extends cc.Component {
     }
 
     protected dead(killByUid: string) {
-         if (this.isDead) return;
          this.isDead = true;
+         this.node.scaleY = 0.8;
          this.rb.linearVelocity = ignoreZ(this.node.position.sub(GameManager.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
          this.animCtrl.state = {...this.animCtrl.state, isDead: true};
          GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {

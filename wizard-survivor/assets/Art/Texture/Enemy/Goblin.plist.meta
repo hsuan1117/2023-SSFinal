@@ -199,7 +199,7 @@
       "importer": "sprite-frame",
       "rawTextureUuid": "75730b1e-a9d1-469c-bd43-67b4ab3c0600",
       "trimType": "auto",
-      "trimThreshold": 1,
+      "trimThreshold": 34,
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,

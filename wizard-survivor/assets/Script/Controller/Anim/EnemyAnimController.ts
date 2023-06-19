@@ -20,6 +20,9 @@ export default class EnemyAnimController extends AnimController {
     @property()
     public enemySkillAnim: string = 'enemy_skill';
 
+    @property(cc.SpriteFrame)
+    public enemyDieSprite: cc.SpriteFrame = null;
+
     protected _state = {
         isMoving: false,
         isDead: false,
@@ -53,7 +56,11 @@ export default class EnemyAnimController extends AnimController {
         this.anim.stop();
 
         if (newState.isDead && !oldState.isDead) {
-            this.anim.play(this.enemyDeadAnim);
+            if (this.enemyDieSprite) {
+                this.anim.node.getComponent(cc.Sprite).spriteFrame = this.enemyDieSprite;
+            } else {
+                this.anim.play(this.enemyDeadAnim);
+            }
         }
         else if (newState.isSkill) {
             this.anim.play(this.enemySkillAnim);
