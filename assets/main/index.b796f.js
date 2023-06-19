@@ -7377,8 +7377,15 @@ window.__require = function e(t, n, r) {
             const evt_name = evt.split("client-")[1];
             "ON_CREATE_PLAYER" === evt_name && this.mem_createPlayer.push(data);
             "ON_GAME_START" === evt_name && this.dispatchCreatePlayers();
+            if (evt_name === RemoteGameSystem.ON_BUFF_APPLY) {
+              this._buffReadyToApply.push(data);
+              if (this._buffReadyToApply.length >= GameManager_1.default.instance.playerManager.allPlayerIDs.length) {
+                for (let bf of this._buffReadyToApply) this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
+                this._buffReadyToApply = [];
+              }
+            }
             console.log("dispatch event", evt_name, data);
-            this.event.emit(evt_name, data);
+            evt_name !== RemoteGameSystem.ON_BUFF_APPLY && this.event.emit(evt_name, data);
           }
         });
       }
@@ -7405,12 +7412,19 @@ window.__require = function e(t, n, r) {
         this.echoInstance.join("room." + (null === (_a = this._gameInfo) || void 0 === _a ? void 0 : _a.id)).whisper(evt, data);
       }
       emitApplyBuff(uid, buffId) {
+        var _a;
+        this.echoInstance.join("room." + (null === (_a = this._gameInfo) || void 0 === _a ? void 0 : _a.id)).whisper(GameSystem.ON_BUFF_APPLY, {
+          uid: uid,
+          buffId: buffId
+        });
         this._buffReadyToApply.push({
           uid: uid,
           buffId: buffId
         });
-        if (this._buffReadyToApply.length >= GameManager_1.default.instance.playerManager.allPlayerIDs.length) for (let bf of this._buffReadyToApply) this.dispatchEvent(GameSystem.ON_BUFF_APPLY, bf);
-        this._buffReadyToApply = [];
+        if (this._buffReadyToApply.length >= GameManager_1.default.instance.playerManager.allPlayerIDs.length) {
+          for (let bf of this._buffReadyToApply) this.event.emit(GameSystem.ON_BUFF_APPLY, bf);
+          this._buffReadyToApply = [];
+        }
       }
       emitPlayerHPChange(uid, deltaHP) {
         this.dispatchEvent(GameSystem.ON_PLAYER_HP_CHANGE, {
@@ -8888,7 +8902,7 @@ window.__require = function e(t, n, r) {
         return this.playerChara[id];
       }
       setUpSyncPlayerPosition(gameInfo) {
-        const intervalSec = .1;
+        const intervalSec = .3;
         if (gameInfo.gameStartType === MainMenuUI_1.GameStartType.OFFLINE_1P || gameInfo.gameStartType === MainMenuUI_1.GameStartType.OFFLINE_2P || gameInfo.gameStartType === MainMenuUI_1.GameStartType.OFFLINE_3P) return;
         gameInfo.gameStartType === MainMenuUI_1.GameStartType.ONLINE_NEW_ROOM ? this.schedule(this.broadcastAuthorityPos.bind(this), intervalSec) : gameInfo.gameStartType === MainMenuUI_1.GameStartType.ONLINE_JOIN_ROOM && GameManager_1.default.instance.gameSystem.event.on(GameSystem_1.RemoteGameSystem.ON_POSITION_SYNC, this.onPositionSync, this);
       }
@@ -9810,14 +9824,15 @@ window.__require = function e(t, n, r) {
         this.idleAnim = "idle";
       }
       initState() {
-        this._state = {
+        this.state = {
           isAttacking: false,
           dontBreakAttackAnimCnt: 0
         };
       }
       onStateChange(oldState, newState) {
+        var _a;
         if (oldState === newState) return;
-        newState.isAttacking ? this.currentAnimState = this.anim.play(this.attackAnim) : false === newState.isAttacking && (this.currentAnimState.name == this.attackAnim ? this.anim.on("lastframe", () => this.currentAnimState = this.anim.play(this.idleAnim), this) : this.currentAnimState = this.anim.play(this.idleAnim));
+        newState.isAttacking ? this.currentAnimState = this.anim.play(this.attackAnim) : false === newState.isAttacking && ((null === (_a = this.currentAnimState) || void 0 === _a ? void 0 : _a.name) == this.attackAnim ? this.anim.on("lastframe", () => this.currentAnimState = this.anim.play(this.idleAnim), this) : this.currentAnimState = this.anim.play(this.idleAnim));
       }
     };
     __decorate([ property() ], WeaponAnimController.prototype, "attackAnim", void 0);
@@ -9874,6 +9889,10 @@ window.__require = function e(t, n, r) {
         this.node.getComponent(FaceTo_1.default).init(this.node);
         this.animCtrl = this.node.getComponent(WeaponAnimController_1.default);
         this.searchTarget = this.node.addComponent(SearchEnemy_1.default);
+        if (this.animCtrl) {
+          this.animCtrl.initState();
+          console.log("Weapon, animCtrl.state, node.name", this.animCtrl.state, this.node.name);
+        }
       }
       update(dt) {
         this.nextShotCountDown -= dt;
@@ -9885,9 +9904,6 @@ window.__require = function e(t, n, r) {
           this.bounceDirIdx = Math.floor(8 * Math.random());
         }
         if (this.canAttack && this.shotCnt < this.shotPerAttack.value && this.nextShotCountDown <= 0) {
-          this.animCtrl && (this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
-            isAttacking: true
-          }));
           this.shoot();
           this.nextShotCountDown = 1 / this.shootSpeed.value;
           this.shotCnt++;
@@ -9913,6 +9929,9 @@ window.__require = function e(t, n, r) {
       shoot() {
         const target = this.searchTarget.getTarget();
         if (!target) return;
+        this.animCtrl && (this.animCtrl.state = Object.assign(Object.assign({}, this.animCtrl.state), {
+          isAttacking: true
+        }));
         this.getComponent(FaceTo_1.default).setFaceTo(target);
         const projectile = GameManager_1.default.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController_1.default);
         const pos = GameManager_1.default.instance.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v2(0, 0)));
