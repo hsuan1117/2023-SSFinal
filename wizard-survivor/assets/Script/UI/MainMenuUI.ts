@@ -142,8 +142,9 @@ export default class MainMenuUI extends cc.Component {
             return;
         }
 
-        const {token} = res;
+        const {token, user} = res;
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
 
         if (this.roomType) {
             this.node.getChildByName("AuthDialog").active = false;
