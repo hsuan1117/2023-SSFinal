@@ -318,13 +318,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 1.48,
+      "y": -1.32
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 15.3,
-      "height": 30.7
+      "height": 22.3
     },
     "_id": ""
   },
