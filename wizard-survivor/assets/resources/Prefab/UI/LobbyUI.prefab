@@ -46,25 +46,22 @@
       },
       {
         "__id__": 190
-      },
-      {
-        "__id__": 207
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 224
+        "__id__": 207
       },
       {
-        "__id__": 225
+        "__id__": 208
       },
       {
-        "__id__": 226
+        "__id__": 209
       }
     ],
     "_prefab": {
-      "__id__": 227
+      "__id__": 210
     },
     "_opacity": 255,
     "_color": {
@@ -3587,7 +3584,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 183.16,
+      "width": 0,
       "height": 126
     },
     "_anchorPoint": {
@@ -4242,7 +4239,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Skeleton",
+    "_name": "Assassin",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -4298,8 +4295,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -126,
-        0,
+        -127,
+        62,
         0,
         0,
         0,
@@ -4353,7 +4350,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 25,
+      "width": 31,
       "height": 25
     },
     "_anchorPoint": {
@@ -4406,7 +4403,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "341ebf9d-f26c-40e2-abde-2029b372a12d"
+      "__uuid__": "df47de03-f99f-4ddc-a3c0-58ab802cde92"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4420,7 +4417,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "74488066-c1d8-4d3c-8c03-7b16975c7464"
+      "__uuid__": "a5120d71-2e64-46ea-bdf7-1c1f2eff595d"
     },
     "_id": ""
   },
@@ -4433,17 +4430,17 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
+      "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
     },
     "_clips": [
       {
-        "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
+        "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
       },
       {
-        "__uuid__": "d7a44610-592a-4fd7-8ebd-54728e044c75"
+        "__uuid__": "414cd981-2734-4d1a-bacc-7f49eb063773"
       },
       {
-        "__uuid__": "ad358327-de3b-4731-bf85-be4b01a9d058"
+        "__uuid__": "166ba0a8-3f34-4ac7-b35a-e00ec13116b4"
       }
     ],
     "playOnLoad": true,
@@ -4455,9 +4452,9 @@
       "__id__": 122
     },
     "asset": {
-      "__uuid__": "bdd26768-a6ab-4409-864b-908134ae0bcc"
+      "__uuid__": "9e0e0f12-0077-49b6-9723-7bf26c3877a0"
     },
-    "fileId": "50SAL+7+tILKgMr7ggziAY",
+    "fileId": "00g8A7MT9POLPTAC0ISD62",
     "sync": false
   },
   {
@@ -4484,21 +4481,13 @@
       "__id__": 132
     },
     "mainWeaponPrefab": {
-      "__uuid__": "fe1b44cb-5393-4c03-bb03-947644299c4a"
+      "__uuid__": "2a4e343b-3fac-4d5d-a0a7-4d0c66d7b387"
     },
     "_id": ""
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 120
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 5
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
+    "_defaultValue": 150
   },
   {
     "__type__": "AttrNum",
@@ -4506,7 +4495,15 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 500
+    "_defaultValue": 100
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 2
+  },
+  {
+    "__type__": "AttrNum",
+    "_defaultValue": 700
   },
   {
     "__type__": "cc.RigidBody",
@@ -4549,14 +4546,32 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 1.6,
+      "y": 0.7
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 15.3,
-      "height": 30.7
+      "height": 19.6
     },
+    "_id": ""
+  },
+  {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 122
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 125
+    },
+    "playerIdleAnim": "AssassinStand",
+    "playerMoveAnim": "AssassinWalk",
+    "playerDashAnim": "AssassinWalk",
+    "playerHurtAnim": "AssassinStand",
+    "playerDeadAnim": "AssassinDead",
     "_id": ""
   },
   {
@@ -4592,24 +4607,6 @@
     "_id": ""
   },
   {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 122
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 125
-    },
-    "playerIdleAnim": "SkeletonStand",
-    "playerMoveAnim": "SkeletonWalk",
-    "playerDashAnim": "SkeletonStand",
-    "playerHurtAnim": "SkeletonStand",
-    "playerDeadAnim": "SkeletonDead",
-    "_id": ""
-  },
-  {
     "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
@@ -4632,14 +4629,14 @@
       "__id__": 122
     },
     "asset": {
-      "__uuid__": "bdd26768-a6ab-4409-864b-908134ae0bcc"
+      "__uuid__": "9e0e0f12-0077-49b6-9723-7bf26c3877a0"
     },
-    "fileId": "e3B4WZQWpLTpYemPN7W4sd",
+    "fileId": "e03vOY5hBIkJIYxVXS8nRy",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "Assassin",
+    "_name": "Skeleton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -4695,8 +4692,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -61,
-        0,
+        100,
+        67,
         0,
         0,
         0,
@@ -4750,7 +4747,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 31,
+      "width": 25,
       "height": 25
     },
     "_anchorPoint": {
@@ -4803,7 +4800,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "df47de03-f99f-4ddc-a3c0-58ab802cde92"
+      "__uuid__": "341ebf9d-f26c-40e2-abde-2029b372a12d"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4817,7 +4814,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "a5120d71-2e64-46ea-bdf7-1c1f2eff595d"
+      "__uuid__": "74488066-c1d8-4d3c-8c03-7b16975c7464"
     },
     "_id": ""
   },
@@ -4830,17 +4827,17 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
+      "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
     },
     "_clips": [
       {
-        "__uuid__": "720e2caa-c56d-48de-ad75-ac5dc0f4990f"
+        "__uuid__": "84ce8b63-7d90-4566-8c6d-b5965239b3de"
       },
       {
-        "__uuid__": "414cd981-2734-4d1a-bacc-7f49eb063773"
+        "__uuid__": "d7a44610-592a-4fd7-8ebd-54728e044c75"
       },
       {
-        "__uuid__": "166ba0a8-3f34-4ac7-b35a-e00ec13116b4"
+        "__uuid__": "ad358327-de3b-4731-bf85-be4b01a9d058"
       }
     ],
     "playOnLoad": true,
@@ -4852,9 +4849,9 @@
       "__id__": 139
     },
     "asset": {
-      "__uuid__": "9e0e0f12-0077-49b6-9723-7bf26c3877a0"
+      "__uuid__": "bdd26768-a6ab-4409-864b-908134ae0bcc"
     },
-    "fileId": "a349DbmONCPqR3qteSt+5h",
+    "fileId": "00g8A7MT9POLPTAC0ISD62",
     "sync": false
   },
   {
@@ -4881,17 +4878,17 @@
       "__id__": 149
     },
     "mainWeaponPrefab": {
-      "__uuid__": "2a4e343b-3fac-4d5d-a0a7-4d0c66d7b387"
+      "__uuid__": "fe1b44cb-5393-4c03-bb03-947644299c4a"
     },
     "_id": ""
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 150
+    "_defaultValue": 120
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 4
+    "_defaultValue": 5
   },
   {
     "__type__": "AttrNum",
@@ -4899,11 +4896,11 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 2
+    "_defaultValue": 4
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 700
+    "_defaultValue": 500
   },
   {
     "__type__": "cc.RigidBody",
@@ -4946,32 +4943,14 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 0.61,
+      "y": 0.52
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 15.3,
-      "height": 30.7
+      "height": 22.03
     },
-    "_id": ""
-  },
-  {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 139
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 142
-    },
-    "playerIdleAnim": "AssassinStand",
-    "playerMoveAnim": "AssassinWalk",
-    "playerDashAnim": "AssassinWalk",
-    "playerHurtAnim": "AssassinStand",
-    "playerDeadAnim": "AssassinDead",
     "_id": ""
   },
   {
@@ -5007,6 +4986,24 @@
     "_id": ""
   },
   {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 139
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 142
+    },
+    "playerIdleAnim": "SkeletonStand",
+    "playerMoveAnim": "SkeletonWalk",
+    "playerDashAnim": "SkeletonStand",
+    "playerHurtAnim": "SkeletonStand",
+    "playerDeadAnim": "SkeletonDead",
+    "_id": ""
+  },
+  {
     "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
@@ -5029,14 +5026,14 @@
       "__id__": 139
     },
     "asset": {
-      "__uuid__": "9e0e0f12-0077-49b6-9723-7bf26c3877a0"
+      "__uuid__": "bdd26768-a6ab-4409-864b-908134ae0bcc"
     },
-    "fileId": "f0E2FreXxCDrUnU7XHthlI",
+    "fileId": "caorfGASZNva2gHzzfxGtP",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "DarkKnight",
+    "_name": "Knight",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -5092,8 +5089,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        -74,
+        -23,
         0,
         0,
         0,
@@ -5147,8 +5144,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 28,
-      "height": 34
+      "width": 25,
+      "height": 29
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5200,7 +5197,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "17e90d42-b390-4cc9-9458-aa22128cb6ca"
+      "__uuid__": "cfe4e3b7-adc8-4993-9573-bfce44744aa7"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -5214,7 +5211,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "22e89d36-931c-43c8-b1b1-1f3a5dbd2438"
+      "__uuid__": "26ebc06f-14cc-42c3-9973-cefa070a6818"
     },
     "_id": ""
   },
@@ -5227,17 +5224,17 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "dbfe9c7d-c6a4-4088-9b64-bd3ca726bc53"
+      "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
     },
     "_clips": [
       {
-        "__uuid__": "dbfe9c7d-c6a4-4088-9b64-bd3ca726bc53"
+        "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
       },
       {
-        "__uuid__": "c6a79e7a-d342-4dc0-b66c-41869dd510fc"
+        "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
       },
       {
-        "__uuid__": "5ef47e7b-4a79-4bf6-bb82-dce540e69772"
+        "__uuid__": "42930f3b-0912-4fac-8e74-28c78c2e3a15"
       }
     ],
     "playOnLoad": true,
@@ -5249,9 +5246,9 @@
       "__id__": 156
     },
     "asset": {
-      "__uuid__": "823a35e4-3024-4a0a-992a-0c0dc6333684"
+      "__uuid__": "6c99d198-e6a6-4fd8-a22c-c482f16d2988"
     },
-    "fileId": "b1ViVmcu9D5pyidNmt8nn2",
+    "fileId": "00g8A7MT9POLPTAC0ISD62",
     "sync": false
   },
   {
@@ -5278,7 +5275,7 @@
       "__id__": 166
     },
     "mainWeaponPrefab": {
-      "__uuid__": "b768c1ad-75ad-482a-9f5e-c3e10ced2606"
+      "__uuid__": "49ac59f2-13ff-42dc-b84a-4d891913222e"
     },
     "_id": ""
   },
@@ -5288,7 +5285,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 5
+    "_defaultValue": 6
   },
   {
     "__type__": "AttrNum",
@@ -5296,7 +5293,7 @@
   },
   {
     "__type__": "AttrNum",
-    "_defaultValue": 1
+    "_defaultValue": 5
   },
   {
     "__type__": "AttrNum",
@@ -5344,13 +5341,31 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 0.9
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 15.3,
-      "height": 30.7
+      "height": 22
     },
+    "_id": ""
+  },
+  {
+    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 156
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 159
+    },
+    "playerIdleAnim": "KnightStand",
+    "playerMoveAnim": "KnightWalk",
+    "playerDashAnim": "KnightStand",
+    "playerHurtAnim": "KnightStand",
+    "playerDeadAnim": "KnightDead",
     "_id": ""
   },
   {
@@ -5386,24 +5401,6 @@
     "_id": ""
   },
   {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 156
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 159
-    },
-    "playerIdleAnim": "DarkKnightStand",
-    "playerMoveAnim": "DarkKnightWalk",
-    "playerDashAnim": "DarkKnightStand",
-    "playerHurtAnim": "DarkKnightStand",
-    "playerDeadAnim": "DarkKnightDead",
-    "_id": ""
-  },
-  {
     "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
@@ -5426,9 +5423,9 @@
       "__id__": 156
     },
     "asset": {
-      "__uuid__": "823a35e4-3024-4a0a-992a-0c0dc6333684"
+      "__uuid__": "6c99d198-e6a6-4fd8-a22c-c482f16d2988"
     },
-    "fileId": "97JV5yzxJIs6pMA9SGhXRT",
+    "fileId": "9czO6r2qhHmZvavLYbYm+L",
     "sync": false
   },
   {
@@ -5489,8 +5486,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        53,
-        0,
+        198,
+        -52,
         0,
         0,
         0,
@@ -5557,7 +5554,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        0,
+        9,
         0,
         0,
         0,
@@ -5648,7 +5645,7 @@
     "asset": {
       "__uuid__": "ab1bcc5a-8b5b-456d-b3a1-56eb649ab2ea"
     },
-    "fileId": "52mj6TRgpL/5AVBzuRAKEY",
+    "fileId": "00g8A7MT9POLPTAC0ISD62",
     "sync": false
   },
   {
@@ -5675,7 +5672,7 @@
       "__id__": 183
     },
     "mainWeaponPrefab": {
-      "__uuid__": "0972d291-1121-4f88-8e95-485edbd757d0"
+      "__uuid__": "a100b0e9-0fc8-408c-a9c7-b0094bf96c0b"
     },
     "_id": ""
   },
@@ -5740,13 +5737,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -0.98,
+      "y": -1.17
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 15.3,
-      "height": 30.7
+      "width": 13.34,
+      "height": 26.2
     },
     "_id": ""
   },
@@ -5825,12 +5822,12 @@
     "asset": {
       "__uuid__": "ab1bcc5a-8b5b-456d-b3a1-56eb649ab2ea"
     },
-    "fileId": "93njhj9uxBfYoipJL0T+AN",
+    "fileId": "21Wsr8D3JN5LIrM4lT11C8",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "Knight",
+    "_name": "Vampire",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -5886,8 +5883,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        90,
-        0,
+        -199,
+        -118,
         0,
         0,
         0,
@@ -5941,403 +5938,6 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 25,
-      "height": 29
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 191
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "cfe4e3b7-adc8-4993-9573-bfce44744aa7"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "26ebc06f-14cc-42c3-9973-cefa070a6818"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 191
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
-    },
-    "_clips": [
-      {
-        "__uuid__": "a05446bc-9ea9-46b1-96b1-cfff48257595"
-      },
-      {
-        "__uuid__": "7e87ab72-c3c1-48d7-acd1-a2c3bcf863de"
-      },
-      {
-        "__uuid__": "42930f3b-0912-4fac-8e74-28c78c2e3a15"
-      }
-    ],
-    "playOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 190
-    },
-    "asset": {
-      "__uuid__": "6c99d198-e6a6-4fd8-a22c-c482f16d2988"
-    },
-    "fileId": "66TO9PnPhDqrVXZ43yoAdx",
-    "sync": false
-  },
-  {
-    "__type__": "bfa71Q353hKSZrSsOz7x96r",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "moveSpeed": {
-      "__id__": 196
-    },
-    "maxHp": {
-      "__id__": 197
-    },
-    "expGainPercentage": {
-      "__id__": 198
-    },
-    "dashCoolDown": {
-      "__id__": 199
-    },
-    "dashSpeed": {
-      "__id__": 200
-    },
-    "mainWeaponPrefab": {
-      "__uuid__": "49ac59f2-13ff-42dc-b84a-4d891913222e"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 6
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 5
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 500
-  },
-  {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": false,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsBoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 15.3,
-      "height": 30.7
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 193
-    },
-    "playerIdleAnim": "KnightStand",
-    "playerMoveAnim": "KnightWalk",
-    "playerDashAnim": "KnightStand",
-    "playerHurtAnim": "KnightStand",
-    "playerDeadAnim": "KnightDead",
-    "_id": ""
-  },
-  {
-    "__type__": "cc.MotionStreak",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_fadeTime": 0.1,
-    "_minSeg": 0.5,
-    "_stroke": 15,
-    "_texture": {
-      "__uuid__": "f2a9897d-f653-4d83-af3f-3ad2240e337b"
-    },
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 124
-    },
-    "_fastMode": false,
-    "_N$preview": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 190
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 100,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 190
-    },
-    "asset": {
-      "__uuid__": "6c99d198-e6a6-4fd8-a22c-c482f16d2988"
-    },
-    "fileId": "19aske0KpHLqvOJLaKX2My",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "Vampire",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [
-      {
-        "__id__": 208
-      }
-    ],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 212
-      },
-      {
-        "__id__": 218
-      },
-      {
-        "__id__": 219
-      },
-      {
-        "__id__": 220
-      },
-      {
-        "__id__": 221
-      },
-      {
-        "__id__": 222
-      }
-    ],
-    "_prefab": {
-      "__id__": 223
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        145,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "Sprite",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 207
-    },
-    "_children": [],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 209
-      },
-      {
-        "__id__": 210
-      }
-    ],
-    "_prefab": {
-      "__id__": 211
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
       "width": 24,
       "height": 30
     },
@@ -6380,7 +5980,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 208
+      "__id__": 191
     },
     "_enabled": true,
     "_materials": [
@@ -6414,7 +6014,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 208
+      "__id__": 191
     },
     "_enabled": true,
     "_defaultClip": {
@@ -6437,12 +6037,12 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 207
+      "__id__": 190
     },
     "asset": {
       "__uuid__": "241a5961-b2b4-414c-8760-91bce9eca71f"
     },
-    "fileId": "bf144nO6JKpqp4zMMtVcjU",
+    "fileId": "00g8A7MT9POLPTAC0ISD62",
     "sync": false
   },
   {
@@ -6450,23 +6050,23 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "moveSpeed": {
-      "__id__": 213
+      "__id__": 196
     },
     "maxHp": {
-      "__id__": 214
+      "__id__": 197
     },
     "expGainPercentage": {
-      "__id__": 215
+      "__id__": 198
     },
     "dashCoolDown": {
-      "__id__": 216
+      "__id__": 199
     },
     "dashSpeed": {
-      "__id__": 217
+      "__id__": 200
     },
     "mainWeaponPrefab": {
       "__uuid__": "29948099-c131-438e-98c0-b0d540dc2263"
@@ -6498,7 +6098,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "_type": 2,
@@ -6523,7 +6123,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "tag": 0,
@@ -6534,13 +6134,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 1.48,
+      "y": -1.32
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 15.3,
-      "height": 30.7
+      "height": 22.3
     },
     "_id": ""
   },
@@ -6549,7 +6149,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "_materials": [
@@ -6581,11 +6181,11 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "anim": {
-      "__id__": 210
+      "__id__": 193
     },
     "playerIdleAnim": "VampireStand",
     "playerMoveAnim": "VampireWalk",
@@ -6599,7 +6199,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 207
+      "__id__": 190
     },
     "_enabled": true,
     "tag": 0,
@@ -6614,12 +6214,12 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 207
+      "__id__": 190
     },
     "asset": {
       "__uuid__": "241a5961-b2b4-414c-8760-91bce9eca71f"
     },
-    "fileId": "04ZJGsxT1HibZNKOrfvnmk",
+    "fileId": "39ndTZugtOPa1exSUpLFYh",
     "sync": false
   },
   {

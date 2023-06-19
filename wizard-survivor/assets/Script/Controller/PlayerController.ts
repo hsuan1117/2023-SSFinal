@@ -173,10 +173,6 @@ export default class PlayerController extends cc.Component{
         this.event.emit(PlayerController.PLAYER_HURT, damageInfo);
         damage = damageInfo.damage; // 讓事件的 callback 可以修改傷害數值
 
-        if (GameManager.instance.isLocalUid(this.uid)){
-            GameManager.instance.mainCamera.shake();
-        }
-
         const deltaHP = Math.min(this.currentHP.value, damage);
         if (GameManager.instance.isLocalUid(this.uid))
             GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);

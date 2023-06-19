@@ -39,10 +39,13 @@ export default class EnemyController extends cc.Component {
 
     protected isBossFight: boolean = false;
 
+    protected _collider: cc.PhysicsCollider = null;
+
 
     // LIFE-CYCLE CALLBACKS:
      onLoad() {
         this.rb = this.node.getComponent(cc.RigidBody);
+        this._collider = this.node.getComponent(cc.PhysicsCollider);
         this.rb.enabledContactListener = true;
         this.node.getComponent(cc.PhysicsCollider).density = this.DENSITY;
         this.node.getComponent(cc.RigidBody).linearDamping = this.LINEAR_DAMP;
@@ -86,6 +89,7 @@ export default class EnemyController extends cc.Component {
          this.animCtrl.initState();
          this.isBossFight = false;
          this.searchable = true;
+         this._collider.enabled = true;
     }
 
     private flashEnd() {
@@ -109,9 +113,7 @@ export default class EnemyController extends cc.Component {
 
 
         if (this.hp.value <= 0) {
-            this.scheduleOnce(() => {
-                this.dead(byUid);
-            }, 0.2);
+            this.dead(byUid);
         }
         // GameManager.instance.audioManager.playEffect("miner_s3_hurt");
     }
@@ -162,9 +164,12 @@ export default class EnemyController extends cc.Component {
             enemyPosition: this.node.getPosition(),
             killByUid: killByUid
          });
+         this._collider.enabled = false;
 
-         GameManager.instance.poolManager.recycle(this.node);
-         GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
+         this.scheduleOnce(() => {
+             GameManager.instance.poolManager.recycle(this.node);
+             GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
+         }, 0.3);
     }
 
     protected selfDestroy() {
@@ -188,7 +193,7 @@ export default class EnemyController extends cc.Component {
     }
 
     protected knockBack() {
-         const knockBackSpeedScale = 100;
+         const knockBackSpeedScale = 50;
          const speed = this.rb.linearVelocity.neg();
          // this.rb.applyForceToCenter(speed.mul(knockBackSpeedScale), true);
          this.rb.linearVelocity = (speed.mul(knockBackSpeedScale));
