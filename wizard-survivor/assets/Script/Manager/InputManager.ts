@@ -85,6 +85,7 @@ export default class InputManager extends cc.Component {
 
     /*
     此為 Input Manager 的事件型別
+    ignoreAllInput: boolean;
 
     僅在本地端輸入發生時 emit
 

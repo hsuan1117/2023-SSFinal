@@ -71,7 +71,9 @@ export class GameSystem {
      */
     public static readonly ON_GAME_END: string = "ON_GAME_END";
 
-    public get gameInfo(): GameInfo { return this._gameInfo; }
+    public get gameInfo(): GameInfo {
+        return this._gameInfo;
+    }
 
     protected _gameInfo: GameInfo;
     private buffReadyToApply: { uid: string, buffId: string }[] = [];
@@ -202,6 +204,10 @@ export class RemoteGameSystem extends GameSystem {
                 this.event.emit(evt_name, data);
             }
         });
+
+        setInterval(() => {
+            this.dispatchCurrentPositions()
+        }, 1000);
     }
 
     private dispatchEvent(evt, data) {
@@ -277,6 +283,17 @@ export class RemoteGameSystem extends GameSystem {
         return {
             level,
             coin
+        }
+    }
+
+    public dispatchCurrentPositions() {
+        if (this.gameInfo?.gameStartType === GameStartType.ONLINE_NEW_ROOM) {
+            for (let p of GameManager.instance.playerManager.allPlayerIDs) {
+                this.dispatchEvent(RemoteGameSystem.ON_POSITION_SYNC, {
+                    uid: p,
+                    pos: GameManager.instance.playerManager.getPlayerNodeByID(p).position
+                });
+            }
         }
     }
 }
