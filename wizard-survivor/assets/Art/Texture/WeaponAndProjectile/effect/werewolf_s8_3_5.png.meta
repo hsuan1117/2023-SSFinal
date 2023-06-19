@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "d0680d7f-4060-4902-a1c1-1d740248c79d",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 69,
+  "height": 93,
+  "platformSettings": {},
+  "subMetas": {
+    "werewolf_s8_3_5": {
+      "ver": "1.0.6",
+      "uuid": "93d3f902-e76d-4c5e-bb5f-b259ad57dc62",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "d0680d7f-4060-4902-a1c1-1d740248c79d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 65,
+      "height": 89,
+      "rawWidth": 69,
+      "rawHeight": 93,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

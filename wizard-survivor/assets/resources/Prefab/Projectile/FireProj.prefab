@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Priest",
+    "_name": "FireProj",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -27,23 +27,14 @@
         "__id__": 6
       },
       {
-        "__id__": 12
+        "__id__": 7
       },
       {
-        "__id__": 13
-      },
-      {
-        "__id__": 14
-      },
-      {
-        "__id__": 15
-      },
-      {
-        "__id__": 16
+        "__id__": 8
       }
     ],
     "_prefab": {
-      "__id__": 17
+      "__id__": 9
     },
     "_opacity": 255,
     "_color": {
@@ -60,8 +51,8 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0,
+      "y": 0
     },
     "_trs": {
       "__type__": "TypedArray",
@@ -88,8 +79,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -122,8 +113,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 26,
-      "height": 33
+      "width": 76,
+      "height": 77
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -141,8 +132,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        2,
+        2,
         1
       ]
     },
@@ -155,8 +146,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -175,7 +166,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "4723d46a-4255-4ffd-9cc7-9b3ab71703ac"
+      "__uuid__": "11d77953-20ee-423c-a7df-3f19e778c68f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -188,9 +179,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "faab6805-48a9-4f2d-aab0-e52f61357876"
-    },
+    "_atlas": null,
     "_id": ""
   },
   {
@@ -202,20 +191,14 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
+      "__uuid__": "187567c8-b889-4205-980c-ebec90789de6"
     },
     "_clips": [
       {
-        "__uuid__": "fdcdb958-3fff-4cc5-8ef5-385c7846331d"
-      },
-      {
-        "__uuid__": "ab166082-7463-4d32-8df1-81877fafcd4e"
-      },
-      {
-        "__uuid__": "31a462d3-c243-415d-b8b9-36a3bc3c8a1f"
+        "__uuid__": "187567c8-b889-4205-980c-ebec90789de6"
       }
     ],
-    "playOnLoad": true,
+    "playOnLoad": false,
     "_id": ""
   },
   {
@@ -226,56 +209,18 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "00g8A7MT9POLPTAC0ISD62",
+    "fileId": "12kbJySrhCf7ACIVBO9UIX",
     "sync": false
   },
   {
-    "__type__": "bfa71Q353hKSZrSsOz7x96r",
+    "__type__": "7289eUMHZpExpJGOiK42kq1",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "moveSpeed": {
-      "__id__": 7
-    },
-    "maxHp": {
-      "__id__": 8
-    },
-    "expGainPercentage": {
-      "__id__": 9
-    },
-    "dashCoolDown": {
-      "__id__": 10
-    },
-    "dashSpeed": {
-      "__id__": 11
-    },
-    "mainWeaponPrefab": {
-      "__uuid__": "a100b0e9-0fc8-408c-a9c7-b0094bf96c0b"
-    },
     "_id": ""
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 70
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 5
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 100
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 1
-  },
-  {
-    "__type__": "AttrNum",
-    "_defaultValue": 500
   },
   {
     "__type__": "cc.RigidBody",
@@ -285,7 +230,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 2,
+    "_type": 1,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -295,15 +240,15 @@
       "x": 0,
       "y": 0
     },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": false,
+    "_angularVelocity": 1440,
+    "_fixedRotation": false,
+    "enabledContactListener": true,
+    "bullet": true,
+    "awakeOnLoad": true,
     "_id": ""
   },
   {
-    "__type__": "cc.PhysicsBoxCollider",
+    "__type__": "cc.PhysicsCircleCollider",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -312,87 +257,16 @@
     "_enabled": true,
     "tag": 0,
     "_density": 1,
-    "_sensor": false,
+    "_sensor": true,
     "_friction": 0.2,
     "_restitution": 0,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": -0.98,
-      "y": -1.17
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 13.34,
-      "height": 26.2
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.MotionStreak",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_fadeTime": 0.1,
-    "_minSeg": 0.5,
-    "_stroke": 15,
-    "_texture": {
-      "__uuid__": "f2a9897d-f653-4d83-af3f-3ad2240e337b"
-    },
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 124
-    },
-    "_fastMode": false,
-    "_N$preview": true,
-    "_id": ""
-  },
-  {
-    "__type__": "01ab6nJ7i9AIKSo5Y3paBSz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 4
-    },
-    "playerIdleAnim": "PriestStand",
-    "playerMoveAnim": "PriestWalk",
-    "playerDashAnim": "PriestStand",
-    "playerHurtAnim": "PriestStand",
-    "playerDeadAnim": "PriestDead",
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_radius": 100,
+    "_radius": 65,
     "_id": ""
   },
   {

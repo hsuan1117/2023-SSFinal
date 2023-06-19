@@ -39,6 +39,9 @@ export default class WeaponController extends cc.Component {
     @property()
     public aimWeaponOwner: boolean = false;
 
+    @property({tooltip: "是否直接鎖定敵人，會優先於 aimWeaponOwner 生效"})
+    public aimEnemy: boolean = false;
+
     private player: PlayerController = null;
 
     private searchTarget: ISearchTarget = null;
@@ -114,7 +117,11 @@ export default class WeaponController extends cc.Component {
         projectile.init({...this.projectileAttr}, null, this.bounceDirIdx, this.player.uid);
         projectile.node.parent = GameManager.instance.bulletLayer;
 
-        if (this.aimWeaponOwner) {
+        if (this.aimEnemy){
+            projectile.node.setPosition(target.position);
+            projectile.shootToTarget(target);
+        }
+        else if (this.aimWeaponOwner) {
             // projectile.node.parent = this.player.node;
             // projectile.shootToDirection(ignoreZ(target.position.sub(this.player.node.position)).normalize());
             projectile.shootToTarget(this.player.node);
