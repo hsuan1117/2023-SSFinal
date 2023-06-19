@@ -159,11 +159,11 @@ export default class GameManager extends cc.Component {
                 this.exp.addFactor += 5;
             }
             else if (keyCode === cc.macro.KEY.p) {
-                // if (cc.director.isPaused()) {
-                //     cc.director.resume();
-                // } else {
-                //     cc.director.pause()
-                // }
+                console.log('All players info: ');
+                for (let uid of this.playerManager.allPlayerIDs) {
+                    console.log('uid, isLocal, node, playerController: ')
+                    console.log(uid, this.isLocalUid(uid), this.playerManager.getPlayerNodeByID(uid), this.playerManager.getPlayer(uid));
+                }
             } else if (keyCode == cc.macro.KEY.x) {
                 this.endGame();
             } else if (keyCode == cc.macro.KEY.h) {

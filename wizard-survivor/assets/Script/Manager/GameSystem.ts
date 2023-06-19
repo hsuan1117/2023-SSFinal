@@ -53,9 +53,9 @@ export class GameSystem {
 
     /*事件：玩家創建
 
-    注意！！！這個事件會廣播給所有 client，但是只有 remote client 需要處理這個事件
+    注意！！！這個事件會廣播給所有 client
 
-    passed event data: {uid: string, charaId: string, isLocal: boolean}
+    passed event data: {uid: string, charaId: string}
      */
     public static readonly ON_CREATE_PLAYER: string = "ON_CREATE_PLAYER";
 
@@ -110,7 +110,7 @@ export class GameSystem {
     }
 
     public emitCreatePlayer(uid: string, charaId: string) {
-        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId, isLocal: true});
+        this.event.emit(GameSystem.ON_CREATE_PLAYER, {uid: uid, charaId: charaId});
     }
 
     public emitGameStart() {

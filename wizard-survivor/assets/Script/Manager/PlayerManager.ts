@@ -24,7 +24,6 @@ export default class PlayerManager extends cc.Component {
     }
 
     private playerIds: string[] = [];
-    private isLocalPlayer: {[uid: string]: boolean} = {};
     private playerChara: {[uid: string]: string} = {};
     private playerControllers: {[id: string]: PlayerController} = {};
     private playerDeltaHp: {[uid: string]: number} = {}
@@ -42,17 +41,9 @@ export default class PlayerManager extends cc.Component {
     /*
     若還沒有實例化，回傳 null
      */
-    public getPlayerNodeByID(id: string): cc.Node{
-        return this.playerControllers[id]?.node;
-    }
-
-    public getPlayer(id: string): PlayerController{
-        return this.playerControllers[id];
-    }
-
-    public getPlayerChara(id: string): string{
-        return this.playerChara[id];
-    }
+    public getPlayerNodeByID(id: string): cc.Node { return this.playerControllers[id]?.node; }
+    public getPlayer(id: string): PlayerController { return this.playerControllers[id]; }
+    public getPlayerChara(id: string): string { return this.playerChara[id]; }
 
     public async instantiatePlayer(uid: string){
         return await loadResource(`Prefab/Chara/${this.playerChara[uid]}`, cc.Prefab)
@@ -75,7 +66,6 @@ export default class PlayerManager extends cc.Component {
 
     public clearAllChara(){
         this.playerIds = [];
-        this.isLocalPlayer = {};
         this.playerChara = {};
         this.playerControllers = {};
         this.playerDeltaHp = {};
@@ -84,7 +74,7 @@ export default class PlayerManager extends cc.Component {
 
     // HELPERS
     private createPlayer({uid, charaId}){
-        if (this.isLocalPlayer[uid]) return;
+        console.log(`Create player ${uid} with chara ${charaId}`);
         if (this.playerIds.includes(uid)) return;
         this.playerIds.push(uid);
         this.playerChara[uid] = charaId;
@@ -93,9 +83,6 @@ export default class PlayerManager extends cc.Component {
 
     private onInput(input: Input){
         if (!this.playerControllers[input.uid]) return;
-
-        // console.log('PlayerManager.onInput: input, playerControllers');
-        // console.log(input, this.playerControllers[input.uid]);
 
         if (input.type == InputType.STICK){
             this.playerControllers[input.uid].setMovingDir(cc.v2(input.lX/1000, input.lY/1000));
