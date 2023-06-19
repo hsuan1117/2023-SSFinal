@@ -1,6 +1,6 @@
 #!/bin/zsh
 rm .firebase/*.cache
-/Applications/CocosCreator/Creator/2.4.8/CocosCreator.app/Contents/MacOS/CocosCreator --path "$(pwd)" --build "platform=web-desktop;debug=true;previewWidth=960;previewHeight=640;"
+/Applications/CocosCreator/Creator/2.4.8/CocosCreator.app/Contents/MacOS/CocosCreator --path "$(pwd)" --build "platform=web-desktop;debug=false;optimizeHotUpdate=true;inlineSpriteFrames=true;previewWidth=960;previewHeight=640;"
 echo ""
 echo "Copying 關卡編輯器..."
 cp -r ../WaveEditor build/web-desktop
