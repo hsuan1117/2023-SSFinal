@@ -48,7 +48,7 @@ export default class MainMenuUI extends cc.Component {
     public static readonly ON_LEADERBOARD_CLICKED: string = "ON_LEADERBOARD_CLICKED";
     public event: cc.EventTarget;
 
-    private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p', 'Leaderboard'];
+    private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p'];
     private uid: string;
 
     private playerFocus: PlayerFocus;
