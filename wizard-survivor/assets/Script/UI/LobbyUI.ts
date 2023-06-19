@@ -44,8 +44,8 @@ export default class LobbyUI extends cc.Component {
 
         if (GameManager.instance.gameSystem instanceof RemoteGameSystem) {
             this._remoteInfo.opacity = 255;
-            const roomId = 'xgpU';
-            const username = 'ovo';
+            const roomId = GameManager.instance.gameSystem.gameInfo.code;
+            const username = JSON.parse(localStorage.getItem('user') ?? '{}')?.email.split('@')[0];
             this._remoteInfo.getChildByName('RoomId').getComponent(cc.Label).string = roomId.toString();
             this._remoteInfo.getChildByName('Username').getComponent(cc.Label).string = username;
         }

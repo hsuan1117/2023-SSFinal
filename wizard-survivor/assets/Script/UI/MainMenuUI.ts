@@ -21,12 +21,13 @@ export enum GameType {
 export enum GameStartType {
     OFFLINE_1P,
     OFFLINE_2P,
-    OFFLINE_3P ,
+    OFFLINE_3P,
     ONLINE_NEW_ROOM,
     ONLINE_JOIN_ROOM
 }
 
 export type GameInfo = {
+    code?: string;
     localUids: string[];
     id?: string | number;
     users?: {
@@ -173,8 +174,8 @@ export default class MainMenuUI extends cc.Component {
         }
         const userId = room.user_id
         room = room.room;
-        if (typeof code === "undefined")
-            alert(room.code)
+        //if (typeof code === "undefined")
+        //alert(room.code)
 
         const gameInfo: GameInfo = {
             gameType: GameType.ONLINE,
