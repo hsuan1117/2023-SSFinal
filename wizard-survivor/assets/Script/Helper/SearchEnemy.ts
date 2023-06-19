@@ -46,6 +46,7 @@ export default class SearchEnemy extends cc.Component implements ISearchTarget{
     // HELPERS:
     private isTarget(target: cc.Node): boolean {
         return target?.isValid &&
-            target.getComponent(EnemyController)?.searchable;
+            target.getComponent(EnemyController)?.searchable &&
+                target.getComponent(EnemyController)?.isDead == false;
     }
 }

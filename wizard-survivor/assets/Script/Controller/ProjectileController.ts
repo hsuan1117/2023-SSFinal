@@ -42,7 +42,7 @@ export default class ProjectileController extends cc.Component {
 
     onBeginContact(contact: cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider) {
         const enemy = other.getComponent(EnemyController);
-        if (enemy) {
+        if (enemy && !enemy.isDead && enemy.isValid) {
             this.onHitCallback && this.onHitCallback({enemy: enemy, projectile: this});
 
             enemy.hurt(this.projectileAttr.damage.value, this.shootByUid);

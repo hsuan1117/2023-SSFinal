@@ -31,6 +31,8 @@ export default class EnemyController extends cc.Component {
     @property(AttrNum)
     public collideDamageCoolDown: AttrNum = new AttrNum();
 
+    public get isDead(): boolean { return this._isDead; }
+
     protected normalMaterial: cc.Material = null;
     protected hurtMaterial: cc.Material = null;
     protected sprite: cc.Sprite = null;
@@ -40,7 +42,7 @@ export default class EnemyController extends cc.Component {
     protected isBossFight: boolean = false;
 
     protected _collider: cc.PhysicsCollider = null;
-    protected isDead: boolean = false;
+    protected _isDead: boolean = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -61,7 +63,7 @@ export default class EnemyController extends cc.Component {
     }
 
     playAnim() {
-        if (this.isDead)
+        if (this._isDead)
             return;
 
          if (this.rb.linearVelocity.x > 0)
@@ -74,6 +76,9 @@ export default class EnemyController extends cc.Component {
     }
 
     protected update(dt: number) {
+         if (this._isDead){
+             this._collider.enabled = false;
+         }
         if (!this.isBossFight) this.followPlayer();
         else this.runAwayFromPlayer();
         this.playAnim();
@@ -89,7 +94,7 @@ export default class EnemyController extends cc.Component {
          this.isBossFight = false;
          this.searchable = true;
          this._collider.enabled = true;
-         this.isDead = false;
+         this._isDead = false;
          this.node.scaleY = 1;
     }
 
@@ -141,7 +146,7 @@ export default class EnemyController extends cc.Component {
     }
 
     protected followPlayer() { // For Boss fight
-         if (this.isDead) return;
+         if (this._isDead) return;
         let target = this.findClosestPlayer();
         if (!target) {
             this.rb.linearVelocity = cc.Vec2.ZERO;
@@ -163,15 +168,14 @@ export default class EnemyController extends cc.Component {
     }
 
     protected dead(killByUid: string) {
-         this.isDead = true;
+         this._isDead = true;
          this.node.scaleY = 0.8;
-         this.rb.linearVelocity = ignoreZ(this.node.position.sub(GameManager.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
+         // this.rb.linearVelocity = ignoreZ(this.node.position.sub(GameManager.instance.playerManager.getPlayer(killByUid).node.position).normalize().mul(800));
          this.animCtrl.state = {...this.animCtrl.state, isDead: true};
          GameManager.instance.waveManager.event.emit(WaveManager.ON_ENEMY_DIE, {
             enemyPosition: this.node.getPosition(),
             killByUid: killByUid
          });
-         this._collider.enabled = false;
 
          this.scheduleOnce(() => {
              GameManager.instance.poolManager.recycle(this.node);
