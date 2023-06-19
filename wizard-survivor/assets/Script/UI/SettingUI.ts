@@ -15,14 +15,19 @@ export default class SettingUI extends cc.Component {
     private isCollide: { [uid: string]: boolean } = {};
     private settingPopUp: cc.Node = null;
     private playerFocus: PlayerFocus = null;
+    private _toFocus: string[] = ['Exit', 'ToggleMusic', 'ToggleSoundEffect'];
+
+    private _bgmVolume: number = 0;
+    private _soundEffectVolume: number = 0;
 
     onLoad() {
         this.settingPopUp = this.node.getChildByName('SettingPopUp');
+        console.log('SettingUI onLoad', this.settingPopUp);
         this.playerFocus = this.node.getComponent(PlayerFocus);
         this.playerFocus.init(
-            this.settingPopUp.children,
-            cc.v2(0, 20).add(ignoreZ(this.settingPopUp.position)),
-            true
+            this._toFocus.map(name => this.settingPopUp.getChildByName(name)),
+            cc.v2(80, 5).add(ignoreZ(this.settingPopUp.position)),
+            false
         )
     }
 
@@ -48,12 +53,22 @@ export default class SettingUI extends cc.Component {
             this.popDown();
         }
         this.command['ToggleMusic'] = () => {
-            // TODO: toggle music
-            console.log('In Setting: ToggleMusic')
+            if (this._bgmVolume == 0) {
+                this._bgmVolume = 1;
+            }
+            else {
+                this._bgmVolume = 0;
+            }
+            cc.audioEngine.setMusicVolume(this._bgmVolume);
         }
         this.command['ToggleSoundEffect'] = () => {
-            // TODO: toggle sound effect
-            console.log('In Setting: ToggleSoundEffect')
+            if (this._soundEffectVolume == 0) {
+                this._soundEffectVolume = 1;
+            }
+            else {
+                this._soundEffectVolume = 0;
+            }
+            cc.audioEngine.setEffectsVolume(this._soundEffectVolume);
         }
         this.popDown();
     }
@@ -95,16 +110,16 @@ export default class SettingUI extends cc.Component {
             this.playerFocus.removeFocus(uid);
         }
         this.isOn = false;
-        this.settingPopUp.active = false;
+        this.settingPopUp.opacity = 0
     }
 
     private popUp() {
         this.isOn = true;
-        this.settingPopUp.active = true;
+        this.settingPopUp.opacity = 255;
+        console.log('SettingUI popUp, node', this.settingPopUp);
         for (let uid of GameManager.instance.playerManager.localUids) {
-            this.playerFocus.focusOnIndex(uid, 0);
+            this.playerFocus.focusOnIndex(uid, 1);
         }
-        console.log('Local Uids', GameManager.instance.playerManager.localUids)
         GameManager.instance.pauseGame();
     }
 
