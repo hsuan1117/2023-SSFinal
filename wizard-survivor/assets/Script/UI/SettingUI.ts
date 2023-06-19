@@ -108,7 +108,7 @@ export default class SettingUI extends cc.Component {
 
     private popDown() {
         GameManager.instance.resumeGame();
-        for (let uid of GameManager.instance.playerManager.localUids) {
+        for (let uid of GameManager.instance.localUids) {
             this.playerFocus.removeFocus(uid);
         }
         this.isOn = false;
@@ -118,7 +118,7 @@ export default class SettingUI extends cc.Component {
     private popUp() {
         this.isOn = true;
         this.settingPopUp.opacity = 255;
-        for (let uid of GameManager.instance.playerManager.localUids) {
+        for (let uid of GameManager.instance.localUids) {
             this.playerFocus.focusOnIndex(uid, 1);
         }
         GameManager.instance.pauseGame();

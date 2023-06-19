@@ -170,7 +170,8 @@ export default class PlayerController extends cc.Component{
         damage = damageInfo.damage; // 讓事件的 callback 可以修改傷害數值
 
         const deltaHP = Math.min(this.currentHP.value, damage);
-        GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
+        if (GameManager.instance.isLocalUid(this.uid))
+            GameManager.instance.gameSystem.emitPlayerHPChange(this.uid, -damage);
 
         GameManager.instance.particleManager.createParticle("Red Explosion", this.node.position, 0.005, 1);
 

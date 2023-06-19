@@ -79,6 +79,9 @@ export default class GameManager extends cc.Component {
             personal_coin: this.coinCnt.value
         };
     }
+    public isLocalUid(uid: string): boolean { return this._localUids.includes(uid); }
+    public get localUids(): string[] { return this._localUids; }
+
 
     @property(cc.Prefab)
     public loadingUIPrefab: cc.Prefab = null;

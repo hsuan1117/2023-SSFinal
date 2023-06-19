@@ -23,10 +23,6 @@ export default class PlayerManager extends cc.Component {
         return this.playerIds;
     }
 
-    public get localUids(): string[]{
-        return this.playerIds.filter((id) => this.isLocalPlayer[id]);
-    }
-
     private playerIds: string[] = [];
     private isLocalPlayer: {[uid: string]: boolean} = {};
     private playerChara: {[uid: string]: string} = {};
@@ -58,10 +54,6 @@ export default class PlayerManager extends cc.Component {
         return this.playerChara[id];
     }
 
-    public isLocal(id: string): boolean{
-        return this.isLocalPlayer[id] == true;
-    }
-
     public async instantiatePlayer(uid: string){
         return await loadResource(`Prefab/Chara/${this.playerChara[uid]}`, cc.Prefab)
             .then((prefab) =>{
@@ -91,13 +83,12 @@ export default class PlayerManager extends cc.Component {
 
 
     // HELPERS
-    private createPlayer({uid, charaId, isLocal}){
+    private createPlayer({uid, charaId}){
         if (this.isLocalPlayer[uid]) return;
         if (this.playerIds.includes(uid)) return;
         this.playerIds.push(uid);
         this.playerChara[uid] = charaId;
         this.playerDeltaHp[uid] = 0;
-        this.isLocalPlayer[uid] = isLocal;
     }
 
     private onInput(input: Input){

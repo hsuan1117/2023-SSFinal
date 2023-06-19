@@ -96,6 +96,7 @@ export default class PlayerFocus extends cc.Component {
     }
 
     public removeFocus(uid: string){
+        if (!this.focus.hasOwnProperty(uid)) return;
         delete this.focus[uid];
         this.pointer[uid].destroy();
         delete this.pointer[uid];

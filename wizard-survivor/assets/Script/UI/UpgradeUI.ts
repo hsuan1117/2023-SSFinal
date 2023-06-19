@@ -87,7 +87,7 @@ export default class UpgradeUI extends cc.Component {
         Promise.all(promise)
             .then(() => this.playerFocus.init(this.buffCards, cc.v2(0, 100), true))
             .then(() => {
-                for (let uid of GameManager.instance.playerManager.localUids) {
+                for (let uid of GameManager.instance.localUids) {
                     this.playerFocus.focusOnIndex(uid, 0);
                 }
             });
