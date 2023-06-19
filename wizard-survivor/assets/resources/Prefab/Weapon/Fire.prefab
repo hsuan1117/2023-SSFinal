@@ -142,7 +142,7 @@
       "__id__": 11
     },
     "notFly": true,
-    "lockTargetLerpRatio": 1
+    "lockTargetLerpRatio": 0.1
   },
   {
     "__type__": "AttrNum",

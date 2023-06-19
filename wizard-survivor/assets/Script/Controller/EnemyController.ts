@@ -101,12 +101,17 @@ export default class EnemyController extends cc.Component {
                 damage: damage
             }
         )
+        this.knockBack();
         this.hp.addFactor -= damage;
         this.sprite.setMaterial(0, this.hurtMaterial);
         this.unschedule(this.flashEnd);
         this.schedule(this.flashEnd, 0.1);
+
+
         if (this.hp.value <= 0) {
-            this.dead(byUid);
+            this.scheduleOnce(() => {
+                this.dead(byUid);
+            }, 0.2);
         }
         // GameManager.instance.audioManager.playEffect("miner_s3_hurt");
     }
@@ -182,4 +187,10 @@ export default class EnemyController extends cc.Component {
         return target;
     }
 
+    protected knockBack() {
+         const knockBackSpeedScale = 100;
+         const speed = this.rb.linearVelocity.neg();
+         // this.rb.applyForceToCenter(speed.mul(knockBackSpeedScale), true);
+         this.rb.linearVelocity = (speed.mul(knockBackSpeedScale));
+    }
 }
