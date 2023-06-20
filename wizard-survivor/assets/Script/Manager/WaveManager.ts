@@ -70,6 +70,7 @@ export default class WaveManager extends cc.Component {
 
     public setWave(wave: number){
         if (this.waveData.json[wave] == undefined) {
+            cc.log("wave " + wave + " not found");
             this.currentWaveNum = wave;
             return;
         }
@@ -121,7 +122,6 @@ export default class WaveManager extends cc.Component {
     update (dt) {
         this.spawnCenter = ignoreZ(cc.Camera.main.node.position).sub(cc.v2(winSize.width / 2, cc.winSize.height / 2));
 
-        if (WaveManager.enemyCount < 100) {
             for (const key in this.currentWave) {
                 if (this.countDowns[key] === undefined) {
                     this.countDowns[key] = 3;
@@ -136,7 +136,6 @@ export default class WaveManager extends cc.Component {
                     this.countDowns[key] -= dt;
                 }
             }
-        }
 
         if (WaveManager.dropCount > 40) {
             let id = GameManager.instance.playerManager.allPlayerIDs[0];
