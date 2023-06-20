@@ -308,8 +308,9 @@ export class RemoteGameSystem extends GameSystem {
             // }
             const data = {positions: {}};
             for (let uid of GameManager.instance.playerManager.allPlayerIDs) {
-                const node = GameManager.instance.playerManager.getPlayerNodeByID(uid).position;
-                data.positions[uid] = {x: node.x, y: node.y};
+                const node = GameManager.instance.playerManager.getPlayerNodeByID(uid);
+                if(node === null) continue;
+                data.positions[uid] = {x: node.position.x, y: node.position.y};
             }
             this.dispatchEvent(RemoteGameSystem.ON_POSITION_SYNC, data);
         }
