@@ -22,7 +22,7 @@ export default class ParticleManager extends cc.Component {
         {threshold: Infinity, color: cc.Color.BLUE, fontSize: 60},
     ]
     private readonly _damageNumberDelay = 0.05;
-    private readonly _damageNumberDuration = 0.3;
+    private readonly _damageNumberDuration = 0.5;
     private _damageNumberOffset = cc.v2(10, 10);
     private _damageNumberPrefab: cc.Prefab = null;
 

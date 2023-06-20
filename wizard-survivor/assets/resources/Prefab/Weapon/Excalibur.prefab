@@ -246,6 +246,8 @@
       "__uuid__": "895fb7f8-7849-4eac-b7d2-2a41ddade449"
     },
     "aimWeaponOwner": true,
+    "aimEnemy": false,
+    "shootAudio": "weapon_sword",
     "_id": ""
   },
   {

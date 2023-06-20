@@ -1,4 +1,4 @@
-import InputManager, {ARROW_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
+import InputManager, {ARROW_TO_CONTROLLER, NUMPAD_TO_CONTROLLER, WASD_TO_CONTROLLER} from "./InputManager";
 import PoolManager from "./PoolManager";
 import PlayerManager from "./PlayerManager";
 import WaveManager from "./WaveManager";
@@ -14,6 +14,7 @@ import GameEndUI from "../UI/GameEndUI";
 import AudioManager from "./AudioManager";
 import RandomGenerator from "../Helper/RandomGenerator";
 import CameraController from "../Controller/CameraController";
+import {Buffs, EffectOnce} from "../Helper/Buff";
 
 
 const {ccclass, property} = cc._decorator;
@@ -94,7 +95,7 @@ export default class GameManager extends cc.Component {
     /* === 局內、玩家共享遊戲狀態 === */
     public killEnemyCnt: AttrNum = new AttrNum(0);
     public coinCnt: AttrNum = new AttrNum(0);
-    public upgradeExp: AttrNum = new AttrNum(20);
+    public upgradeExp: AttrNum = new AttrNum(0);
     public level: AttrNum = new AttrNum(1);
     public exp: AttrNum = new AttrNum(0);
 
@@ -301,9 +302,8 @@ export default class GameManager extends cc.Component {
 
         this.initGameSystem(gameInfo);
 
-        // Set input for local player
-        let conversion = [WASD_TO_CONTROLLER, ARROW_TO_CONTROLLER];
-        if (this._localUids.length > 2) throw new Error('For now, only support 2 players');
+        let conversion = [WASD_TO_CONTROLLER, ARROW_TO_CONTROLLER, NUMPAD_TO_CONTROLLER];
+        if (this._localUids.length > 3) throw new Error('For now, only support 3 players');
 
         for (let i=0, len=this._localUids.length; i<len; i++) {
             this.inputManager.addLocalPlayerInput(this._localUids[i], conversion[i%conversion.length]);
@@ -320,7 +320,10 @@ export default class GameManager extends cc.Component {
 
     private async generateGameScene() {
         this.buildLayers();
+        EffectOnce.clearAppliedByUids();
 
+        this.upgradeExp.reset();
+        this.upgradeExp.defaultValue = 20;
         this.level.reset();
         this.level.defaultValue = 1;
         this.exp.reset();

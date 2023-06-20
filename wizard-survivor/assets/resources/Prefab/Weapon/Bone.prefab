@@ -220,6 +220,8 @@
       "__uuid__": "5fb4be36-8f76-4cc6-b5b7-f766082b37de"
     },
     "aimWeaponOwner": false,
+    "aimEnemy": false,
+    "shootAudio": "weapon_bone",
     "_id": ""
   },
   {

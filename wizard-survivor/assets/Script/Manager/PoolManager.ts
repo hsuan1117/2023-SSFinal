@@ -32,6 +32,7 @@ export default class PoolManager extends cc.Component {
     如果節點沒有所屬的對象池，直接 destroy 節點。
      */
     public recycle(node: cc.Node){
+        if (!node) return;
         if (!this.pool[node.name]){
             node.destroy();
             return;

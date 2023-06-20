@@ -62,7 +62,7 @@ export const ARROW_TO_CONTROLLER: ControllerConversion = {
 
 export const NUMPAD_TO_CONTROLLER: ControllerConversion = {
     [cc.macro.KEY.num8]: 'L_UP',
-    [cc.macro.KEY.num8]: 'L_DOWN',
+    [cc.macro.KEY.num5]: 'L_DOWN',
     [cc.macro.KEY.num4]: 'L_LEFT',
     [cc.macro.KEY.num6]: 'L_RIGHT',
     [cc.macro.KEY.enter]: 'A',

@@ -42,6 +42,9 @@ export default class WeaponController extends cc.Component {
     @property({tooltip: "是否直接鎖定敵人，會優先於 aimWeaponOwner 生效"})
     public aimEnemy: boolean = false;
 
+    @property()
+    public shootAudio: string = "weapon_default";
+
     private player: PlayerController = null;
 
     private searchTarget: ISearchTarget = null;
@@ -110,6 +113,7 @@ export default class WeaponController extends cc.Component {
         const target = this.searchTarget.getTarget();
         if (!target) return;
         if(this.animCtrl) this.animCtrl.state = {...this.animCtrl.state, isAttacking: true};
+        GameManager.instance.audioManager.playEffect(this.shootAudio);
 
         this.getComponent(FaceTo).setFaceTo(target);
         const projectile = GameManager.instance.poolManager.createPrefab(this.projectilePrefab).getComponent(ProjectileController);
@@ -117,6 +121,7 @@ export default class WeaponController extends cc.Component {
         projectile.node.setPosition(pos);
         projectile.init({...this.projectileAttr}, null, this.bounceDirIdx, this.player.uid);
         projectile.node.parent = GameManager.instance.bulletLayer;
+
 
         if (this.aimEnemy){
             projectile.node.setPosition(target.position);

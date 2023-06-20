@@ -34,8 +34,8 @@ export class IBuff {
     *
     * 否則不會觸發事件＆不會被記錄在 PlayerController.appliedBuff 中。
     *
-    * 若套用成功，該方法會返回一個函數，呼叫該函數可以移除該 Buff。否則返回 null。 */
-    public _apply(player: PlayerController) { console.warn("IBuff._apply() should be override by child class");}
+    * 若套用成功且需要手動卸除 buff，則返回一個卸除函數 */
+    public _apply(player: PlayerController) { console.warn("IBuff._apply() should be override by child class"); return null; }
     public remove(player: PlayerController){}
 
     public intoCoolDown(player: PlayerController) {
@@ -73,6 +73,8 @@ export class EffectOnce extends IBuff {
     constructor(coolDown) {super(coolDown)};
 
     protected static _appliedByUids: {[buffId: string]: {[uid: string]: boolean}} = {};
+
+    public static clearAppliedByUids() {this._appliedByUids = {};}
 
     public static playerHasApplied(player: PlayerController, buff: IBuff): boolean {
         if (!EffectOnce._appliedByUids[buff.id]) EffectOnce._appliedByUids[buff.id] = {};
@@ -222,7 +224,8 @@ class Tiamat extends EffectOnce {
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, ({enemyPosition, killByUid}) => {
+
+        const onEnemyHit = ({enemyPosition, killByUid}) => {
             if (killByUid != player.uid) return;
             if (this._coolDownTimer > 0) return;
 
@@ -242,7 +245,11 @@ class Tiamat extends EffectOnce {
                     0, true),
             );
             proj.shootToDirection(cc.Vec2.ZERO);
-        })
+        };
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_HIT, onEnemyHit, this);
+
+        return () => GameManager.instance.waveManager.event.off(WaveManager.ON_ENEMY_HIT, onEnemyHit, this);
     }
 }
 
@@ -260,7 +267,8 @@ class GA extends EffectOnce {
 
     public _apply(player: PlayerController) {
         if (EffectOnce.playerHasApplied(player, this)) return;
-        player.event.on(PlayerController.PLAYER_HURT, (damageInfo) => {
+
+        const onPlayerHurt = (damageInfo) => {
             if (this._coolDownTimer > 0) return;
             if (player.currentHP.value > damageInfo.damage) return;
 
@@ -270,7 +278,11 @@ class GA extends EffectOnce {
             player.recover(player.maxHp.value);
             player.isInvincible++;
             player.scheduleOnce(() => {player.isInvincible--}, this._invincibleTime);
-        })
+        };
+
+        player.event.on(PlayerController.PLAYER_HURT, onPlayerHurt, this);
+
+        return () => player.event.off(PlayerController.PLAYER_HURT, onPlayerHurt);
     }
 }
 
@@ -296,7 +308,8 @@ class Mash extends EffectOnce {
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
-        player.event.on(PlayerController.PLAYER_HURT, (damageInfo) => {
+
+        const onPlayerHurt = (damageInfo) => {
             if (this._coolDownTimer > 0) return;
 
             this.intoCoolDown(player);
@@ -318,7 +331,11 @@ class Mash extends EffectOnce {
             );
             proj.node.parent = GameManager.instance.bulletLayer;
             proj.shootToTarget(player.node);
-        })
+        };
+
+        player.event.on(PlayerController.PLAYER_HURT, onPlayerHurt, this);
+
+        return () => player.event.off(PlayerController.PLAYER_HURT, onPlayerHurt);
     }
 }
 
@@ -346,7 +363,7 @@ class Yasuo extends EffectOnce {
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
-        player.event.on(PlayerController.PLAYER_DASH, () => {
+        const onPlayerDash = () => {
 
             this.showBuffTriggered(player);
 
@@ -375,7 +392,11 @@ class Yasuo extends EffectOnce {
             player.scheduleOnce(() => {
                 GameManager.instance.waveManager.event.off(WaveManager.ON_ENEMY_DIE, resetDash);
             }, this._resetTime);
-        })
+        };
+
+        player.event.on(PlayerController.PLAYER_DASH, onPlayerDash, this);
+
+        return () => player.event.off(PlayerController.PLAYER_DASH, onPlayerDash);
     }
 }
 
@@ -402,7 +423,8 @@ class Domino extends EffectOnce {
         loadResource(this._prefabPath, cc.Prefab).then(
             (prefab) => this._prefab = prefab as unknown as cc.Prefab
         );
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+
+        const onEnemyDie = ({enemyPosition, killByUid}) => {
 
             this.showBuffTriggered(player);
 
@@ -422,7 +444,11 @@ class Domino extends EffectOnce {
             );
             proj.node.parent = GameManager.instance.bulletLayer;
             proj.shootToDirection(cc.Vec2.ZERO);
-        })
+        };
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, onEnemyDie, this);
+
+        return () => GameManager.instance.waveManager.event.off(WaveManager.ON_ENEMY_DIE, onEnemyDie);
     }
 }
 
@@ -685,13 +711,15 @@ class HeartSteel extends IBuff {
         player.mainWeapon.projectileAttr.damage.percentageFactor -= this._damagePercentage;
         addHp();
 
-        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, ({enemyPosition, killByUid}) => {
+        const onEnemyDie = ({enemyPosition, killByUid}) => {
             if (killByUid != player.uid) return;
             this._killCnt++;
             if (this._killCnt > 0 && this._killCnt % this._killCntToAddHp == 0) {
                 addHp();
             }
-        })
+        };
+
+        GameManager.instance.waveManager.event.on(WaveManager.ON_ENEMY_DIE, onEnemyDie, this);
     }
 }
 

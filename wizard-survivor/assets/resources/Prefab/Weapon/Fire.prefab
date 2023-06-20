@@ -110,6 +110,7 @@
     },
     "aimWeaponOwner": false,
     "aimEnemy": true,
+    "shootAudio": "weapon_fire",
     "_id": ""
   },
   {

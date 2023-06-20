@@ -220,6 +220,8 @@
       "__uuid__": "296a5665-030e-43d7-bc07-ee37d3b34625"
     },
     "aimWeaponOwner": false,
+    "aimEnemy": false,
+    "shootAudio": "weapon_shuiriken",
     "_id": ""
   },
   {

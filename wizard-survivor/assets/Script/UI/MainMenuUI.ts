@@ -50,7 +50,7 @@ export default class MainMenuUI extends cc.Component {
     public static readonly ON_LEADERBOARD_CLICKED: string = "ON_LEADERBOARD_CLICKED";
     public event: cc.EventTarget;
 
-    private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p'];
+    private readonly child: string[] = ['OnlineWithNewRoom', 'OnlineJoinRoom', 'Offline1p', 'Offline2p', 'Offline3p'];
     private uid: string;
 
     private playerFocus: PlayerFocus;
@@ -103,7 +103,7 @@ export default class MainMenuUI extends cc.Component {
         execute['OnlineJoinRoom'] = this.onlineJoinRoomId.bind(this);
         execute['Offline1p'] = this.offline1p.bind(this);
         execute['Offline2p'] = this.offline2p.bind(this);
-        execute['Leaderboard'] = this.leaderboard.bind(this);
+        execute['Offline3p'] = this.offline3p.bind(this);
 
         execute[node.name]();
     }
@@ -122,6 +122,15 @@ export default class MainMenuUI extends cc.Component {
             gameType: GameType.OFFLINE,
             localUids: ['p1', 'p2'],
             gameStartType: GameStartType.OFFLINE_2P
+        }
+        this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
+    }
+
+    private offline3p(): void {
+        const gameInfo: GameInfo = {
+            gameType: GameType.OFFLINE,
+            localUids: ['p1', 'p2', 'p3'],
+            gameStartType: GameStartType.OFFLINE_3P
         }
         this.event.emit(MainMenuUI.ON_AUTH_COMPLETED, {gameInfo: gameInfo})
     }

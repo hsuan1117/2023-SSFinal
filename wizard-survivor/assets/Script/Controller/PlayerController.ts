@@ -84,6 +84,7 @@ export default class PlayerController extends cc.Component{
     public normalMaterial: cc.Material = null;
     public hurtMaterial: cc.Material = null;
     private sprite: cc.Sprite = null;
+    private _removeBuffCallbacks: (() => void)[] = [];
 
     // LIFE-CYCLE CALLBACKS:
     onLoad(){
@@ -158,8 +159,10 @@ export default class PlayerController extends cc.Component{
     }
 
     onDisable() {
-        for (let buff of this.appliedBuff){
-            buff.remove(this);
+        console.log('PlayerController onDisable, removeBuffs: ')
+        for (let cb of this._removeBuffCallbacks){
+            console.log(cb);
+            cb();
         }
     }
 
@@ -246,21 +249,15 @@ export default class PlayerController extends cc.Component{
     public addBuff(buff: IBuff){
         if (this._isDead) return;
 
-        buff._apply(this);
+        const removeCallback =  buff._apply(this);
+        removeCallback && this._removeBuffCallbacks.push(removeCallback);
+
         this.appliedBuff.push(buff);
         this.event.emit(PlayerController.PLAYER_ATTR_CHANGE, buff);
     }
 
 
     // HELPER METHODS:
-    // protected collectDrop() {
-    //     if (this._isDead) return;
-    //
-    //     while (this.getComponent(SearchDrop).getTarget()) {
-    //         let target = this.getComponent(SearchDrop).getTarget();
-    //         target.getComponent(DropController).collectBy(this.node);
-    //     }
-    // }
 
     protected checkIsDead(){
         if (this._isDead) return;

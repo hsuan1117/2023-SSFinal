@@ -249,6 +249,7 @@
     },
     "aimWeaponOwner": false,
     "aimEnemy": false,
+    "shootAudio": "weapon_flag",
     "_id": ""
   },
   {
