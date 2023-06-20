@@ -38,15 +38,15 @@ export default class PlayerStatUI extends cc.Component {
 
         this.label.string =
             // `current HP: ${this.player.currentHP.toString()}\n` +
-            `移動速度: ${this.player.moveSpeed.value}\n` +
+            `移動速度: ${Math.ceil(this.player.moveSpeed.value)}\n` +
             // `最大生命: ${this.player.maxHp.value}\n` +
             `經驗增益: ${this.player.expGainPercentage.value}%\n` +
-            `衝刺冷卻: ${this.player.dashCoolDown.value}\n` +
+            `衝刺冷卻: ${this.player.dashCoolDown.value.toFixed(2)}\n` +
             // `dash speed: ${this.player.dashSpeed.toString()}\n` +
-            `攻擊速度: ${this.player.mainWeapon.attackSpeed.value}\n` +
+            `攻擊速度: ${this.player.mainWeapon.attackSpeed.value.toFixed(2)}\n` +
             // `shot per attack: ${this.player.mainWeapon.shotPerAttack.toString()}\n` +
             // `shoot speed: ${this.player.mainWeapon.shootSpeed.toString()}\n` +
-            `基礎傷害: ${this.player.mainWeapon.projectileAttr.damage.value}\n`;
+            `基礎傷害: ${Math.ceil(this.player.mainWeapon.projectileAttr.damage.value)}\n`;
             // `子彈飛行速度: ${this.player.mainWeapon.projectileAttr.flySpeed.value}\n`;
         // `exist duration: ${this.player.mainWeapon.projectileAttr.existDuration.toString()}\n`;
         // `bounce on enemy times: ${this.player.mainWeapon.projectileAttr.bounceOnEnemyTimes.toString()}\n` +
