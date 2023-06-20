@@ -13,6 +13,11 @@ export default class LeaderBoardUI extends cc.Component {
     private _leaderBoard: cc.Node = null;
     private _isCollide: { [uid: string]: boolean } = {};
     private _isOn: boolean = false;
+    private cmp(a,b) {
+        if(a.level < b.level) return -1;
+        else if(a.level > b.level) return 1;
+        return 0;
+    }
 
     /**
      * @description 排行榜數據
@@ -35,7 +40,7 @@ export default class LeaderBoardUI extends cc.Component {
             if (rank.length > 8) rank = rank.slice(0, 8);
             this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = rank.join('\n');
         } else {
-            let rank = JSON.parse(localStorage.getItem('gameHistory') ?? '{}').sort(x => x.level).map((record: any) => (
+            let rank = JSON.parse(localStorage.getItem('gameHistory') ?? '{}').sort(this.cmp).map((record: any) => (
                 `[離線模式    ] 最高等級 ${record.level} | ${new Date(record.created_at).toLocaleDateString()}`
             ));
             if (rank.length > 8) rank = rank.slice(0, 8);
