@@ -178,13 +178,14 @@ export default class EnemyController extends cc.Component {
          });
 
          this.scheduleOnce(() => {
-             GameManager.instance.poolManager.recycle(this.node);
+             this.selfDestroy();
              GameManager.instance.particleManager.createParticle("Enemy Explosion", this.node.position, 0, 1);
          }, 1);
     }
 
     protected selfDestroy() {
         GameManager.instance.poolManager.recycle(this.node);
+        WaveManager.enemyCount--;
     }
 
     protected findClosestPlayer() {

@@ -338,6 +338,7 @@
     "enemyHurtAnim": "GraveGuardWalk",
     "enemyDeadAnim": "GraveGuardStand",
     "enemySkillAnim": "GraveGuardAttack",
+    "enemyDieSprite": null,
     "_id": ""
   },
   {

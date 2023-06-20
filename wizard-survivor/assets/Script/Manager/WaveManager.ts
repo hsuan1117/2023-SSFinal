@@ -27,6 +27,7 @@ export default class WaveManager extends cc.Component {
 
     public event: cc.EventTarget;
     public static dropCount: number = 0;
+    public static enemyCount: number = 0;
 
     /* 事件：當敵人死亡時觸發
     *
@@ -120,18 +121,20 @@ export default class WaveManager extends cc.Component {
     update (dt) {
         this.spawnCenter = ignoreZ(cc.Camera.main.node.position).sub(cc.v2(winSize.width / 2, cc.winSize.height / 2));
 
-        for (const key in this.currentWave){
-            if (this.countDowns[key] === undefined) {
-                this.countDowns[key] = 3;
-            }
-
-            if (this.countDowns[key] <= 0){
-                for (let i = 0; i < this.currentWave[key]["spawnNum"]; i++){
-                    this.spawnEnemy(this.enemyPrefabs[key], this.randomSpawnPos());
+        if (WaveManager.enemyCount < 100) {
+            for (const key in this.currentWave) {
+                if (this.countDowns[key] === undefined) {
+                    this.countDowns[key] = 3;
                 }
-                this.countDowns[key] = this.currentWave[key].spawnInterval;
-            } else {
-                this.countDowns[key] -= dt;
+
+                if (this.countDowns[key] <= 0) {
+                    for (let i = 0; i < this.currentWave[key]["spawnNum"]; i++) {
+                        this.spawnEnemy(this.enemyPrefabs[key], this.randomSpawnPos());
+                    }
+                    this.countDowns[key] = this.currentWave[key].spawnInterval;
+                } else {
+                    this.countDowns[key] -= dt;
+                }
             }
         }
 
@@ -168,6 +171,7 @@ export default class WaveManager extends cc.Component {
         }
 
         enemy.getComponent("EnemyController").init(Math.pow(this.growthRate, this.currentWaveNum - 1));
+        WaveManager.enemyCount++;
     }
 
     private onEnemyDie({enemyPosition, killByUid}: {enemyPosition: cc.Vec3, killByUid: string}){
