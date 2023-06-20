@@ -15,7 +15,7 @@ export default class SearchEnemy extends cc.Component implements ISearchTarget{
         return this._searchRange;
     }
 
-    private _searchRange: number = 1000;
+    private _searchRange: number = 270;
 
 
     // PUBLIC METHODS:

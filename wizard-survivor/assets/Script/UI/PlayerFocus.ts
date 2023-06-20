@@ -156,10 +156,10 @@ export default class PlayerFocus extends cc.Component {
     }
 
     private setFontStyle(label: cc.Label, color: cc.Color){
-        label.node.scaleX = 0.25;
-        label.node.scaleY = 0.25;
-        label.fontSize = 80;
-        label.lineHeight = 60;
+        // label.node.scaleX = 0.5;
+        // label.node.scaleY = 0.5;
+        label.fontSize = 20;
+        label.lineHeight = 25;
         label.node.color = color
         label.font = this.font;
         label.enableBold = true;

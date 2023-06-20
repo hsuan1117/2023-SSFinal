@@ -29,13 +29,18 @@ export default class LeaderBoardUI extends cc.Component {
         this._interactableHint.opacity = 0;
         this._leaderBoard.getChildByName('Coin').getChildByName("CoinIcon").opacity = 0;
         if (GameManager.instance.gameSystem.gameInfo.gameType === 0) {
-            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = (await this.getScoreBoard()).map((userData: any) => (
+            let rank = (await this.getScoreBoard()).map((userData: any) => (
                 `[${userData.email.split("@")[0].padEnd(8, " ")}] 最高等級 ${userData.level} | ${new Date(userData.updated_at).toLocaleDateString()}`
-            )).join('\n');
+            ));
+            if (rank.length > 8) rank = rank.slice(0, 8);
+            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = rank.join('\n');
         } else {
-            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = JSON.parse(localStorage.getItem('gameHistory') ?? '{}').sort(x => x.level).map((record: any) => (
+            let rank = JSON.parse(localStorage.getItem('gameHistory') ?? '{}').sort(x => x.level).map((record: any) => (
                 `[離線模式    ] 最高等級 ${record.level} | ${new Date(record.created_at).toLocaleDateString()}`
-            )).join('\n');
+            ));
+            if (rank.length > 8) rank = rank.slice(0, 8);
+            this._leaderBoard.getChildByName('Coin').getChildByName("CoinLabel").getComponent(cc.Label).string = rank.join('\n');
+
         }
     }
 

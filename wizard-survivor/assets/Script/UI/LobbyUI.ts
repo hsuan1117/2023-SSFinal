@@ -18,6 +18,7 @@ export default class LobbyUI extends cc.Component {
     private uids: string[] = [];
     private _coinLabel: cc.Label = null;
     private _remoteInfo: cc.Node = null;
+    private _chooseCharaHint: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -28,6 +29,8 @@ export default class LobbyUI extends cc.Component {
             .getChildByName('Label')
             .getComponent(cc.Label);
         this._remoteInfo = this.node.getChildByName('RemoteInfo');
+        this._chooseCharaHint = this.node.getChildByName('ChooseCharaHint');
+        this._chooseCharaHint.opacity = 255;
     }
 
 
@@ -80,6 +83,7 @@ export default class LobbyUI extends cc.Component {
                 if (Object.keys(chooseResult).length == this.uids.length) {
                     this.playerFocus.removeFocusAll();
                     this.chooseResult = chooseResult;
+                    this._chooseCharaHint.opacity = 0;
                     resolve();
                 }
             })
